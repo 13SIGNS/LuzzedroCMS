@@ -1,4 +1,4 @@
-# LuzzedroCMS
+# LuzzedroCMS 0.1beta
 ASP.NET MVC 4.5 free, open CMS uses also HTML5, jQuery, AJAX, Bootstrap, CSS
 
 # DEMO
@@ -28,9 +28,10 @@ LuzzedroCMS allows you to:
 
 # USED TECHNOLOGIES
 
-- ASP.NET MVC 4.5 as engine
+- ASP.NET MVC 4.5 C#
 - repository pattern realized by EntityFramework
 - MSSQL as database
+- Razor
 - Ninject as injection engine
 - HTML5, CSS
 - jQuery, AJAX (unobtrusive), Bootstrap
