@@ -32,7 +32,7 @@ LuzzedroCMS allows you to:
 - repository pattern realized by EntityFramework
 - MSSQL as database
 - Razor
-- Ninject as injection engine
+- Ninject
 - HTML5, CSS
 - jQuery, AJAX (unobtrusive), Bootstrap
 - jQuery Validation
