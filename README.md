@@ -43,7 +43,7 @@ LuzzedroCMS allows you to:
 # SCREENSHOTS
 Main view:
 ![Main view](http://signs.civ.pl/demos/screenshots/lcms_all.PNG "LuzzedroCMS")
-
+<hr>
 Navigation:
 ![navigation](http://signs.civ.pl/demos/screenshots/lcms_nav.PNG "LuzzedroCMS")
 
