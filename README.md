@@ -42,7 +42,7 @@ LuzzedroCMS allows you to:
 
 # SCREENSHOTS
 Main view:
-![main view](http://signs.civ.pl/demos/screenshots/lcms_all.png "LuzzedroCMS")
+![alt text](http://signs.civ.pl/demos/screenshots/lcms_all.png "LuzzedroCMS")
 
 # LICENCE
 GNU GPL 3.0
