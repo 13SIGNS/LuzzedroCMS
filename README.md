@@ -44,54 +44,54 @@ LuzzedroCMS allows you to:
 <h4>Main view:</h4>
 ![Main view](http://signs.civ.pl/demos/screenshots/lcms_all.PNG "LuzzedroCMS")
 <hr>
-Navigation:
+<h4>Navigation:</h4>
 ![navigation](http://signs.civ.pl/demos/screenshots/lcms_nav.PNG "LuzzedroCMS")
-
-Adding tag:
+<hr>
+<h4>Adding tag:</h4>
 ![Adding tag](http://signs.civ.pl/demos/screenshots/lcms_add_tag.PNG "LuzzedroCMS")
-
-List of tags:
+<hr>
+<h4>List of tags:</h4>
 ![List of tags](http://signs.civ.pl/demos/screenshots/lcms_tags_list.PNG "LuzzedroCMS")
-
-Adding category:
+<hr>
+<h4>Adding category:</h4>
 ![Adding category](http://signs.civ.pl/demos/screenshots/lcms_adding_category.PNG "LuzzedroCMS")
-
-List of categories:
+<hr>
+<h4>List of categories:</h4>
 ![List of categories](http://signs.civ.pl/demos/screenshots/lcms_category_list.PNG "LuzzedroCMS")
-
-Adding article:
+<hr>
+<h4>Adding article:</h4>
 ![Adding article](http://signs.civ.pl/demos/screenshots/lcms_add_article.PNG "LuzzedroCMS")
-
-Article:
+<hr>
+<h4>Article:</h4>
 ![Article](http://signs.civ.pl/demos/screenshots/lcms_article.PNG "LuzzedroCMS")
-
-List of articles:
+<hr>
+<h4>List of articles:</h4>
 ![List of articles](http://signs.civ.pl/demos/screenshots/lcms_admin_list_articles.PNG "LuzzedroCMS")
-
-Add bookmark:
+<hr>
+<h4>Add bookmark:</h4>
 ![Add bookmark](http://signs.civ.pl/demos/screenshots/lcms_add_bookmark.PNG "LuzzedroCMS")
-
-Add comment:
+<hr>
+<h4>Add comment:</h4>
 ![Add comment](http://signs.civ.pl/demos/screenshots/lcms_add_comment.PNG "LuzzedroCMS")
-
-Edit comment:
+<hr>
+<h4>Edit comment:</h4>
 ![Edit comment](http://signs.civ.pl/demos/screenshots/lcms_editing_comment.PNG "LuzzedroCMS")
-
-Tags cloud:
+<hr>
+<h4>Tags cloud:</h4>
 ![Tags cloud](http://signs.civ.pl/demos/screenshots/lcms_admin_tags_cloud.PNG "LuzzedroCMS")
-
-Universal info (created in controllers):
+<hr>
+<h4>Universal info (created in controllers):</h4>
 ![Universal info](http://signs.civ.pl/demos/screenshots/lcms_universal_info.PNG "LuzzedroCMS")
-
-Universal info (created in controllers):
+<hr>
+<h4>Universal info (created in controllers):</h4>
 ![Universal info](http://signs.civ.pl/demos/screenshots/lcms_universal_info.PNG "LuzzedroCMS")
-
-User edit:
+<hr>
+<h4>User edit:</h4>
 ![User edit](http://signs.civ.pl/demos/screenshots/lcms_user_edit.PNG "LuzzedroCMS")
-
-User list:
+<hr>
+<h4>User list:</h4>
 ![User list](http://signs.civ.pl/demos/screenshots/lcms_user_list.PNG "LuzzedroCMS")
-
+<hr>
 
 
 # LICENCE
