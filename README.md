@@ -41,7 +41,7 @@ LuzzedroCMS allows you to:
 - UnitTest for url patterns
 
 # SCREENSHOTS
-Main view:
+<h4>Main view:</h4>
 ![Main view](http://signs.civ.pl/demos/screenshots/lcms_all.PNG "LuzzedroCMS")
 <hr>
 Navigation:
