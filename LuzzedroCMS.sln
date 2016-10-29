@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuzzedroCMS.WebUI", "LuzzedroCMS\LuzzedroCMS.WebUI.csproj", "{D93A112F-010F-498D-8C09-202C9CA3FD42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuzzedroCMS.Tests", "LuzzedroCMS.Tests\LuzzedroCMS.Tests.csproj", "{27961C9A-C7AA-4D0E-8D34-49FB5E804927}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuzzedroCMS.Domain", "LuzzedroCMS.Domain\LuzzedroCMS.Domain.csproj", "{1F4DBE32-DE9E-408D-97D3-08D75D8D1094}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D93A112F-010F-498D-8C09-202C9CA3FD42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D93A112F-010F-498D-8C09-202C9CA3FD42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D93A112F-010F-498D-8C09-202C9CA3FD42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D93A112F-010F-498D-8C09-202C9CA3FD42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27961C9A-C7AA-4D0E-8D34-49FB5E804927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27961C9A-C7AA-4D0E-8D34-49FB5E804927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27961C9A-C7AA-4D0E-8D34-49FB5E804927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27961C9A-C7AA-4D0E-8D34-49FB5E804927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F4DBE32-DE9E-408D-97D3-08D75D8D1094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4DBE32-DE9E-408D-97D3-08D75D8D1094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F4DBE32-DE9E-408D-97D3-08D75D8D1094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F4DBE32-DE9E-408D-97D3-08D75D8D1094}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
