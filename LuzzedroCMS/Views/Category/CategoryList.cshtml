@@ -1,0 +1,17 @@
+﻿@model IQueryable<LuzzedroCMS.Domain.Entities.Category>
+
+@{
+    Layout = null;
+}
+
+<nav class="navbar navbar-inverse navbar-categories">
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            @foreach (var cat in Model)
+            {
+                string active = Request.Params["category"] == cat.Name ? "active" : "";
+                <li class="@active">@Html.ActionLink(@cat.Name, "ArticlesByCategory", new { controller = "Article", action = "ArticlesByCategory", category = @cat.Name })</li>
+            }
+        </ul>
+    </div>
+</nav>

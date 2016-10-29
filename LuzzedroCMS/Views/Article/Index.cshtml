@@ -1,0 +1,282 @@
+﻿@model LuzzedroCMS.Models.ArticleListViewModel
+@using LuzzedroCMS.WebUI.Properties
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        @for (int i = 0; i < 3; i++)
+        {
+            if (Model.LatestArticles.Skip(i).Any())
+            {
+                string active = i == 0 ? "active" : "";
+                <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.LatestArticles.Skip(i).First().Url, category = Model.LatestArticlesCategories.ElementAt(i) })" class="item @active">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images900/{0}", Model.LatestArticles.Skip(i).First().ImageName))" alt="" />
+                    <div class="carousel-caption full-width-caption">
+                        <h3>@Model.LatestArticles.Skip(i).First().Title</h3>
+                        <p>@Model.LatestArticles.Skip(i).First().Lead</p>
+                    </div>
+                </a>
+            }
+        }
+    </div>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">@Resources.Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">@Resources.Next</span>
+    </a>
+</div>
+<hr />
+<div class="row">
+    @for (int y = 3; y < 6; y++)
+    {
+        if (Model.LatestArticles.Skip(y).Any())
+        {
+            <div class="col-sm-6 col-md-4">
+                <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.LatestArticles.Skip(y).First().Url, category = Model.LatestArticlesCategories.ElementAt(y) })" class="thumbnail thumbnail-link">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images320/{0}", Model.LatestArticles.Skip(y).First().ImageName))" alt="" />
+                    <div class="caption">
+                        <div>@Model.LatestArticlesCategories.ElementAt(y)</div>
+                        <h3 class="caption-article-title">@Model.LatestArticles.Skip(y).First().Title</h3>
+                        <p>@Model.LatestArticles.Skip(y).First().Lead</p>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<hr />
+<div class="row">
+    @for (int z = 6; z < 9; z++)
+    {
+        if (Model.LatestArticles.Skip(z).Any())
+        {
+            <div class="col-sm-6 col-md-4">
+                <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.LatestArticles.Skip(z).First().Url, category = Model.LatestArticlesCategories.ElementAt(z) })" class="thumbnail thumbnail-link">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images320/{0}", Model.LatestArticles.Skip(z).First().ImageName))" alt="" />
+                    <div class="caption">
+                        <div>@Model.LatestArticlesCategories.ElementAt(z)</div>
+                        <h3 class="caption-article-title">@Model.LatestArticles.Skip(z).First().Title</h3>
+                        <p>@Model.LatestArticles.Skip(z).First().Lead</p>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<hr />
+<div class="row">
+    @for (int x = 9; x < 11; x++)
+    {
+        if (Model.LatestArticles.Skip(x).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.LatestArticles.Skip(x).First().Url, category = Model.LatestArticlesCategories.ElementAt(x) })" class="media typical-color">
+                <div class="media-left col-md-2">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.LatestArticles.Skip(x).First().ImageName))" alt="" />
+                </div>
+                <div class="media-body col-md-10">
+                    <h4 class="media-heading">@Model.LatestArticles.Skip(x).First().Title</h4>
+                    @Model.LatestArticles.Skip(x).First().Lead
+                </div>
+            </a>
+        }
+    }
+</div>
+<hr />
+<div class="row">
+    <div class="col-sm-6 col-md-6">
+        @if (Model.ArticlesByCategorySection1.Skip(0).Any())
+            {
+            <h4 class="default-title">@Model.ArticlesByCategorySection1Categories.ElementAt(0)</h4>
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection1.Skip(0).First().Url, category = Model.ArticlesByCategorySection1Categories.ElementAt(0) })" class="thumbnail thumbnail-link">
+                <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images320/{0}", Model.ArticlesByCategorySection1.Skip(0).First().ImageName))" alt="" />
+                <div class="caption">
+                    <h3 class="caption-article-title">@Model.ArticlesByCategorySection1.Skip(0).First().Title</h3>
+                    <p>@Model.ArticlesByCategorySection1.Skip(0).First().Lead</p>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection1.Skip(1).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection1.Skip(1).First().Url, category = Model.ArticlesByCategorySection1Categories.ElementAt(1) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection1.Skip(1).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection1.Skip(1).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection1.Skip(2).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection1.Skip(2).First().Url, category = Model.ArticlesByCategorySection1Categories.ElementAt(2) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection1.Skip(2).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection1.Skip(2).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection1.Skip(3).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection1.Skip(3).First().Url, category = Model.ArticlesByCategorySection1Categories.ElementAt(3) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection1.Skip(3).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection1.Skip(3).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+    <div class="col-sm-6 col-md-6">
+        @if (Model.ArticlesByCategorySection2.Skip(0).Any())
+        {
+            <h4 class="default-title">@Model.ArticlesByCategorySection2Categories.ElementAt(0)</h4>
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection2.Skip(0).First().Url, category = Model.ArticlesByCategorySection2Categories.ElementAt(0) })" class="thumbnail thumbnail-link">
+                <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images320/{0}", Model.ArticlesByCategorySection2.Skip(0).First().ImageName))" alt="" />
+                <div class="caption">
+                    <h3 class="caption-article-title">@Model.ArticlesByCategorySection2.Skip(0).First().Title</h3>
+                    <p>@Model.ArticlesByCategorySection2.Skip(0).First().Lead</p>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection2.Skip(1).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection2.Skip(1).First().Url, category = Model.ArticlesByCategorySection2Categories.ElementAt(1) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection2.Skip(1).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection2.Skip(1).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection2.Skip(2).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection2.Skip(2).First().Url, category = Model.ArticlesByCategorySection2Categories.ElementAt(2) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection2.Skip(2).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection2.Skip(2).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection2.Skip(3).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection2.Skip(3).First().Url, category = Model.ArticlesByCategorySection2Categories.ElementAt(3) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection2.Skip(3).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection2.Skip(3).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-sm-6 col-md-6">
+        @if (Model.ArticlesByCategorySection3.Skip(0).Any())
+        {
+            <h4 class="default-title">@Model.ArticlesByCategorySection3Categories.ElementAt(0)</h4>
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection3.Skip(0).First().Url, category = Model.ArticlesByCategorySection3Categories.ElementAt(0) })" class="thumbnail thumbnail-link">
+                <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images320/{0}", Model.ArticlesByCategorySection3.Skip(0).First().ImageName))" alt="" />
+                <div class="caption">
+                    <h3 class="caption-article-title">@Model.ArticlesByCategorySection3.Skip(0).First().Title</h3>
+                    <p>@Model.ArticlesByCategorySection3.Skip(0).First().Lead</p>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection3.Skip(1).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection3.Skip(1).First().Url, category = Model.ArticlesByCategorySection3Categories.ElementAt(1) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection3.Skip(1).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection3.Skip(1).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection3.Skip(2).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection3.Skip(2).First().Url, category = Model.ArticlesByCategorySection3Categories.ElementAt(2) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection3.Skip(2).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection3.Skip(2).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection3.Skip(3).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection3.Skip(3).First().Url, category = Model.ArticlesByCategorySection3Categories.ElementAt(3) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection3.Skip(3).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection3.Skip(3).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+    <div class="col-sm-6 col-md-6">
+        @if (Model.ArticlesByCategorySection4.Skip(0).Any())
+        {
+            <h4 class="default-title">@Model.ArticlesByCategorySection4Categories.ElementAt(0)</h4>
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection4.Skip(0).First().Url, category = Model.ArticlesByCategorySection4Categories.ElementAt(0) })" class="thumbnail thumbnail-link">
+                <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images320/{0}", Model.ArticlesByCategorySection4.Skip(0).First().ImageName))" alt="" />
+                <div class="caption">
+                    <h3 class="caption-article-title">@Model.ArticlesByCategorySection4.Skip(0).First().Title</h3>
+                    <p>@Model.ArticlesByCategorySection4.Skip(0).First().Lead</p>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection4.Skip(1).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection4.Skip(1).First().Url, category = Model.ArticlesByCategorySection4Categories.ElementAt(1) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection4.Skip(1).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection4.Skip(1).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection4.Skip(2).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection4.Skip(2).First().Url, category = Model.ArticlesByCategorySection4Categories.ElementAt(2) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection4.Skip(2).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection4.Skip(2).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+        @if (Model.ArticlesByCategorySection4.Skip(3).Any())
+        {
+            <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.ArticlesByCategorySection4.Skip(3).First().Url, category = Model.ArticlesByCategorySection4Categories.ElementAt(3) })" class="thumbnail thumbnail-link">
+                <div class="row">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.ArticlesByCategorySection4.Skip(3).First().ImageName))" alt="" class="col-md-4" />
+                    <div class="caption col-md-8">
+                        <h3 class="caption-article-title">@Model.ArticlesByCategorySection4.Skip(3).First().Title</h3>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+</div>

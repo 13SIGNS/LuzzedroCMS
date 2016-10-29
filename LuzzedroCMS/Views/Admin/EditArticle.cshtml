@@ -1,0 +1,132 @@
+﻿@model LuzzedroCMS.Models.EditArticleViewModel
+@using LuzzedroCMS.WebUI.Properties
+
+@section Script{
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script src="~/Scripts/forms.js"></script>
+}
+
+@section Style{
+    <link href="~/Content/Chosen.css" rel="stylesheet" type="text/css" />
+}
+
+@using (Html.BeginForm("EditArticle", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Article.ArticleID)
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(x => x.Categories, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(x => x.Article.CategoryID, new SelectList(Model.Categories.AsEnumerable(), "CategoryID", "Name"), new { @class = "form-control md-2" })
+                @Html.ActionLink(Resources.AddCategory, "EditCategory", "Admin", new { target = "_blank" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ListBoxFor(x => x.SelectedTagIDs, new MultiSelectList(Model.Tags.AsEnumerable(), "TagID", "Name"), new { @class = "form-control md-2 chosen", data_placeholder = Resources.Choose })
+                @Html.ActionLink(Resources.AddTag, "EditTag", "Admin", new { target = "_blank" })
+                @Html.ValidationMessageFor(x => x.Tags, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @if (Model.Article.ImageName != null)
+                {
+            <div class="form-group">
+                @Html.Label("Image", Resources.CurrentMainPhoto, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", Model.Article.ImageName))" />
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Article.ImageName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DisplayFor(x => x.Article.ImageName)
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            @Html.LabelFor(x => x.Article.ImageDesc, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(x => x.Article.ImageDesc, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label(Resources.SelectAnExistingImage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="row defined-images-box">
+                    @foreach (string image in Directory.GetFiles(Server.MapPath("~/Content/ArticleImage/Images120")))
+                    {
+                        var img = new FileInfo(image);
+                        <div class="col-md-3">
+                            <span class="thumbnail addDefinedImageLS defined-image-box" data-name="@img.Name">
+                                <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", img.Name))" />
+                            </span>
+                        </div>
+                    }
+                </div>
+                @Html.ActionLink(Resources.AddImage, "EditPhoto", "Admin", new { target = "_blank" })
+            </div>
+        </div>
+        @Html.Hidden("ExistingImageName", Model.Article.ImageName)
+        <div class="form-group">
+            @Html.LabelFor(x => x.Article.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(x => x.Article.Content, new { htmlAttributes = new { @class = "form-control editor" } })
+                @Html.ValidationMessageFor(x => x.Article.Content, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Article.DateExp, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(x => x.Article.DateExp, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.Article.DateExp, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Article.DatePub, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(x => x.Article.DatePub, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.Article.DatePub, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Article.Lead, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(x => x.Article.Lead, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.Article.Lead, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Article.Source, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(x => x.Article.Source, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.Article.Source, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Article.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(x => x.Article.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.Article.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Article.Status, Resources.Visibility, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default @((Model.Article.Status)==1?"active":"")">@Html.RadioButtonFor(x => x.Article.Status, 1, true) <span class="glyphicon glyphicon-eye-open"></span></label>
+                    <label class="btn btn-default @((Model.Article.Status)==0?"active":"")">@Html.RadioButtonFor(x => x.Article.Status, 0, false) <span class="glyphicon glyphicon-eye-close"></span></label>
+                </div>
+                @Html.ValidationMessageFor(x => x.Article.Status, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@Resources.Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

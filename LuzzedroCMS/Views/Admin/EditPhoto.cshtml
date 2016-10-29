@@ -1,0 +1,41 @@
+﻿@model LuzzedroCMS.Models.ImageViewModel
+@using LuzzedroCMS.WebUI.Properties
+
+@section Script{
+    <script src="~/Scripts/forms.js"></script>
+}
+
+@using (Html.BeginForm("EditPhoto", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.ImageDesc, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(x => x.ImageDesc, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label(Resources.ChooseImage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-default btn-file">
+                            Dodaj obraz
+                            @Html.TextBox("Image", "", new { type = "file", accept = "image/*" })
+                        </span>
+                    </span>
+                    <input type="text" class="form-control" readonly="">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@Resources.Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+

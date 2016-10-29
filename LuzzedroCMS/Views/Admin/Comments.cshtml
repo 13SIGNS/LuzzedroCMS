@@ -1,0 +1,28 @@
+﻿@model IQueryable<LuzzedroCMS.Domain.Entities.Comment>
+@using LuzzedroCMS.WebUI.Properties
+
+@foreach (var comment in Model)
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            @Html.Label(comment.Content, Resources.Comment)
+            @Html.Display(comment.Content)
+            @Html.Label(comment.Date.ToString(), Resources.DateAdded)
+            @Html.Display(comment.Date.ToString())
+            @Html.Label(comment.UserID.ToString(), Resources.User)
+            @Html.Display(comment.UserID.ToString())
+            @Html.ActionLink(Resources.Edit, "EditComment", new { comment.CommentID }, new { @class = "btn btn-default" })
+            @using (Html.BeginForm("RemoveComment", "Admin", FormMethod.Post, new { @class = "inline-form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("CommentID", comment.CommentID)
+                <input type="submit" value="@Resources.Remove" />
+            }
+        </div>
+    </div>
+}
+
+
+
+
+

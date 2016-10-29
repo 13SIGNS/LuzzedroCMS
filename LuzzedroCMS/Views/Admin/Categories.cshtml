@@ -1,0 +1,34 @@
+﻿@model IQueryable<LuzzedroCMS.Domain.Entities.Category>
+@using LuzzedroCMS.WebUI.Properties
+
+@foreach (var category in Model)
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="col-md-1">
+                <span class="label label-success">
+                    <span class="glyphicon glyphicon-sort-by-attributes"></span>
+                    @Html.DisplayFor(x => category.Order)
+                </span>
+            </div>
+            <div class="col-md-1">
+                <span class="label label-success">
+                    @(category.Status == 1 ? new HtmlString("<span class=\"label label-success\"><span class=\"glyphicon glyphicon-eye-open\"></span></span>") : new HtmlString("<span class=\"label label-danger\"><span class=\"glyphicon glyphicon-eye-close\"></span></span>"))
+                </span>
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(x => category.Name)
+            </div>
+            <div class="col-md-3">
+                @using (Html.BeginForm("RemoveCategory", "Admin", FormMethod.Post, new { @class = "inline-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.Hidden("CategoryID", category.CategoryID)
+                    @Html.ActionLink(Resources.Edit, "EditCategory", new { category.CategoryID }, new { @class = "btn btn-default" })
+                    <input type="submit" value="@Resources.Remove" class="btn btn-default" />
+                }
+            </div>
+        </div>
+    </div>
+}

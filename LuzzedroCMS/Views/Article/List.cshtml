@@ -1,0 +1,13 @@
+﻿@model IQueryable<LuzzedroCMS.Domain.Entities.Article>
+@using LuzzedroCMS.WebUI.Properties
+
+@{
+    ViewBag.Title = Resources.Articles;
+}
+
+<h2>@Resources.Articles</h2>
+@foreach(var p in Model)
+{
+    <div>@p.Title</div>
+}
+

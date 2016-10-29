@@ -1,0 +1,90 @@
+﻿@model LuzzedroCMS.Models.ArticleViewModel
+@using LuzzedroCMS.WebUI.Properties
+@{
+    AjaxOptions ajaxOptions = new AjaxOptions
+    {
+        LoadingElementId = "loading",
+        UpdateTargetId = "bookmark-confirm"
+    };
+}
+<div class="row">
+    <div class="col-md-12">
+        @Model.CategoryName
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h2>@Model.Article.Title</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images900/{0}", @Model.Article.ImageName))" class="image-article" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @Html.Raw(Model.Article.Content)
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @using (Ajax.BeginForm("AddBookmark", null, ajaxOptions, new { @class = "pull-right" }))
+        {
+            @Html.Hidden("url", @Model.Article.Url)
+            <button type="submit" class="btn btn-danger add-bookmark">
+                <span id="loading" class="spinner">
+                    <span class="glyphicon glyphicon-refresh glyphicon-spin"></span>
+                </span>
+                <i class="glyphicon glyphicon-heart"></i>
+                <span id="bookmark-confirm">
+                    @Resources.AddBookmark
+                </span>
+            </button>
+        }
+    </div>
+</div>
+@if (Model.Comments.Any())
+{
+    <h2>@Resources.Comments</h2>
+    var i = 0;
+    foreach (var comment in Model.Comments)
+    {
+        <hr />
+        <div class="media">
+            <div class="media-left">
+                <span class="user-photo" href="#">
+                    <img class="media-object" src="@Url.Content(String.Format("~/Content/UserProfileImage/{0}", Model.Users.Skip(i).First().PhotoUrl))" />
+                </span>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">@Model.Users.Skip(i).First().Nick | @comment.Date</h4>
+                <p>@comment.Content</p>
+            </div>
+        </div>
+        i++;
+    }
+}
+
+@if (User.Identity.Name == "")
+{
+    <div class="row">
+        <div class="col-md-12">
+            <hr />
+            <h4>@Resources.ToAddCommentLogIn</h4>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            @Html.Action("Login", "Account")
+        </div>
+        <div class="col-md-6">
+            @Html.Action("Register", "Account")
+        </div>
+    </div>
+}
+else
+{
+    @Html.Action("EditComment", "User", new { articleID = Model.Article.ArticleID, returnUrl = String.Format("/{0}/{1}", Model.CategoryName, Model.Article.Url) })
+}

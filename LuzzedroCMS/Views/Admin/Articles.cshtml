@@ -1,0 +1,29 @@
+﻿@model IQueryable<LuzzedroCMS.Domain.Entities.Article>
+@using LuzzedroCMS.WebUI.Properties
+
+@foreach (var article in Model)
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2">
+                    @article.DatePub
+                </div>
+                <div class="col-md-7">
+                    @article.Title
+                </div>
+                <div class="col-md-3">
+                    @using (Html.BeginForm("RemoveArticle", "Admin", FormMethod.Post, new { @class = "inline-form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.Hidden("ArticleID", article.ArticleID)
+                        @Html.ActionLink(Resources.Edit, "EditArticle", new { article.Url }, new { @class = "btn btn-default" })
+                        <input type="submit" value="@Resources.Remove" class="btn btn-default" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

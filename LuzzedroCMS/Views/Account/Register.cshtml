@@ -1,0 +1,56 @@
+﻿@model LuzzedroCMS.Models.RegisterViewModel
+@using LuzzedroCMS.WebUI.Properties
+
+@{
+    Layout = null;
+}
+
+@if (User.Identity.Name == "")
+{
+    using (Html.BeginForm("Register", "Account"))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-vertical account-form">
+            <h4>@ViewBag.Title</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                @Html.EditorFor(model => model.RegisterEmail, new { htmlAttributes = new { @class = "form-control", placeholder = @Resources.Email } })
+            </div>
+            <div class="form-group">
+                @Html.ValidationMessageFor(model => model.RegisterEmail, "", new { @class = "text-danger" })
+            </div>
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                @Html.EditorFor(model => model.RegisterNick, new { htmlAttributes = new { @class = "form-control", placeholder = @Resources.Nick } })
+            </div>
+            <div class="form-group">
+                @Html.ValidationMessageFor(model => model.RegisterNick, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                @Html.EditorFor(model => model.RegisterPassword, new { htmlAttributes = new { @class = "form-control", placeholder = @Resources.NewPassword } })
+            </div>
+            <div class="form-group">
+                @Html.ValidationMessageFor(model => model.RegisterPassword, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                @Html.EditorFor(model => model.RegisterPasswordConfirm, new { htmlAttributes = new { @class = "form-control", placeholder = @Resources.RepeatPassword } })
+            </div>
+            <div class="form-group">
+                @Html.ValidationMessageFor(model => model.RegisterPasswordConfirm, "", new { @class = "text-danger" })
+            </div>
+            <div class="input-group">
+                @Resources.WontGivePassword
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Resources.Register" class="btn btn-default form-control" />
+            </div>
+        </div>
+
+    }
+}
