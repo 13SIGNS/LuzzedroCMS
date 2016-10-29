@@ -41,7 +41,8 @@ LuzzedroCMS allows you to:
 - UnitTest for url patterns
 
 # SCREENSHOTS
-![alt text](http://signs.civ.pl/demos/screenshots/luzzedrocms.png "LuzzedroCMS")
+Main view:
+![main view](http://signs.civ.pl/demos/screenshots/lcms_all.png "LuzzedroCMS")
 
 # LICENCE
 GNU GPL 3.0
