@@ -42,7 +42,57 @@ LuzzedroCMS allows you to:
 
 # SCREENSHOTS
 Main view:
-![alt text](http://signs.civ.pl/demos/screenshots/lcms_all.png "LuzzedroCMS")
+![Main view](http://signs.civ.pl/demos/screenshots/lcms_all.PNG "LuzzedroCMS")
+
+Navigation:
+![navigation](http://signs.civ.pl/demos/screenshots/lcms_nav.PNG "LuzzedroCMS")
+
+Adding tag:
+![Adding tag](http://signs.civ.pl/demos/screenshots/lcms_add_tag.PNG "LuzzedroCMS")
+
+List of tags:
+![List of tags](http://signs.civ.pl/demos/screenshots/lcms_tags_list.PNG "LuzzedroCMS")
+
+Adding category:
+![Adding category](http://signs.civ.pl/demos/screenshots/lcms_adding_category.PNG "LuzzedroCMS")
+
+List of categories:
+![List of categories](http://signs.civ.pl/demos/screenshots/lcms_category_list.PNG "LuzzedroCMS")
+
+Adding article:
+![Adding article](http://signs.civ.pl/demos/screenshots/lcms_add_article.PNG "LuzzedroCMS")
+
+Article:
+![Article](http://signs.civ.pl/demos/screenshots/lcms_article.PNG "LuzzedroCMS")
+
+List of articles:
+![List of articles](http://signs.civ.pl/demos/screenshots/lcms_admin_list_articles.PNG "LuzzedroCMS")
+
+Add bookmark:
+![Add bookmark](http://signs.civ.pl/demos/screenshots/lcms_add_bookmark.PNG "LuzzedroCMS")
+
+Add comment:
+![Add comment](http://signs.civ.pl/demos/screenshots/lcms_add_comment.PNG "LuzzedroCMS")
+
+Edit comment:
+![Edit comment](http://signs.civ.pl/demos/screenshots/lcms_editing_comment.PNG "LuzzedroCMS")
+
+Tags cloud:
+![Tags cloud](http://signs.civ.pl/demos/screenshots/lcms_admin_tags_cloud.PNG "LuzzedroCMS")
+
+Universal info (created in controllers):
+![Universal info](http://signs.civ.pl/demos/screenshots/lcms_universal_info.PNG "LuzzedroCMS")
+
+Universal info (created in controllers):
+![Universal info](http://signs.civ.pl/demos/screenshots/lcms_universal_info.PNG "LuzzedroCMS")
+
+User edit:
+![User edit](http://signs.civ.pl/demos/screenshots/lcms_user_edit.PNG "LuzzedroCMS")
+
+User list:
+![User list](http://signs.civ.pl/demos/screenshots/lcms_user_list.PNG "LuzzedroCMS")
+
+
 
 # LICENCE
 GNU GPL 3.0
