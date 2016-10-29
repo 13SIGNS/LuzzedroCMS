@@ -78,10 +78,7 @@ LuzzedroCMS allows you to:
 ![Edit comment](http://signs.civ.pl/demos/screenshots/lcms_editing_comments.PNG "LuzzedroCMS")
 <hr>
 <h4>Tags cloud:</h4>
-![Tags cloud](http://signs.civ.pl/demos/screenshots/lcms_admin_tags_cloud.PNG "LuzzedroCMS")
-<hr>
-<h4>Universal info (created in controllers):</h4>
-![Universal info](http://signs.civ.pl/demos/screenshots/lcms_universal_info.PNG "LuzzedroCMS")
+![Tags cloud](http://signs.civ.pl/demos/screenshots/lcms_tags_cloud.PNG "LuzzedroCMS")
 <hr>
 <h4>Universal info (created in controllers):</h4>
 ![Universal info](http://signs.civ.pl/demos/screenshots/lcms_universal_info.PNG "LuzzedroCMS")
