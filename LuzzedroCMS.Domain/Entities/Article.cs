@@ -24,7 +24,7 @@ namespace LuzzedroCMS.Domain.Entities
         [MaxLength(300, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "FieldMustHaveNoMoreChars")]
         public string ImageName { get; set; }
 
-        
+
         [Display(Name = "MainPhotoDesc", ResourceType = typeof(Resources))]
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Required")]
         [MinLength(5, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "FieldMustHaveMoreChars")]

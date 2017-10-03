@@ -61,6 +61,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string Add {
@@ -133,6 +142,24 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Share with Google.
+        /// </summary>
+        public static string AddToGoogle {
+            get {
+                return ResourceManager.GetString("AddToGoogle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Twitter.
+        /// </summary>
+        public static string AddToTwitter {
+            get {
+                return ResourceManager.GetString("AddToTwitter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Administration.
         /// </summary>
         public static string Administration {
@@ -169,6 +196,33 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Article was not found.
+        /// </summary>
+        public static string ArticleNotFound {
+            get {
+                return ResourceManager.GetString("ArticleNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This category doesn&apos;t contain any article.
+        /// </summary>
+        public static string ArticleNotFoundByCategory {
+            get {
+                return ResourceManager.GetString("ArticleNotFoundByCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This tag doesn&apos;t contain any article.
+        /// </summary>
+        public static string ArticleNotFoundByTag {
+            get {
+                return ResourceManager.GetString("ArticleNotFoundByTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Articles.
         /// </summary>
         public static string Articles {
@@ -183,6 +237,33 @@ namespace LuzzedroCMS.WebUI.Properties {
         public static string ArticlesAdd {
             get {
                 return ResourceManager.GetString("ArticlesAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bookmarks.
+        /// </summary>
+        public static string Bookmarks {
+            get {
+                return ResourceManager.GetString("Bookmarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By sign in you agreed with.
+        /// </summary>
+        public static string BySignInYouAgreedWith {
+            get {
+                return ResourceManager.GetString("BySignInYouAgreedWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot logout, please try again.
+        /// </summary>
+        public static string CannotLogout {
+            get {
+                return ResourceManager.GetString("CannotLogout", resourceCulture);
             }
         }
         
@@ -268,6 +349,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The code of the e-mail has already expired. Try again to reset the password.
         /// </summary>
         public static string CodeExpired {
@@ -300,6 +390,33 @@ namespace LuzzedroCMS.WebUI.Properties {
         public static string Comments {
             get {
                 return ResourceManager.GetString("Comments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to comments.
+        /// </summary>
+        public static string CommentsToArticle {
+            get {
+                return ResourceManager.GetString("CommentsToArticle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string ConfigSite {
+            get {
+                return ResourceManager.GetString("ConfigSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string Configuration {
+            get {
+                return ResourceManager.GetString("Configuration", resourceCulture);
             }
         }
         
@@ -372,6 +489,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         public static string DateAdded {
             get {
                 return ResourceManager.GetString("DateAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t have an account? Please sign in via Facebook, Google or register setting an email.
+        /// </summary>
+        public static string DontHaveAccountRegister {
+            get {
+                return ResourceManager.GetString("DontHaveAccountRegister", resourceCulture);
             }
         }
         
@@ -736,6 +862,33 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login with Facebook.
+        /// </summary>
+        public static string LoginWithFacebook {
+            get {
+                return ResourceManager.GetString("LoginWithFacebook", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login with Google.
+        /// </summary>
+        public static string LoginWithGoogle {
+            get {
+                return ResourceManager.GetString("LoginWithGoogle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo.
+        /// </summary>
+        public static string Logo {
+            get {
+                return ResourceManager.GetString("Logo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log out.
         /// </summary>
         public static string LogOut {
@@ -826,6 +979,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No results.
+        /// </summary>
+        public static string NoResults {
+            get {
+                return ResourceManager.GetString("NoResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no user with the email address in the system. Check the address and try again.
         /// </summary>
         public static string NoUserEmail {
@@ -840,6 +1002,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         public static string Order {
             get {
                 return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to or in traditinal way.
+        /// </summary>
+        public static string OrTraditional {
+            get {
+                return ResourceManager.GetString("OrTraditional", resourceCulture);
             }
         }
         
@@ -925,6 +1096,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Properly added configuration key.
+        /// </summary>
+        public static string ProperlyAddedConfig {
+            get {
+                return ResourceManager.GetString("ProperlyAddedConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Properly added image.
         /// </summary>
         public static string ProperlyAddedImage {
@@ -957,6 +1137,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         public static string ProperlyEditedCategory {
             get {
                 return ResourceManager.GetString("ProperlyEditedCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Properly edited configuration key.
+        /// </summary>
+        public static string ProperlyEditedConfig {
+            get {
+                return ResourceManager.GetString("ProperlyEditedConfig", resourceCulture);
             }
         }
         
@@ -1060,6 +1249,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Regulations.
+        /// </summary>
+        public static string Regulations {
+            get {
+                return ResourceManager.GetString("Regulations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string Remove {
@@ -1132,11 +1330,29 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search result.
+        /// </summary>
+        public static string SearchResult {
+            get {
+                return ResourceManager.GetString("SearchResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search results:.
         /// </summary>
         public static string SearchResults {
             get {
                 return ResourceManager.GetString("SearchResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to See similar articles.
+        /// </summary>
+        public static string SeeSimilarArticles {
+            get {
+                return ResourceManager.GetString("SeeSimilarArticles", resourceCulture);
             }
         }
         
@@ -1195,6 +1411,24 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Share.
+        /// </summary>
+        public static string Share {
+            get {
+                return ResourceManager.GetString("Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show password.
+        /// </summary>
+        public static string ShowPassword {
+            get {
+                return ResourceManager.GetString("ShowPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LuzzedroCMS.
         /// </summary>
         public static string SiteName {
@@ -1227,6 +1461,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         public static string Team {
             get {
                 return ResourceManager.GetString("Team", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to regulations.
+        /// </summary>
+        public static string Terms {
+            get {
+                return ResourceManager.GetString("Terms", resourceCulture);
             }
         }
         
@@ -1294,6 +1537,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User photo.
+        /// </summary>
+        public static string UserPhoto {
+            get {
+                return ResourceManager.GetString("UserPhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User has been properly edited.
         /// </summary>
         public static string UserProperlyEdited {
@@ -1344,6 +1596,24 @@ namespace LuzzedroCMS.WebUI.Properties {
         public static string WontGivePassword {
             get {
                 return ResourceManager.GetString("WontGivePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to wykop.
+        /// </summary>
+        public static string Wykop {
+            get {
+                return ResourceManager.GetString("Wykop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To add comment you must create a nick. Invent the name, which will by displayed near your comments.
+        /// </summary>
+        public static string YouMustCreateNick {
+            get {
+                return ResourceManager.GetString("YouMustCreateNick", resourceCulture);
             }
         }
     }

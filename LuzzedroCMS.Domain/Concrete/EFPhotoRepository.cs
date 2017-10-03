@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using LuzzedroCMS.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace LuzzedroCMS.Domain.Concrete
 {
@@ -11,31 +12,56 @@ namespace LuzzedroCMS.Domain.Concrete
     {
         private EFDbContext context = new EFDbContext();
 
-        public IQueryable<Photo> PhotosEnabled
+        public IList<Photo> Photos(
+            bool enabled = true,
+            int page = 1,
+            int take = 0,
+            int userID = 0,
+            Expression<Func<Photo, bool>> orderBy = null,
+            Expression<Func<Photo, bool>> orderByDescending = null)
         {
-            get
-            {
-                return context.Photos.Where(p => p.Status == 1);
-            }
-        }
+            IQueryable<Photo> photos = context.Photos;
 
-        public IQueryable<Photo> PhotosTotal
-        {
-            get
+            if (enabled)
             {
-                return context.Photos;
+                photos = photos.Where(p => p.Status == 1);
             }
-        }
 
-        public IQueryable<Photo> PhotosEnabledByUserID(int userID)
-        {
-            IQueryable<Photo> photos = null;
-            IQueryable<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.UserID == userID);
-            foreach(var userPhotoAssociate in userPhotoAssociates)
+            if (userID != 0)
             {
-                photos.AsEnumerable().Concat(context.Photos.Where(p => p.PhotoID == userPhotoAssociate.PhotoID && p.Status == 1));
+                var photoIDs = context.UserPhotoAssociates.Where(p => p.UserID == userID).Select(x => x.PhotoID).ToList();
+                if (photoIDs != null)
+                {
+                    photos = photos.Where(p => photoIDs.Contains(p.PhotoID));
+                }
             }
-            return photos;
+
+            if (orderByDescending != null)
+            {
+                photos = photos.OrderByDescending(orderByDescending);
+            }
+
+            if (orderBy != null)
+            {
+                photos = photos.OrderBy(orderBy);
+            }
+
+            if (orderBy == null && orderByDescending == null)
+            {
+                photos = photos.OrderByDescending(p => p.Date);
+            }
+
+            if (page != 0 && take != 0)
+            {
+                photos = photos.Skip((page - 1) * take);
+            }
+
+            if (take != 0)
+            {
+                photos = photos.Take(take);
+            }
+
+            return photos.ToList();
         }
 
         public void Remove(int photoID)
@@ -45,7 +71,7 @@ namespace LuzzedroCMS.Domain.Concrete
             {
                 photo.Status = 0;
             }
-            IQueryable<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.PhotoID == photoID);
+            IList<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.PhotoID == photoID).ToList();
             if (userPhotoAssociates != null)
             {
                 foreach (var userPhotoAssociate in userPhotoAssociates)
@@ -63,7 +89,7 @@ namespace LuzzedroCMS.Domain.Concrete
             {
                 context.Photos.Remove(photo);
             }
-            IQueryable<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.PhotoID == photoID);
+            IList<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.PhotoID == photoID).ToList();
             if (userPhotoAssociates != null)
             {
                 foreach (var userPhotoAssociate in userPhotoAssociates)
@@ -93,14 +119,14 @@ namespace LuzzedroCMS.Domain.Concrete
                 {
                     if (dbEntry.Status == 0 && photo.Status == 1)
                     {
-                        IQueryable<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.PhotoID == photo.PhotoID);
-                        if (userPhotoAssociates != null)
+                        IList<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.PhotoID == photo.PhotoID).ToList();
+                        if (userPhotoAssociates.Any())
                         {
                             foreach (var userPhotoAssociate in userPhotoAssociates)
                             {
                                 userPhotoAssociate.Status = 1;
                             }
-                        } 
+                        }
                     }
                     dbEntry.Date = DateTime.Now;
                     dbEntry.Name = photo.Name;

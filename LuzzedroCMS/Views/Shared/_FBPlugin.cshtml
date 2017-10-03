@@ -1,0 +1,23 @@
+﻿@model string
+@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="row fb-plugin">
+            <div class="col-md-12">
+                <div class="fb-page"
+                     data-href="@Model"
+                     data-tabs="timeline"
+                     data-small-header="false"
+                     data-adapt-container-width="true"
+                     data-hide-cover="true"
+                     data-show-facepile="true">
+                    <blockquote cite="@Model" class="fb-xfbml-parse-ignore">
+                        <a href="@Model"></a>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

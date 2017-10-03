@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuzzedroCMS.WebUI", "LuzzedroCMS\LuzzedroCMS.WebUI.csproj", "{D93A112F-010F-498D-8C09-202C9CA3FD42}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuzzedroCMS.AWebUI", "LuzzedroCMS\LuzzedroCMS.AWebUI.csproj", "{D93A112F-010F-498D-8C09-202C9CA3FD42}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuzzedroCMS.Tests", "LuzzedroCMS.Tests\LuzzedroCMS.Tests.csproj", "{27961C9A-C7AA-4D0E-8D34-49FB5E804927}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuzzedroCMS.Domain", "LuzzedroCMS.Domain\LuzzedroCMS.Domain.csproj", "{1F4DBE32-DE9E-408D-97D3-08D75D8D1094}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BE888064-54D0-4B3B-BBEE-4B1CECDD390E}"
+	ProjectSection(SolutionItems) = preProject
+		WebEssentials2015-Settings.json = WebEssentials2015-Settings.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

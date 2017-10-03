@@ -1,17 +1,27 @@
-﻿@model IQueryable<LuzzedroCMS.Domain.Entities.Category>
+﻿@model IList<LuzzedroCMS.Domain.Entities.Category>
+@using LuzzedroCMS.WebUI.Properties
 
 @{
     Layout = null;
 }
 
 <nav class="navbar navbar-inverse navbar-categories">
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-            @foreach (var cat in Model)
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-article-menu">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div id="navbar-collapse-article-menu" class="collapse navbar-collapse navbar-collapse-article-menu">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                @foreach (var cat in Model)
             {
-                string active = Request.Params["category"] == cat.Name ? "active" : "";
-                <li class="@active">@Html.ActionLink(@cat.Name, "ArticlesByCategory", new { controller = "Article", action = "ArticlesByCategory", category = @cat.Name })</li>
-            }
-        </ul>
+                string active = Request.Params["category"] == cat.Name ? "active" : string.Empty;
+                    <li class="@active category-nav">@Html.RouteLink(@cat.Name, "Category", new { controller = "Article", action = "ArticlesByCategory", category = @cat.Name })</li>
+                }
+            </ul>
+        </div>
     </div>
 </nav>

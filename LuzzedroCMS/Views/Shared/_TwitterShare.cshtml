@@ -1,0 +1,14 @@
+﻿@using LuzzedroCMS.WebUI.Properties
+@{
+    string link = "http://twitter.com/share?url=";
+    link += HttpContext.Current.Request.Url.AbsoluteUri;
+}
+
+<div>
+    <a class="btn btn-social btn-custom btn-twitter pull-left"
+       href="@link"
+       target="_blank">
+        <i class="fa fa-twitter"></i>
+        <span class="social-label">@Resources.AddToTwitter</span>
+    </a>
+</div>

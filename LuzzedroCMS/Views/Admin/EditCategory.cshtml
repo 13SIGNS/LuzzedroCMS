@@ -5,35 +5,35 @@
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
         @Html.HiddenFor(x => x.CategoryID)
         <div class="form-group">
             @Html.LabelFor(x => x.Name, Resources.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(x => x.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(x => x.Name, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(x => x.Order, Resources.Order, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(x => x.Order, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(x => x.Order, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(x => x.Order, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(x => x.Status, Resources.Visibility, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default @((Model.Status)==1?"active":"")">@Html.RadioButtonFor(x => x.Status, 1, true) <span class="glyphicon glyphicon-eye-open"></span></label>
-                    <label class="btn btn-default @((Model.Status)==0?"active":"")">@Html.RadioButtonFor(x => x.Status, 0, false) <span class="glyphicon glyphicon-eye-close"></span></label>
+                    <label class="btn btn-default @((Model.Status)==1?"active":string.Empty)">@Html.RadioButtonFor(x => x.Status, 1, true) <span class="fa fa-eye"></span></label>
+                    <label class="btn btn-default @((Model.Status)==0?"active":string.Empty)">@Html.RadioButtonFor(x => x.Status, 0, false) <span class="fa fa-eye-slash"></span></label>
                 </div>
-                @Html.ValidationMessageFor(x => x.Status, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(x => x.Status, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@(Model.CategoryID == 0 ? Resources.Add : Resources.Edit)" class="btn btn-default" />
+                <input type="submit" value="@(Model.CategoryID == 0 ? Resources.Add : Resources.Edit)" class="btn btn-success" />
             </div>
         </div>
     </div>

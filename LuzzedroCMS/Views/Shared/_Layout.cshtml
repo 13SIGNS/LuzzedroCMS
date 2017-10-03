@@ -1,0 +1,269 @@
+﻿@using LuzzedroCMS.WebUI.Properties
+@using System.Web.Optimization
+@using LuzzedroCMS.Domain.Concrete
+@using LuzzedroCMS.WebUI.Infrastructure.Static
+@{
+    EFConfigurationKeyRepository configRepo = new EFConfigurationKeyRepository();
+    string keywords = ViewBag.Keywords != null && ViewBag.Keywords != string.Empty ? ViewBag.Keywords : configRepo.Get(ConfigurationKeyStatic.MAIN_KEYWORDS);
+    string description = ViewBag.Description != null && ViewBag.Description != string.Empty ? ViewBag.Description : configRepo.Get(ConfigurationKeyStatic.MAIN_DESCRIPTION);
+    bool isFacebookConnected = Convert.ToBoolean(configRepo.Get(ConfigurationKeyStatic.IS_FACEBOOK_CONNECTED));
+    bool isGoogleConnected = Convert.ToBoolean(configRepo.Get(ConfigurationKeyStatic.IS_GOOGLE_CONNECTED));
+    bool isGoogleAnalyticsConnected = Convert.ToBoolean(configRepo.Get(ConfigurationKeyStatic.IS_GOOGLE_ANALYTICS_CONNECTED));
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Keywords" content="@keywords" />
+    <meta name="Description" content="@description" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
+    <title>@ViewBag.Title - @configRepo.Get(ConfigurationKeyStatic.APPLICATION_NAME)</title>
+    @Styles.Render("~/bundles/style/bootstrap")
+    @RenderSection("Style", false)
+    @Styles.Render("~/bundles/style/index")
+    @if (isGoogleAnalyticsConnected)
+    {
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', '@configRepo.Get(ConfigurationKeyStatic.GOOGLE_ANALYTICS_ID)', 'auto');
+            ga('send', 'pageview');
+
+        </script>
+    }
+</head>
+<body>
+    @if (isFacebookConnected)
+            {
+        <div id="fb-root"></div>
+        <script>
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v2.10&appId=@configRepo.Get(ConfigurationKeyStatic.FACEBOOK_APP_ID)";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+    }
+    <div class="navbar navbar-inverse navbar-fixed-top navbar-custom-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-main-menu">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" title="@Resources.Home" href="/Home"><i class="fa fa-home"></i></a>
+            </div>
+            <div id="navbar-collapse-main-menu" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="@Resources.Administration">
+                                @Resources.Administration
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink(Resources.CategoriesAdd, "EditCategory", "Admin")</li>
+                                <li>@Html.ActionLink(Resources.Categories, "Categories", "Admin")</li>
+                                <li>@Html.ActionLink(Resources.ImagesAdd, "EditPhoto", "Admin")</li>
+                                <li>@Html.ActionLink(Resources.ArticlesAdd, "EditArticle", "Admin")</li>
+                                <li>@Html.ActionLink(Resources.Articles, "Articles", "Admin")</li>
+                                <li>@Html.ActionLink(Resources.TagsAdd, "EditTag", "Admin")</li>
+                                <li>@Html.ActionLink(Resources.Tags, "Tags", "Admin")</li>
+                                <li>@Html.ActionLink(Resources.Comments, "Comments", "Admin")</li>
+                                <li>@Html.ActionLink(Resources.Users, "Users", "Admin")</li>
+                                <li>@Html.ActionLink(Resources.Configuration, "EditConfiguration", "Admin")</li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @if (User.IsInRole("User"))
+                    {
+                        <li>@Html.ActionLink(Resources.MyAccount, "EditAccount", "User")</li>
+                        <li>
+                            <a href="@Url.Action("Bookmarks", "User")" title="@Resources.Favourites">
+                                @Resources.Favourites <span class="badge bookmarks-count">@Html.Action("BookmarksCount", "User")</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.RouteUrl("UserComments")">
+                                @Resources.MyComments <span class="badge">@Html.Action("CommentsCount", "User")</span>
+                            </a>
+                        </li>
+                    }
+                    @*TODO*@
+                    @*<li>@Html.ActionLink(Resources.Contact, "Contact", "Home")</li>*@
+                    @if (!User.IsInRole("User") && !User.IsInRole("Admin"))
+                    {
+                        <li><a href="#" data-toggle="modal" data-target=".login-form-modal">@Resources.LogIn</a></li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(Resources.LogOut, "Logout", "Account", new { returnUrl = HttpContext.Current.Request.Url.AbsolutePath }, null)</li>
+                    }
+                    <li>@Html.Action("Index", "Search")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="jumbotron jumbotron-logo">
+        <div class="container">
+            <img src="@Url.Content("~/Content/Graphics/logo.png")" alt="@Resources.Logo" title="@configRepo.Get(ConfigurationKeyStatic.APPLICATION_NAME)" />
+        </div>
+    </div>
+    @Html.Action("CategoryList", "Category")
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-9">
+                @if (ViewBag.Title != null && ViewBag.HideTitle != true)
+                {
+                    <div class="page-header">
+                        <h4 class="default-title">@ViewBag.Title</h4>
+                    </div>
+                }
+                @Html.Partial("_Info")
+                @RenderBody()
+            </div>
+            <div class="col-md-3">
+                @if (User.IsInRole("User") || User.IsInRole("Admin"))
+                {
+                    @Html.Action("LoggedInfo", "Account")
+                }
+                @Html.Action("TagCloud", "Tag")
+                @if (isFacebookConnected)
+                {
+                    @Html.Partial("_FBPlugin", configRepo.Get(ConfigurationKeyStatic.FACEBOOK_APP_LINK));
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="social-box">
+                    <div>
+                        <span class="btn btn-social btn-custom btn-facebook pull-left">
+                            <i class="fa fa-facebook"></i>
+                            <span class="social-label">
+                                @Html.Partial("_FBShare")
+                                @Html.Partial("_FBLike")
+                            </span>
+                        </span>
+                    </div>
+                    @Html.Partial("_WykopShare")
+                    @Html.Partial("_TwitterShare")
+                    @Html.Partial("_GoogleShare")
+                    @Html.Partial("_LinkedinShare")
+                </div>
+            </div>
+        </div>
+        <footer class="footer-box">
+            <div class="row">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-1">
+                    <div class="footer-user">
+                        <i class="fa fa-user"></i>
+                    </div>
+                </div>
+                <div class="col-md-2 footer-user-links">
+                    <div>
+                        <a href="#" data-toggle="modal" data-target=".about">@Resources.About</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4 footer-search-form">
+                    @Html.Action("Index", "Search")
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 footer-categories">
+                    <hr />
+                    @Html.Action("CategoryListSimplified", "Category")
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 copyright">
+                    <hr />
+                    <i class="fa fa-copyright"></i> @DateTime.Now.Year - @Resources.SiteName
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 powered">
+                    <i class="fa fa-github"></i> Powered by <a href="https://github.com/13SIGNS/LuzzedroCMS" targer="_blank">Luzzedro CMS by 13signs</a>
+                </div>
+            </div>
+        </footer>
+        <div class="modal fade login-form-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            @Html.Action("Login", "Account")
+                            @Html.Action("Register", "Account")
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade regulations" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">@Resources.Regulations</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>@MvcHtmlString.Create(configRepo.Get(ConfigurationKeyStatic.REGULATIONS))</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade about" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">@Resources.About</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>@MvcHtmlString.Create(configRepo.Get(ConfigurationKeyStatic.ABOUT))</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryvalidate")
+    @Scripts.Render("~/bundles/jqueryvalidateunobtrusive")
+    @Scripts.Render("~/bundles/jqueryunobtrusiveajax")
+    @Scripts.Render("~/bundles/cookie")
+    @Scripts.Render("~/bundles/login")
+    @Styles.Render("~/bundles/style/fontawesome")
+    @RenderSection("Script", false)
+</body>
+
+</html>

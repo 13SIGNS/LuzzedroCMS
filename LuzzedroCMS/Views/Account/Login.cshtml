@@ -1,35 +1,47 @@
 ﻿@model LuzzedroCMS.Models.LoginViewModel
 @using LuzzedroCMS.WebUI.Properties
 
-    @{
-        Layout = null;
-        string imageName = Session["User.PhotoUrl"] != null ? Session["User.PhotoUrl"].ToString() : "null.png";
-    }
-
-    @if (User.Identity.Name == "")
+@{
+    Layout = null;
+}
+<div class="col-md-12">
+    <h5 class="default-title">@Resources.LogIn</h5>
+</div>
+@Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
+<div class="col-md-6">
+    @if (!Model.IsLogged)
     {
         <div class="form-vertical  account-form">
             @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "login-form" }))
             {
                 @Html.AntiForgeryToken()
-                <h4>@Resources.LogIn</h4>
-                <hr />
+                <div>
+                    @if (Model.IsFacebookConnected)
+                    {
+                        <a href="@Url.Action("LoginByFacebook", "Account", new { returnUrl = HttpContext.Current.Request.Url.AbsolutePath})" class="btn btn-default btn-facebook btn-block"><i class="fa fa-facebook"></i> <span>@Resources.LoginWithFacebook</span></a>
+                    }
+                    @if (Model.IsGoogleConnected)
+                    {
+                        <a href="@Url.Action("LoginByGoogle", "Account", new { returnUrl = HttpContext.Current.Request.Url.AbsolutePath})" class="btn btn-default btn-google btn-block"><i class="fa fa-google"></i> <span>@Resources.LoginWithGoogle</span></a>
 
+                    }
+                </div>
+                <h5 class="text-center">@Resources.OrTraditional</h5>
+                @Html.EditorFor(model => model.LoginEmail, new { htmlAttributes = new { @class = "form-control", placeholder = Resources.Email, data_toggle = "tooltip", title = @Resources.Email } })
+                <div class="form-group">
+                    @Html.ValidationMessageFor(model => model.LoginEmail, string.Empty, new { @class = "text-danger" })
+                </div>
                 <div class="input-group">
-                    <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = Resources.Email } })
+                    @Html.EditorFor(model => model.LoginPassword, new { htmlAttributes = new { @class = "form-control login-password", placeholder = Resources.Password, data_toggle = "tooltip", title = @Resources.Password } })
+                    <span class="input-group-btn">
+                        <button class="btn btn-default ShowPasswordLS" data-target=".login-password" type="button">@Resources.ShowPassword</button>
+                    </span>
                 </div>
                 <div class="form-group">
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.LoginPassword, string.Empty, new { @class = "text-danger" })
                 </div>
-                <div class="input-group">
-                    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = Resources.Password } })
-                </div>
-                <div class="form-group">
-                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                </div>
-                <input type="submit" value="@Resources.LogIn" class="btn btn-default form-control" />
+                <input type="submit" value="@Resources.LogIn" class="btn btn-success form-control" />
+                @Html.Hidden("returnUrl", $"{ HttpContext.Current.Request.Url.AbsolutePath }#login-form")
                 @Html.ActionLink(@Resources.ForgotPassword, "Remind", "Account")
             }
         </div>
@@ -40,9 +52,12 @@
         {
             @Html.AntiForgeryToken()
             <div class="user-photo">
-                <img src="@Url.Content(String.Format("~/Content/UserProfileImage/{0}", imageName))" class="img-circle" />
+                <img src="@Url.Content(String.Format("{0}UserProfileImage/{1}", @Model.ContentExternalUrl, @Model.ImageName))" alt="@Resources.UserPhoto" title="@Resources.UserPhoto" class="img-circle" />
             </div>
-            <h4> @Resources.Hello, @Session["User.Name"] </h4>
+            if (!string.IsNullOrEmpty(Model.UserName))
+            {
+                <h4> @Resources.Hello, @Model.UserName </h4>
+            }
         }
     }
-
+</div>

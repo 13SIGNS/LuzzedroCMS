@@ -1,0 +1,32 @@
+﻿@model LuzzedroCMS.Models.ArticlesExtendedViewModel
+@using LuzzedroCMS.Domain.Entities;
+@using LuzzedroCMS.WebUI.Properties
+@{
+    Layout = null;
+}
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="default-title">@Resources.SeeSimilarArticles</div>
+    </div>
+</div>
+<div class="row">
+    @foreach (ArticleExtended articleExtended in Model.ArticlesExtended)
+    {
+        <div class="col-sm-6 col-md-3">
+            <a href="@Url.RouteUrl("Article", new { controller = "Article", action = "Article", url = articleExtended.Article.Url, category = articleExtended.Category.Name })" class="thumbnail thumbnail-link" title="@articleExtended.Article.Title">
+                <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, articleExtended.Article.ImageName))" alt="@articleExtended.Article.ImageDesc" title="@articleExtended.Article.ImageDesc" />
+                <div class="caption">
+                    <div>
+                        @if (articleExtended.CommentsExtended.Count() > 0)
+                        {
+                            <span class="comment-number"><i class="fa fa-comment"></i> @articleExtended.CommentsExtended.Count()</span>
+                        }
+                    </div>
+                    <h3 class="caption-article-title">@articleExtended.Article.Title</h3>
+                    <p>@articleExtended.Article.Lead</p>
+                </div>
+            </a>
+        </div>
+    }
+</div>

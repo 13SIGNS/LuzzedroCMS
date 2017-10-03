@@ -64,17 +64,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LuzzedroCMS.Domain\LuzzedroCMS.Domain.csproj">
-      <Project>{1f4dbe32-de9e-408d-97d3-08d75d8d1094}</Project>
-      <Name>LuzzedroCMS.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LuzzedroCMS\LuzzedroCMS.WebUI.csproj">
+    <ProjectReference Include="..\LuzzedroCMS\LuzzedroCMS.AWebUI.csproj">
       <Project>{D93A112F-010F-498D-8C09-202C9CA3FD42}</Project>
-      <Name>LuzzedroCMS.WebUI</Name>
+      <Name>LuzzedroCMS.AWebUI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

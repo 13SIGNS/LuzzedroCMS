@@ -1,0 +1,16 @@
+﻿@using LuzzedroCMS.WebUI.Properties
+@{
+    string link = "https://www.linkedin.com/shareArticle?mini=true&url=";
+    link += HttpContext.Current.Request.Url.AbsoluteUri;
+    link += "&title=";
+    link += ViewBag.Title;
+}
+
+<div>
+    <a class="btn btn-social btn-custom btn-linkedin pull-left"
+       href="@link"
+       target="_blank">
+        <i class="fa fa-linkedin"></i>
+        <span class="social-label">@Resources.Share</span>
+    </a>
+</div>

@@ -135,6 +135,12 @@
   <data name="CommentParentID" xml:space="preserve">
     <value>Comment's parent's ID</value>
   </data>
+  <data name="ConfigurationKey" xml:space="preserve">
+    <value>Configuration key</value>
+  </data>
+  <data name="ConfigurationValue" xml:space="preserve">
+    <value>Configuration value</value>
+  </data>
   <data name="Content" xml:space="preserve">
     <value>Content</value>
   </data>

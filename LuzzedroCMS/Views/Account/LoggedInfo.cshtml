@@ -1,0 +1,18 @@
+﻿@model LuzzedroCMS.Models.LoginViewModel
+@using LuzzedroCMS.WebUI.Properties
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("Logout", "Account"))
+{
+    @Html.AntiForgeryToken()
+    <div class="user-photo">
+        <img src="@Url.Content(String.Format("{0}UserProfileImage/{1}", @Model.ContentExternalUrl, @Model.ImageName))" alt="@Resources.UserPhoto" title="@Resources.UserPhoto" class="img-circle" />
+    </div>
+    if (!string.IsNullOrEmpty(Model.UserName))
+    {
+        <h4> @Resources.Hello, @Model.UserName </h4>
+    }
+}

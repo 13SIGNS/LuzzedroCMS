@@ -5,52 +5,38 @@
     Layout = null;
 }
 
-@if (User.Identity.Name == "")
+@if (!Model.IsLogged)
 {
-    using (Html.BeginForm("Register", "Account"))
-    {
-        @Html.AntiForgeryToken()
-        <div class="form-vertical account-form">
-            <h4>@ViewBag.Title</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="input-group">
-                <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-                @Html.EditorFor(model => model.RegisterEmail, new { htmlAttributes = new { @class = "form-control", placeholder = @Resources.Email } })
-            </div>
-            <div class="form-group">
-                @Html.ValidationMessageFor(model => model.RegisterEmail, "", new { @class = "text-danger" })
-            </div>
-            <div class="input-group">
-                <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-                @Html.EditorFor(model => model.RegisterNick, new { htmlAttributes = new { @class = "form-control", placeholder = @Resources.Nick } })
-            </div>
-            <div class="form-group">
-                @Html.ValidationMessageFor(model => model.RegisterNick, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="input-group">
-                <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-                @Html.EditorFor(model => model.RegisterPassword, new { htmlAttributes = new { @class = "form-control", placeholder = @Resources.NewPassword } })
-            </div>
-            <div class="form-group">
-                @Html.ValidationMessageFor(model => model.RegisterPassword, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="input-group">
-                <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-                @Html.EditorFor(model => model.RegisterPasswordConfirm, new { htmlAttributes = new { @class = "form-control", placeholder = @Resources.RepeatPassword } })
-            </div>
-            <div class="form-group">
-                @Html.ValidationMessageFor(model => model.RegisterPasswordConfirm, "", new { @class = "text-danger" })
-            </div>
-            <div class="input-group">
-                @Resources.WontGivePassword
-            </div>
-            <div class="form-group">
-                <input type="submit" value="@Resources.Register" class="btn btn-default form-control" />
-            </div>
+    <div class="col-md-6">
+        <div class="form-vertical  account-form">
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-vertical account-form">
+                    <h4 class="text-center">@Resources.DontHaveAccountRegister</h4>
+                    @Html.EditorFor(model => model.RegisterEmail, new { htmlAttributes = new { @class = "form-control", placeholder = @Resources.Email, data_toggle = "tooltip", title = @Resources.Email } })
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(model => model.RegisterEmail, string.Empty, new { @class = "text-danger" })
+                    </div>
+                    <div class="input-group">
+                        @Html.EditorFor(model => model.RegisterPassword, new { htmlAttributes = new { @class = "form-control register-password", placeholder = @Resources.InventPassword, data_toggle = "tooltip", title = @Resources.InventPassword } })
+                        <span class="input-group-btn">
+                            <button class="btn btn-default ShowPasswordLS" data-target=".register-password" type="button">@Resources.ShowPassword</button>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(model => model.RegisterPassword, string.Empty, new { @class = "text-danger" })
+                    </div>
+                    @Html.Hidden("returnUrl", $"{ HttpContext.Current.Request.Url.AbsolutePath }#login-form")
+                    <div class="form-group">
+                        <input type="submit" value="@Resources.Register" class="btn btn-success form-control" />
+                    </div>
+                    <div class="input-group small">
+                        @Resources.WontGivePassword
+                    </div>
+                </div>
+            }
         </div>
-
-    }
+    </div>
+    <div class="col-md-12 text-center">@Resources.BySignInYouAgreedWith <a href="#" data-toggle="modal" data-target=".regulations">@Resources.Terms</a></div>
 }

@@ -1,0 +1,15 @@
+﻿@model LuzzedroCMS.Models.TagCloudViewModel
+@using LuzzedroCMS.WebUI.Properties
+
+@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="default-title">@Resources.Tags</div>
+        @foreach (var tag in Model.Tags)
+        {
+            <a href="@Url.Action("ArticlesByTag", new {controller="Article", action="ArticlesByTag", tag = @tag.Key })" style="font-size: 1.@(tag.Value)em" title="@tag.Key">@tag.Key</a>
+        }
+    </div>
+</div>

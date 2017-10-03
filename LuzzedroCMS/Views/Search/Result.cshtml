@@ -1,24 +1,31 @@
-﻿@model LuzzedroCMS.Models.ArticlesSearchViewModel
+﻿@model LuzzedroCMS.Models.ArticlesSearchedViewModel
 @using LuzzedroCMS.WebUI.Properties
 
-@{
-    var i = 0;
-}
-<h4>@Resources.SearchResults @Model.SearchKey</h4>
-<hr />
-@foreach (var article in Model.Articles)
+@Html.ValidationSummary()
+@if (Model != null)
 {
-    <a href="@Url.Action("Article", "Article", new {category = Model.Categories.Skip(i).First().Name, url = article.Url})">
-        <div class="row">
-            <div class="col-md-2">
-                <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", article.ImageName))" />
+    foreach (var articleExtended in Model.ArticlesExtended)
+    {
+        <a href="@Url.Action("Article", "Article", new { category = articleExtended.Category, url = articleExtended.Article.Url })" title="@articleExtended.Category">
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{0}", Model.ContentExternalUrl, articleExtended.Article.ImageName))" alt="@articleExtended.Article.ImageDesc" title="@articleExtended.Article.ImageDesc" />
+                </div>
+                <div class="col-md-10">
+                    <h4>@articleExtended.Article.Title</h4>
+                </div>
             </div>
-            <div class="col-md-10">
-                <h4>@article.Title</h4>
-            </div>
-        </div>
-    </a>
-    <hr />
-    i++;
-}
+        </a>
+        <hr />
+    }
 
+    if (!Model.ArticlesExtended.Any())
+    {
+        <div>
+            @Resources.NoResults
+        </div>
+    }
+    <div>
+        @Html.PageLinks(Model.PagingInfo, x => Url.Action("SearchPaged", new { controller = "Search", action = "Result", page = x }))
+    </div>
+}

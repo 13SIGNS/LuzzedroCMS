@@ -1,9 +1,7 @@
-﻿using LuzzedroCMS.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using bundles;
+using LuzzedroCMS.Infrastructure;
 using System.Web.Mvc;
+using System.Web.Optimization;
 using System.Web.Routing;
 
 namespace LuzzedroCMS
@@ -15,6 +13,7 @@ namespace LuzzedroCMS
             AreaRegistration.RegisterAllAreas();
             DependencyResolver.SetResolver(new NinjectDependencyResolver());
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
     }
 }

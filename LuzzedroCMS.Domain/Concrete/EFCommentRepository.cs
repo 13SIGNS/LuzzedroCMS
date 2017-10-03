@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using LuzzedroCMS.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace LuzzedroCMS.Domain.Concrete
 {
@@ -11,35 +11,114 @@ namespace LuzzedroCMS.Domain.Concrete
     {
         private EFDbContext context = new EFDbContext();
 
-        public Comment CommentByID(int commentID)
+        public Comment Comment(
+            bool enabled = true,
+            int commentID = 0)
         {
-            return context.Comments.Find(commentID);
-        }
+            IQueryable<Comment> comments = context.Comments;
 
-        public IQueryable<Comment> CommentsEnabled
-        {
-            get
+            if (enabled)
             {
-                return context.Comments.Where(p => p.Status == 1);
+                comments = comments.Where(p => p.Status == 1);
             }
-        }
 
-        public IQueryable<Comment> CommentsTotal
-        {
-            get
+            if (commentID != 0)
             {
-                return context.Comments;
+                comments = comments.Where(p => p.CommentID == commentID);
             }
+
+            return comments.FirstOrDefault();
         }
 
-        public IQueryable<Comment> CommentsEnabledByArticleID(int articleID)
+        public CommentExtended CommentExtended(
+            bool enabled = true,
+            int commentID = 0,
+            Comment comment = null)
         {
-            return context.Comments.Where(p => p.ArticleID == articleID && p.Status == 1);
+            Comment commentSelected = comment != null ? comment : Comment(enabled, commentID);
+            User user = context.Users.FirstOrDefault(p => p.UserID == comment.UserID);
+            return new CommentExtended()
+            {
+                Comment = comment,
+                User = user
+            };
         }
 
-        public IQueryable<Comment> CommentsEnabledByUserID(int userID)
+        public IList<Comment> Comments(
+            bool enabled = true,
+            int page = 1,
+            int take = 0,
+            int articleID = 0,
+            int userID = 0,
+            Expression<Func<Comment, bool>> orderBy = null,
+            Expression<Func<Comment, bool>> orderByDescending = null)
         {
-            return context.Comments.Where(p => p.UserID == userID && p.Status == 1).OrderByDescending(p => p.Date);
+            IQueryable<Comment> comments = context.Comments;
+
+            if (enabled)
+            {
+                comments = comments.Where(p => p.Status == 1);
+            }
+
+            if (articleID != 0)
+            {
+                comments = comments.Where(p => p.ArticleID == articleID);
+            }
+
+            if (userID != 0)
+            {
+                comments = comments.Where(p => p.UserID == userID);
+            }
+
+            if (orderByDescending != null)
+            {
+                comments = comments.OrderByDescending(orderByDescending);
+            }
+
+            if (orderBy != null)
+            {
+                comments = comments.OrderBy(orderBy);
+            }
+
+            if (orderBy == null && orderByDescending == null)
+            {
+                comments = comments.OrderByDescending(p => p.Date);
+            }
+
+            if (page != 0 && take != 0)
+            {
+                comments = comments.Skip((page - 1) * take);
+            }
+
+            if (take != 0)
+            {
+                comments = comments.Take(take);
+            }
+
+            return comments.ToList();
+        }
+
+        public IList<CommentExtended> CommentsExtended(
+            bool enabled = true,
+            int page = 1,
+            int take = 0,
+            int articleID = 0,
+            int userID = 0,
+            Expression<Func<Comment, bool>> orderBy = null,
+            Expression<Func<Comment, bool>> orderByDescending = null,
+            IList<Comment> comments = null)
+        {
+            IList<Comment> commentsSelected = comments != null ? comments : Comments(enabled, page, take, articleID, userID, orderBy, orderByDescending);
+            IList<CommentExtended> commentsExtended = new List<CommentExtended>();
+            foreach (var comment in commentsSelected)
+            {
+                commentsExtended.Add(new CommentExtended()
+                {
+                    Comment = comment,
+                    User = context.Users.FirstOrDefault(p => p.UserID == comment.UserID)
+                });
+            }
+            return commentsExtended;
         }
 
         public void Remove(int commentID)

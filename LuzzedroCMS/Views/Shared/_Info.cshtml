@@ -1,0 +1,23 @@
+﻿@{
+    Layout = null;
+}
+
+@if (TempData["Info.info"] != null)
+{
+    <div class="alert alert-info">@TempData["Info.info"]</div>
+}
+
+@if (TempData["Info.warning"] != null)
+{
+    <div class="alert alert-warning">@TempData["Info.warning"]</div>
+}
+
+@if (TempData["Info.danger"] != null)
+{
+    <div class="alert alert-danger">@TempData["Info.danger"]</div>
+}
+
+@if (TempData["Info.success"] != null)
+{
+    <div class="alert alert-success">@TempData["Info.success"]</div>
+}

@@ -1,11 +1,7 @@
-﻿using LuzzedroCMS.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using LuzzedroCMS.Infrastructure.Abstract;
 using System.Net.Mail;
-using System.Web;
 
-namespace LuzzedroCMS.Concrete
+namespace LuzzedroCMS.Infrastructure.Concrete
 {
     public class EmailSender : IEmailSender
     {
@@ -29,7 +25,7 @@ namespace LuzzedroCMS.Concrete
                 SmtpClient smtp = new SmtpClient();
                 smtp.Send(message);
             }
-            catch (Exception e)
+            catch
             {
                 feedback = false;
             }

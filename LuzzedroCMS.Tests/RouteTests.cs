@@ -13,7 +13,7 @@ namespace LuzzedroCMS.Tests
 
         private HttpContextBase CreateHttpContext(string targetUrl = null,
                                                   string httpMethod = "GET")
-        { 
+        {
             Mock<HttpRequestBase> mockRequest = new Mock<HttpRequestBase>();
             mockRequest.Setup(m => m.AppRelativeCurrentExecutionFilePath)
                 .Returns(targetUrl);
@@ -45,7 +45,8 @@ namespace LuzzedroCMS.Tests
             string controller, string action, object propertySet = null)
         {
 
-            Func<object, object, bool> valCompare = (v1, v2) => {
+            Func<object, object, bool> valCompare = (v1, v2) =>
+            {
                 return StringComparer.InvariantCultureIgnoreCase.Compare(v1, v2) == 0;
             };
 
@@ -78,17 +79,51 @@ namespace LuzzedroCMS.Tests
         }
 
         [TestMethod]
-        public void TestIncomingRoutes()
+        public void TestIncomingRoutesArticleIndex()
         {
             TestRouteMatch("~/", "Article", "Index");
+        }
+
+        [TestMethod]
+        public void TestIncomingRoutesArticle()
+        {
             TestRouteMatch("~/Categoryexample/Articleexample-art", "Article", "Article");
+        }
+
+        [TestMethod]
+        public void TestIncomingRoutesTags()
+        {
             TestRouteMatch("~/Tags/Tagexample", "Article", "ArticlesByTag");
+        }
+
+        [TestMethod]
+        public void TestIncomingRoutesSearch()
+        {
             TestRouteMatch("~/Search", "Search", "Result");
+        }
+
+        [TestMethod]
+        public void TestIncomingRoutesEditAccount()
+        {
             TestRouteMatch("~/Account", "User", "EditAccount");
+        }
+
+        [TestMethod]
+        public void TestIncomingRoutesBookmarks()
+        {
             TestRouteMatch("~/Favs", "User", "Bookmarks");
+        }
+
+        [TestMethod]
+        public void TestIncomingRoutesComments()
+        {
             TestRouteMatch("~/Comments", "User", "Comments");
+        }
+
+        [TestMethod]
+        public void TestIncomingRoutesArticlesByCategory()
+        {
             TestRouteMatch("~/CategoryExample", "Article", "ArticlesByCategory");
-            TestRouteMatch("~/Article/Index", "Article", "Index");
         }
     }
 }

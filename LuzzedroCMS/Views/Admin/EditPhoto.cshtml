@@ -1,15 +1,16 @@
 ﻿@model LuzzedroCMS.Models.ImageViewModel
 @using LuzzedroCMS.WebUI.Properties
+@using System.Web.Optimization
 
 @section Script{
-    <script src="~/Scripts/forms.js"></script>
+    @Scripts.Render("~/bundles/forms")
 }
 
 @using (Html.BeginForm("EditPhoto", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-
+    @Html.AntiForgeryToken()
     <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
 
         <div class="form-group">
             @Html.LabelFor(x => x.ImageDesc, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -24,16 +25,16 @@
                     <span class="input-group-btn">
                         <span class="btn btn-default btn-file">
                             Dodaj obraz
-                            @Html.TextBox("Image", "", new { type = "file", accept = "image/*" })
+                            @Html.TextBox("Image", string.Empty, new { type = "file", accept = "image/*" })
                         </span>
                     </span>
-                    <input type="text" class="form-control" readonly="">
+                    <input type="text" class="form-control" readonly=string.Empty>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@Resources.Save" class="btn btn-default" />
+                <input type="submit" value="@Resources.Save" class="btn btn-success" />
             </div>
         </div>
     </div>

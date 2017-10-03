@@ -1,22 +1,24 @@
 ﻿@model LuzzedroCMS.Models.ArticlesTagViewModel
 
-@{
-    var i = 0;
-}
-<h4>@Model.TagName</h4>
-<hr />
-@foreach (var article in Model.Articles)
+@if (Model != null)
 {
-    <a href="@Url.Action("Article", "Article", new {category = Model.ArticleCategories.ElementAt(i), url = article.Url})">
-        <div class="row">
-            <div class="col-md-2">
-                <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images120/{0}", article.ImageName))" />
-            </div>
-            <div class="col-md-10">
-                <h4>@article.Title</h4>
-            </div>
-        </div>
-    </a>
+    <h4>@Model.TagName</h4>
     <hr />
-    i++;
+    foreach (var articleExtended in Model.ArticlesExtended)
+    {
+        <a href="@Url.Action("Article", "Article", new { category = articleExtended.Category, url = articleExtended.Article.Url })">
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, articleExtended.Article.ImageName))" alt="@articleExtended.Article.ImageDesc" title="@articleExtended.Article.ImageDesc" />
+                </div>
+                <div class="col-md-10">
+                    <h4>@articleExtended.Article.Title</h4>
+                </div>
+            </div>
+        </a>
+        <hr />
+    }
+    <div>
+        @Html.PageLinks(Model.PagingInfo, x => Url.Action("ArticlesByTag", new { controller = "Article", action = "ArticlesByTag", tag = Model.TagName, page = x }))
+    </div>
 }

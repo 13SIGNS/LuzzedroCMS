@@ -1,0 +1,16 @@
+﻿@using LuzzedroCMS.WebUI.Properties
+@{
+    string link = "https://www.wykop.pl/dodaj/link/?url=";
+    link += HttpContext.Current.Request.Url.AbsoluteUri;
+    link += "&title=";
+    link += ViewBag.Title;
+}
+
+<div>
+    <a class="btn btn-social btn-custom btn-wykop pull-left"
+       href="@link"
+       target="_blank">
+        <img src="~/Content/Graphics/wykop-bg.png" />
+        <span class="social-label">@Resources.Wykop</span>
+    </a>
+</div>

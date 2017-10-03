@@ -1,90 +1,137 @@
-﻿@model LuzzedroCMS.Models.ArticleViewModel
+﻿@model LuzzedroCMS.Models.ArticlePageViewModel
 @using LuzzedroCMS.WebUI.Properties
+@using System.Web.Optimization
+
 @{
     AjaxOptions ajaxOptions = new AjaxOptions
     {
         LoadingElementId = "loading",
-        UpdateTargetId = "bookmark-confirm"
+        UpdateTargetId = "bookmark-confirm",
+        OnSuccess = "IncrementBookmarkCount"
     };
 }
-<div class="row">
-    <div class="col-md-12">
-        @Model.CategoryName
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <h2>@Model.Article.Title</h2>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <img src="@Url.Content(String.Format("~/Content/ArticleImage/Images900/{0}", @Model.Article.ImageName))" class="image-article" />
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        @Html.Raw(Model.Article.Content)
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        @using (Ajax.BeginForm("AddBookmark", null, ajaxOptions, new { @class = "pull-right" }))
-        {
-            @Html.Hidden("url", @Model.Article.Url)
-            <button type="submit" class="btn btn-danger add-bookmark">
-                <span id="loading" class="spinner">
-                    <span class="glyphicon glyphicon-refresh glyphicon-spin"></span>
-                </span>
-                <i class="glyphicon glyphicon-heart"></i>
-                <span id="bookmark-confirm">
-                    @Resources.AddBookmark
-                </span>
-            </button>
-        }
-    </div>
-</div>
-@if (Model.Comments.Any())
-{
-    <h2>@Resources.Comments</h2>
-    var i = 0;
-    foreach (var comment in Model.Comments)
-    {
-        <hr />
-        <div class="media">
-            <div class="media-left">
-                <span class="user-photo" href="#">
-                    <img class="media-object" src="@Url.Content(String.Format("~/Content/UserProfileImage/{0}", Model.Users.Skip(i).First().PhotoUrl))" />
-                </span>
-            </div>
-            <div class="media-body">
-                <h4 class="media-heading">@Model.Users.Skip(i).First().Nick | @comment.Date</h4>
-                <p>@comment.Content</p>
-            </div>
-        </div>
-        i++;
-    }
+
+@section Style{
+    @Styles.Render("~/bundles/style/highlight")
+    @Scripts.Render("~/bundles/editnick")
 }
 
-@if (User.Identity.Name == "")
+@section Script{
+    @Scripts.Render("~/bundles/highlight")
+    <script>hljs.initHighlightingOnLoad();</script>
+    @Scripts.Render("~/bundles/article")
+}
+
+@if (Model != null)
 {
     <div class="row">
         <div class="col-md-12">
-            <hr />
-            <h4>@Resources.ToAddCommentLogIn</h4>
-            <hr />
+            <span class="image-category">@Model.Category.Name</span>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            @Html.Action("Login", "Account")
-        </div>
-        <div class="col-md-6">
-            @Html.Action("Register", "Account")
+        <div class="col-md-12">
+            <h2>@Model.Article.Title</h2>
         </div>
     </div>
-}
-else
-{
-    @Html.Action("EditComment", "User", new { articleID = Model.Article.ArticleID, returnUrl = String.Format("/{0}/{1}", Model.CategoryName, Model.Article.Url) })
+    <div class="row">
+        <div class="col-md-12">
+            <img src="@Url.Content(String.Format("{0}ArticleImage/Images900/{1}", Model.ContentExternalUrl, Model.Article.ImageName))" alt="@Model.Article.ImageDesc" title="@Model.Article.ImageDesc" class="image-article" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @if (Model.Tags != null)
+            {
+                foreach (var tag in Model.Tags)
+                {
+                    @Html.RouteLink(tag.Name, "Tag", new { Tag = tag.Name }, new { @class = "label label-default article-tag-link", title = Resources.ArticleByTag + ": " + tag.Name })
+                }
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div id="article-content" class="col-md-9 pull-right article-content">
+            @Html.Raw(Model.Article.Content)
+        </div>
+        <div class="col-md-3">
+            <div class="article-externals">
+                <div class="user-photo pull-left">
+                    <img src="@Url.Content(String.Format("{0}UserProfileImage/{1}", @Model.ContentExternalUrl, @Model.User.PhotoUrl ?? "null.png"))" alt="@Model.User.Nick" title="" class="img-circle" />
+                    <span>@Model.User.Nick</span>
+                </div>
+                <div class="externals-title">
+                    @Model.Article.Title
+                </div>
+                <div class="externals-date">
+                    @Model.Article.DatePub
+                </div>
+            </div>
+        </div>
+    </div>
+    if (Model.IsLogged && !Model.HasBookmark)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                @using (Ajax.BeginForm("AddBookmark", null, ajaxOptions, new { @class = "pull-right" }))
+                {
+                    @Html.Hidden("url", @Model.Article.Url)
+                    <button type="submit" class="btn btn-danger add-bookmark">
+                        <span id="loading" class="spinner">
+                            <span class="glyphicon glyphicon-refresh glyphicon-spin"></span>
+                        </span>
+                        <i class="glyphicon glyphicon-heart"></i>
+                        <span id="bookmark-confirm">
+                            @Resources.AddBookmark
+                        </span>
+                    </button>
+                }
+            </div>
+        </div>
+    }
+    <div class="row comments">
+        <div class="col-md-12">
+            <div class="default-title">@Resources.Comments</div>
+            @if (Model.CommentsExtended.Any())
+            {
+                foreach (var commentsExtended in Model.CommentsExtended)
+                {
+                    <div class="media">
+                        <div class="media-left">
+                            <span class="user-photo" href="#">
+                                <img class="media-object img-circle" src="@Url.Content(String.Format("{0}UserProfileImage/{1}", @Model.ContentExternalUrl, commentsExtended.User.PhotoUrl ?? "null.png"))" alt="@Resources.UserPhoto" title="@Resources.UserPhoto" />
+                            </span>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading comment-heading">@commentsExtended.User.Nick | <span class="comment-heading-date">@commentsExtended.Comment.Date</span></h4>
+                            <p>@commentsExtended.Comment.Content</p>
+                        </div>
+                    </div>
+                    <hr />
+                }
+            }
+        </div>
+    </div>
+    if (!Model.IsLogged)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="alert alert-warning">@Resources.ToAddCommentLogIn</h5>
+            </div>
+        </div>
+        <div class="row login-register-form">
+            @Html.Action("Login", "Account")
+            @Html.Action("Register", "Account")
+        </div>
+    }
+    else
+    {
+        <div class="edit-nick-form">
+            @Html.Action("EditNick", "User")
+        </div>
+        <div class="@(Model.HasUserNick ? string.Empty : "hidden")" id="edit-comment-form">
+            @Html.Action("EditComment", "User", new { articleID = Model.Article.ArticleID, returnUrl = Url.RouteUrl("Article", new { category = Model.Category.Name, url = Model.Article.Url }) })
+        </div>
+    }
+    @Html.Action("ArticlesMore", "Article")
 }

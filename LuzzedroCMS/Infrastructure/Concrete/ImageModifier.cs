@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LuzzedroCMS.Infrastructure.Abstract;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Web;
 
 namespace LuzzedroCMS.Infrastructure.Concrete
 {
-    public class ImageModifier
+    public class ImageModifier : IImageModifier
     {
         public Image ResizeImage(HttpPostedFileBase httpPostedFileBase, int maxWidth, int maxHeight)
         {
@@ -18,6 +17,13 @@ namespace LuzzedroCMS.Infrastructure.Concrete
 
         public Image ResizeImage(Image img, int maxWidth, int maxHeight)
         {
+            return _ResizeImage(img, maxWidth, maxHeight);
+
+        }
+
+        public Image ResizeImage(Bitmap bitMap, int maxWidth, int maxHeight)
+        {
+            Image img = (Image)bitMap;
             return _ResizeImage(img, maxWidth, maxHeight);
 
         }
@@ -36,10 +42,7 @@ namespace LuzzedroCMS.Infrastructure.Concrete
                 using (Graphics gr = Graphics.FromImage(cpy))
                 {
                     gr.Clear(Color.Transparent);
-
-                    // This is said to give best quality when resizing images
                     gr.InterpolationMode = InterpolationMode.High;
-
                     gr.DrawImage(img,
                         new Rectangle(0, 0, nnx, nny),
                         new Rectangle(0, 0, img.Width, img.Height),

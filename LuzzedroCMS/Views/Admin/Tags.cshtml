@@ -1,13 +1,13 @@
-﻿@model IQueryable<LuzzedroCMS.Domain.Entities.Tag>
+﻿@model IList<LuzzedroCMS.Domain.Entities.Tag>
 @using LuzzedroCMS.WebUI.Properties
 
 @foreach (var tag in Model)
 {
     <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-body admin-panel">
             <div class="row">
                 <div class="col-md-1">
-                    @(tag.Status == 1 ? new HtmlString("<span class=\"label label-success\"><span class=\"glyphicon glyphicon-eye-open\"></span></span>") : new HtmlString("<span class=\"label label-danger\"><span class=\"glyphicon glyphicon-eye-close\"></span></span>"))
+                    @(tag.Status == 1 ? new HtmlString("<span class=\"label label-success\"><span class=\"fa fa-eye\"></span></span>") : new HtmlString("<span class=\"label label-danger\"><span class=\"fa fa-eye-slash\"></span></span>"))
                 </div>
                 <div class="col-md-8">
                     @tag.Name
@@ -19,7 +19,7 @@
                         @Html.AntiForgeryToken()
                         @Html.Hidden("TagID", tag.TagID)
                         @Html.ActionLink(Resources.Edit, "EditTag", new { tag.TagID }, new { @class = "btn btn-default" })
-                        <input type="submit" value="@Resources.Remove" class="btn btn-default" />
+                        <input type="submit" value="@Resources.Remove" class="btn btn-danger" />
                     }
                 </div>
             </div>

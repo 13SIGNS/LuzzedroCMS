@@ -1,0 +1,639 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Dodaj</value>
+  </data>
+  <data name="AddCategory" xml:space="preserve">
+    <value>Dodaj kategorię</value>
+  </data>
+  <data name="AddComment" xml:space="preserve">
+    <value>Dodaj komentarz</value>
+  </data>
+  <data name="AddImage" xml:space="preserve">
+    <value>Dodaj zdjęcie</value>
+  </data>
+  <data name="AddingAnImage" xml:space="preserve">
+    <value>Dodawanie zdjęcia</value>
+  </data>
+  <data name="AddingArticle" xml:space="preserve">
+    <value>Dodawanie artykułu</value>
+  </data>
+  <data name="AddTag" xml:space="preserve">
+    <value>Dodaj tag</value>
+  </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Administracja</value>
+  </data>
+  <data name="Articles" xml:space="preserve">
+    <value>Artykuły</value>
+  </data>
+  <data name="ArticlesAdd" xml:space="preserve">
+    <value>Artykuły - dodaj</value>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Kategorie</value>
+  </data>
+  <data name="CategoriesAdd" xml:space="preserve">
+    <value>Kategorie - dodaj</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Zmień</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Zmień hasło</value>
+  </data>
+  <data name="Choose" xml:space="preserve">
+    <value>Wybierz</value>
+  </data>
+  <data name="ChooseImage" xml:space="preserve">
+    <value>Wybierz zdjęcie</value>
+  </data>
+  <data name="ChooseTags" xml:space="preserve">
+    <value>Zmień tagi</value>
+  </data>
+  <data name="ClickToFinish" xml:space="preserve">
+    <value>Kliknij tu aby zakończyć</value>
+  </data>
+  <data name="CodeExpired" xml:space="preserve">
+    <value>Link z wiadomości email wygasł. Spróbuj ponownie aby zresetować hasło</value>
+  </data>
+  <data name="CodeNotExists" xml:space="preserve">
+    <value>Kod z wiadomości nie został dopasowany. Spróbuj ponownie aby zresetować hasło</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Komentarz</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Komentarze</value>
+  </data>
+  <data name="ConfirmationRegistration" xml:space="preserve">
+    <value>Potwierdzenie rejestracji na stronie {0}</value>
+  </data>
+  <data name="ConfirmingEmail" xml:space="preserve">
+    <value>Potwierdzenie e-mail</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>Kontakt</value>
+  </data>
+  <data name="CorrectlyChanged" xml:space="preserve">
+    <value>Poprawnie zmieniono artykuł</value>
+  </data>
+  <data name="CorrectlyEditComment" xml:space="preserve">
+    <value>Poprawnie edytowano komentarz</value>
+  </data>
+  <data name="CorrectlySetUp" xml:space="preserve">
+    <value>Poprawnie utworzono konto. Witamy!</value>
+  </data>
+  <data name="CurrentMainPhoto" xml:space="preserve">
+    <value>Obecne zdjęcie główne</value>
+  </data>
+  <data name="DateAdded" xml:space="preserve">
+    <value>Data dodania</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edytuj</value>
+  </data>
+  <data name="EditArticle" xml:space="preserve">
+    <value>Edytuj artykuł</value>
+  </data>
+  <data name="EditComment" xml:space="preserve">
+    <value>Edytuj komentarz</value>
+  </data>
+  <data name="EditTag" xml:space="preserve">
+    <value>Edytuj tag</value>
+  </data>
+  <data name="EditUser" xml:space="preserve">
+    <value>Edytuj użytkownika</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>email</value>
+  </data>
+  <data name="EnterEmail" xml:space="preserve">
+    <value>Wpisz adres email, na który zostaną wysłane instrukcje do resetowania hasła</value>
+  </data>
+  <data name="EnterEmailReset" xml:space="preserve">
+    <value>Wpisz adres email, na który zostaną wysłane instrukcje do resetowania hasła</value>
+  </data>
+  <data name="EnterLoginEmail" xml:space="preserve">
+    <value>Wpisz adres email używany do zalogowania się</value>
+  </data>
+  <data name="EnterNewLoginEmail" xml:space="preserve">
+    <value>Wpisz adres email, który będzie używany do logowania się</value>
+  </data>
+  <data name="EnterNickname" xml:space="preserve">
+    <value>Wymyśl i wpisz pseudonim, który będzie wyświetlany przy Twoich komentarzach</value>
+  </data>
+  <data name="EnterPassword" xml:space="preserve">
+    <value>Wpisz hasło</value>
+  </data>
+  <data name="EnterSequence" xml:space="preserve">
+    <value>Wpisz zdanie, które będzie zmieniać nazwę zdjęcia</value>
+  </data>
+  <data name="ErrorOcurred" xml:space="preserve">
+    <value>Wystąpił błąd. Spróbuj później</value>
+  </data>
+  <data name="ExistingPassword" xml:space="preserve">
+    <value>istniejące hasło</value>
+  </data>
+  <data name="Favourites" xml:space="preserve">
+    <value>Zakładki</value>
+  </data>
+  <data name="FieldMustHaveMoreChars" xml:space="preserve">
+    <value>Pole {0} musi mieć więcej znaków niż {1}</value>
+  </data>
+  <data name="FieldMustHaveNoMoreChars" xml:space="preserve">
+    <value>Pole {0} musi mieć mniej znaków niż {1}</value>
+  </data>
+  <data name="FileCannotBeMore" xml:space="preserve">
+    <value>Plik nie może być większy niż 4MB</value>
+  </data>
+  <data name="FileNotHaveContent" xml:space="preserve">
+    <value>Plik jest pusty</value>
+  </data>
+  <data name="FitPhoto" xml:space="preserve">
+    <value>Dopasuj zdjęcie</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Przypomnienie hasła</value>
+  </data>
+  <data name="GoToArticle" xml:space="preserve">
+    <value>Idź do artykułu</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Cześć</value>
+  </data>
+  <data name="Here" xml:space="preserve">
+    <value>tutaj</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Strona główna</value>
+  </data>
+  <data name="IfReceivedMistake" xml:space="preserve">
+    <value>Jeśli ta wiadomość przyszła przez przypadek, zignoruj ją</value>
+  </data>
+  <data name="Images" xml:space="preserve">
+    <value>Zdjęcia</value>
+  </data>
+  <data name="ImagesAdd" xml:space="preserve">
+    <value>Zdjęcia - dodaj</value>
+  </data>
+  <data name="Important" xml:space="preserve">
+    <value>Ważne</value>
+  </data>
+  <data name="IncorectoUserNamePassword" xml:space="preserve">
+    <value>Nieprawidłowy adres lub hasło</value>
+  </data>
+  <data name="InvalidFileType" xml:space="preserve">
+    <value>Nieprawidłowy format plików</value>
+  </data>
+  <data name="InventPassword" xml:space="preserve">
+    <value>Wymyśl hasło</value>
+  </data>
+  <data name="ListOfArticles" xml:space="preserve">
+    <value>Lista artykułów</value>
+  </data>
+  <data name="ListOfComments" xml:space="preserve">
+    <value>Lista komentarzy</value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>Zaloguj się</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Wyloguj się</value>
+  </data>
+  <data name="MainPhoto" xml:space="preserve">
+    <value>Zdjęcie główne</value>
+  </data>
+  <data name="MyAccount" xml:space="preserve">
+    <value>Moje konto</value>
+  </data>
+  <data name="MyComments" xml:space="preserve">
+    <value>Moje komentarze</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nazwa</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>nowe hasło</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Następne</value>
+  </data>
+  <data name="Nick" xml:space="preserve">
+    <value>pseudonim</value>
+  </data>
+  <data name="NoAddedImage" xml:space="preserve">
+    <value>Nie dodano zdjęcia</value>
+  </data>
+  <data name="NoUserEmail" xml:space="preserve">
+    <value>Nie ma w systemie użytkownika z takim adresem email. Sprawdź adres i spróbuj ponownie</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Kolejność</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>hasło</value>
+  </data>
+  <data name="PasswordChanged" xml:space="preserve">
+    <value>Hasło zostało poprawnie zmienione!</value>
+  </data>
+  <data name="PasswordReset" xml:space="preserve">
+    <value>Resetowanie hasła</value>
+  </data>
+  <data name="PasswordsDontMatch" xml:space="preserve">
+    <value>Hasła nie pasują</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Poprzednie</value>
+  </data>
+  <data name="ProperlyAddedArticle" xml:space="preserve">
+    <value>Poprawnie dodano artykuł</value>
+  </data>
+  <data name="ProperlyAddedImage" xml:space="preserve">
+    <value>Poprawnie dodano zdjęcie</value>
+  </data>
+  <data name="ProperlyAddedTag" xml:space="preserve">
+    <value>Poprawnie dodano tag</value>
+  </data>
+  <data name="ProperlyLogged" xml:space="preserve">
+    <value>Poprawnie zalogowano</value>
+  </data>
+  <data name="ProperlyLoggedOut" xml:space="preserve">
+    <value>Poprawnie wylogowano</value>
+  </data>
+  <data name="ProperlyRemovedArticle" xml:space="preserve">
+    <value>Poprawnie usunięto artykuł</value>
+  </data>
+  <data name="ProperlyRemovedComment" xml:space="preserve">
+    <value>Poprawnie usunięto komentarz</value>
+  </data>
+  <data name="ProperlyRemovedTag" xml:space="preserve">
+    <value>Poprawnie usunięto tag</value>
+  </data>
+  <data name="Recommend" xml:space="preserve">
+    <value>Polecane</value>
+  </data>
+  <data name="Regards" xml:space="preserve">
+    <value>Pozdrawiamy!</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Zarejestruj się</value>
+  </data>
+  <data name="RegisterError" xml:space="preserve">
+    <value>Wystąpił błąd. Spróbuj zarejestrować się ponownie i kliknij w link, który otrzymasz w wiadomości email</value>
+  </data>
+  <data name="Registration" xml:space="preserve">
+    <value>Rejestracja</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Usuń</value>
+  </data>
+  <data name="RepeatNewPassword" xml:space="preserve">
+    <value>powtórz nowe hasło</value>
+  </data>
+  <data name="RepeatPassword" xml:space="preserve">
+    <value>powtórz hasło</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>To pole jest wymagane</value>
+  </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>Resetowanie hasła</value>
+  </data>
+  <data name="ResettingPassword" xml:space="preserve">
+    <value>Resetowanie hasła na stronie {0}</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Zapisz</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Szukaj...</value>
+  </data>
+  <data name="SearchResults" xml:space="preserve">
+    <value>Wyniki wyszukiwania:</value>
+  </data>
+  <data name="SelectAnExistingImage" xml:space="preserve">
+    <value>Wybierz istniejące zdjęcie</value>
+  </data>
+  <data name="SentLink" xml:space="preserve">
+    <value>Na podany adres została wysłana wiadomość potwierdzająca chęć otwarcia konta. Kliknij na link w niej zamieszczony by dokończyć rejestrację</value>
+  </data>
+  <data name="SentLinkFurther" xml:space="preserve">
+    <value>Na podany adres została wysłana wiadomość z kolejnymi krokami. Kliknij na link w niej zamieszczony by dokończyć resetowanie hasła</value>
+  </data>
+  <data name="SentLinkProblem" xml:space="preserve">
+    <value>Wystąpił problem z wysłaniem wiadomości. Spróbuj później</value>
+  </data>
+  <data name="SiteName" xml:space="preserve">
+    <value>LuzzedroCMS</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Tagi</value>
+  </data>
+  <data name="TagsAdd" xml:space="preserve">
+    <value>Tagi - dodaj</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>Zespół {0}</value>
+  </data>
+  <data name="ThanksForRegistering" xml:space="preserve">
+    <value>Dziękujemy za rejestrację na stronie {0}!</value>
+  </data>
+  <data name="ToAddCommentLogIn" xml:space="preserve">
+    <value>Aby dodac komentarz musisz być zalogowany</value>
+  </data>
+  <data name="ToResetPassword" xml:space="preserve">
+    <value>Aby zresetować hasło, kliknij</value>
+  </data>
+  <data name="UploadFileToStartCropping" xml:space="preserve">
+    <value>Załaduj zdjęcie by rozpocząć ucinanie</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Użytkownik</value>
+  </data>
+  <data name="UserEmailExists" xml:space="preserve">
+    <value>Użytkownik z podanym adresem email istnieje już w bazie. Sprawdź wprowadzony adres lub spróbuj zresetować hasło</value>
+  </data>
+  <data name="UserNickExists" xml:space="preserve">
+    <value>Użytkownik z takim pseudonimem już istnieje w bazie danych. Wybierz proszę inny pseudonim</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Użytkownicy</value>
+  </data>
+  <data name="UsersList" xml:space="preserve">
+    <value>Lista użytkowników</value>
+  </data>
+  <data name="Visibility" xml:space="preserve">
+    <value>Widoczność</value>
+  </data>
+  <data name="WontGivePassword" xml:space="preserve">
+    <value>Nie martw się, nie przekażemy nikomu adresu email, będzie służył do logowania</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Artykuł</value>
+  </data>
+  <data name="ArticleByCategory" xml:space="preserve">
+    <value>Artykuł po kategorii</value>
+  </data>
+  <data name="ArticleByTag" xml:space="preserve">
+    <value>Artykuł po tagu</value>
+  </data>
+  <data name="CategoryList" xml:space="preserve">
+    <value>Lista kategorii</value>
+  </data>
+  <data name="EditCategory" xml:space="preserve">
+    <value>Edycja kategorii</value>
+  </data>
+  <data name="EditData" xml:space="preserve">
+    <value>Edycja danych</value>
+  </data>
+  <data name="ListFavArticles" xml:space="preserve">
+    <value>Lista zakładek z artykułami</value>
+  </data>
+  <data name="ListMyComments" xml:space="preserve">
+    <value>Lista komentarzy</value>
+  </data>
+  <data name="PasswordIncorrect" xml:space="preserve">
+    <value>Hasło jest nieprawidłowe</value>
+  </data>
+  <data name="ProperlyAddedCategory" xml:space="preserve">
+    <value>Poprawnie dodano kategorię</value>
+  </data>
+  <data name="ProperlyChangedPassword" xml:space="preserve">
+    <value>Hasło zostało zmienione poprawnie</value>
+  </data>
+  <data name="ProperlyEditedCategory" xml:space="preserve">
+    <value>Poprawnie edytowano kategorię</value>
+  </data>
+  <data name="ProperlyRemovedCategory" xml:space="preserve">
+    <value>Poprawnie usunięto kategorię</value>
+  </data>
+  <data name="UserProperlyEdited" xml:space="preserve">
+    <value>Poprawnie edytowano użytkownika</value>
+  </data>
+  <data name="UserProperlyRemoved" xml:space="preserve">
+    <value>Użytkownik został poprawnie usunięty</value>
+  </data>
+  <data name="AddBookmark" xml:space="preserve">
+    <value>Dodaj zakładkę</value>
+  </data>
+  <data name="MustBeLogged" xml:space="preserve">
+    <value>Musisz być zalogowany by to zrobić</value>
+  </data>
+  <data name="ProperlyAddedBookmark" xml:space="preserve">
+    <value>Poprawnie dodano zakładkę</value>
+  </data>
+  <data name="SelectedCategoryIDs" xml:space="preserve">
+    <value>Wybierz identyfikator kategorii</value>
+  </data>
+  <data name="SelectedTagIDs" xml:space="preserve">
+    <value>Wybrane identyfikatory tagów</value>
+  </data>
+  <data name="CommentsToArticle" xml:space="preserve">
+    <value>komentarze</value>
+  </data>
+  <data name="CannotLogout" xml:space="preserve">
+    <value>Nie udało się wylogować, spróbuj ponownie</value>
+  </data>
+  <data name="ArticleNotFound" xml:space="preserve">
+    <value>Artykuł nie został znaleziony</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="Regulations" xml:space="preserve">
+    <value>Regulamin</value>
+  </data>
+  <data name="SearchResult" xml:space="preserve">
+    <value>Wyniki wyszukiwania</value>
+  </data>
+  <data name="UserPhoto" xml:space="preserve">
+    <value>Zdjęcie użytkownika</value>
+  </data>
+  <data name="ProperlyAddedConfig" xml:space="preserve">
+    <value>Poprawnie dodano klucz konfiguracji</value>
+  </data>
+  <data name="ProperlyEditedConfig" xml:space="preserve">
+    <value>Poprawnie edytowano klucz konfiguracji</value>
+  </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Konfiguracja</value>
+  </data>
+  <data name="ConfigSite" xml:space="preserve">
+    <value>Konfiguracja</value>
+  </data>
+  <data name="SeeSimilarArticles" xml:space="preserve">
+    <value>Zobacz podobne artykuły</value>
+  </data>
+  <data name="LoginWithFacebook" xml:space="preserve">
+    <value>Zaloguj przez Facebooka</value>
+  </data>
+  <data name="LoginWithGoogle" xml:space="preserve">
+    <value>Zaloguj przez Google</value>
+  </data>
+  <data name="ShowPassword" xml:space="preserve">
+    <value>Pokaż hasło</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Zamknij</value>
+  </data>
+  <data name="DontHaveAccountRegister" xml:space="preserve">
+    <value>Nie masz konta? Zaloguj się przez Facebooka lub Google albo załóż konto w tradycyjny sposób podając email</value>
+  </data>
+  <data name="OrTraditional" xml:space="preserve">
+    <value>lub w tradycyjny sposób</value>
+  </data>
+  <data name="BySignInYouAgreedWith" xml:space="preserve">
+    <value>Logując się zgadzasz się z </value>
+  </data>
+  <data name="Terms" xml:space="preserve">
+    <value>warunkami korzystania</value>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>Udostępnij</value>
+  </data>
+  <data name="YouMustCreateNick" xml:space="preserve">
+    <value>Żeby dodać komentarz musisz najpierw wymyśleć sobie pseudonim, który będzie wyświetlany przy każdym komentarzu.</value>
+  </data>
+  <data name="Wykop" xml:space="preserve">
+    <value>wykop</value>
+  </data>
+  <data name="AddToGoogle" xml:space="preserve">
+    <value>Podziel się</value>
+  </data>
+  <data name="AddToTwitter" xml:space="preserve">
+    <value>Twitter</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>O mnie</value>
+  </data>
+  <data name="ArticleNotFoundByCategory" xml:space="preserve">
+    <value>W tej kategorii nie ma artykułów</value>
+  </data>
+  <data name="ArticleNotFoundByTag" xml:space="preserve">
+    <value>Pod tym tagiem nie ma żadnych artykułów</value>
+  </data>
+  <data name="NoResults" xml:space="preserve">
+    <value>Brak wyników</value>
+  </data>
+  <data name="Bookmarks" xml:space="preserve">
+    <value>Zakładki</value>
+  </data>
+</root>

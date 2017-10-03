@@ -13,25 +13,32 @@ namespace LuzzedroCMS.Domain.Concrete
 
         public int RoleIdByName(string roleName)
         {
-            int roleId = context.Roles.Where(p => p.Name == roleName).Select(p => p.RoleID).FirstOrDefault();
-            return roleId;
+            Role roleId = context.Roles.FirstOrDefault(p => p.Name == roleName);
+            return roleId.RoleID;
         }
 
         public string[] RolesByUserEmail(string email)
         {
             int userID = context.Users.Where(p => p.Email == email).Select(p => p.UserID).FirstOrDefault();
-            IQueryable<UserRoleAssociate> roles = context.UserRoleAssociates.Where(p => p.UserID == userID);
-            string[] roleTable = new string[roles.Count()];
-            int counter = 0;
-            var contextRoles = context.Roles;
-            foreach (var role in roles)
+            IList<UserRoleAssociate> roles = context.UserRoleAssociates.Where(p => p.UserID == userID).ToList();
+            if (roles.Any())
             {
-                roleTable[counter] = contextRoles.Where(p => p.RoleID == role.RoleID).Select(p => p.Name).FirstOrDefault();
+                string[] roleTable = new string[roles.Count()];
+                int counter = 0;
+                var contextRoles = context.Roles;
+                foreach (var role in roles)
+                {
+                    roleTable[counter] = contextRoles.Where(p => p.RoleID == role.RoleID).Select(p => p.Name).FirstOrDefault();
 
-                counter++;
+                    counter++;
+                }
+                //roleTable[counter] = "Admin";
+                return roleTable;
             }
-            //roleTable[counter] = "Admin";
-            return roleTable;
+            else
+            {
+                return null;
+            }
         }
 
         public void SaveUserRole(int userID, int roleID)
@@ -41,6 +48,7 @@ namespace LuzzedroCMS.Domain.Concrete
                 UserID = userID,
                 RoleID = roleID
             });
+            context.SaveChanges();
         }
     }
 }

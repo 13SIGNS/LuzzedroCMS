@@ -1,29 +1,33 @@
-﻿@model IQueryable<LuzzedroCMS.Domain.Entities.User>
+﻿@model LuzzedroCMS.Models.UsersViewModel
 @using LuzzedroCMS.WebUI.Properties
 
-@foreach (var user in Model)
+@foreach (var userViewModel in Model.Users)
 {
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-1">
                     <div class="user-photo mini">
-                        <img src="@Url.Content(String.Format("~/Content/UserProfileImage/{0}", user.PhotoUrl))" class="img-circle pull-left" />
+                        <img src="@Url.Content(userViewModel.PhotoUrlPath)" class="img-circle pull-left" />
                     </div>
                 </div>
                 <div class="col-md-8">
-                    @user.Email
+                    @userViewModel.User.Email
                 </div>
                 <div class="col-md-3">
                     @using (Html.BeginForm("RemoveUser", "Admin", FormMethod.Post, new { @class = "inline-form" }))
                 {
                         @Html.AntiForgeryToken()
-                        @Html.Hidden("UserID", user.UserID)
-                        @Html.ActionLink(Resources.Edit, "EditUser", new { user.UserID }, new { @class = "btn btn-default" })
-                        <input type="submit" value="@Resources.Remove" class="btn btn-default" />
+                        @Html.Hidden("UserID", userViewModel.User.UserID)
+                        @Html.ActionLink(Resources.Edit, "EditUser", new { userViewModel.User.UserID }, new { @class = "btn btn-default" })
+                        <input type="submit" value="@Resources.Remove" class="btn btn-danger" />
                     }
                 </div>
             </div>
         </div>
     </div>
 }
+
+<div>
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Users", new { controller = "Admin", action = "Users", page = x }))
+</div>

@@ -1,0 +1,38 @@
+﻿@model LuzzedroCMS.WebUI.ViewModels.NickViewModel
+@using LuzzedroCMS.WebUI.Properties
+@using System.Web.Optimization
+
+@{
+    Layout = null;
+}
+
+@if (Model.Nick == string.Empty)
+{
+    using (Ajax.BeginForm("EditNick", "User", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnEditNickSuccess" }))
+    {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <hr />
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Resources.YouMustCreateNick
+                <div id="nick-info"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Nick, new { htmlAttributes = new { placeholder = "Pseudonim", @class = "form-control" } })
+            </div>
+            <div class="col-md-9">
+                @Html.ValidationMessageFor(model => model.Nick, string.Empty, new { @class = "text-danger", id = "nick-validation" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" value="@Resources.Add" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+    }
+}

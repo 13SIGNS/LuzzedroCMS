@@ -1,8 +1,4 @@
 ﻿using LuzzedroCMS.Domain.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace LuzzedroCMS.Controllers
@@ -13,14 +9,21 @@ namespace LuzzedroCMS.Controllers
 
         public CategoryController(ICategoryRepository categoryRepo)
         {
-           repoCategory = categoryRepo;
+            repoCategory = categoryRepo;
         }
 
         [HttpGet]
         [ChildActionOnly]
         public ActionResult CategoryList()
         {
-            return PartialView(repoCategory.CategoriesEnabled);
+            return View(repoCategory.Categories());
+        }
+
+        [HttpGet]
+        [ChildActionOnly]
+        public ActionResult CategoryListSimplified()
+        {
+            return View(repoCategory.Categories());
         }
     }
 }

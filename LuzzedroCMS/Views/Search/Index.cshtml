@@ -8,10 +8,14 @@
 @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "navbar-form search-form" }))
 {
     @Html.AntiForgeryToken()
+
     <div class="input-group">
-        @Html.EditorFor(x => x.Key, new { htmlAttributes = new { @class = "form-control", placeholder = Resources.Search } })
+        @Html.EditorFor(x => x.Key, new { htmlAttributes = new { @class = "form-control", placeholder = Resources.Search, maxlength = 100 } })
         <span class="input-group-btn">
             <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
         </span>
     </div>
+    <span class="search-validation text-danger">
+        @Html.ValidationMessageFor(x => x.Key)
+    </span>
 }

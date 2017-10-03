@@ -1,36 +1,72 @@
 ﻿using LuzzedroCMS.Domain.Abstract;
 using LuzzedroCMS.Domain.Entities;
-using LuzzedroCMS.Domain.Infrastructure;
-using LuzzedroCMS.Infrastructure.Concrete;
+using LuzzedroCMS.Domain.Infrastructure.Abstract;
+using LuzzedroCMS.Infrastructure.Abstract;
+using LuzzedroCMS.Infrastructure.Attributes;
 using LuzzedroCMS.Models;
+using LuzzedroCMS.WebUI.Infrastructure.Enums;
+using LuzzedroCMS.WebUI.Infrastructure.Helpers;
+using LuzzedroCMS.WebUI.Infrastructure.Static;
+using LuzzedroCMS.WebUI.Properties;
+using LuzzedroCMS.WebUI.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using LuzzedroCMS.WebUI.Properties;
 using System.Web.Mvc;
 
 namespace LuzzedroCMS.Controllers
 {
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "Admin, User")]
     public class UserController : Controller
     {
         private IUserRepository repoUser;
         private ICommentRepository repoComment;
         private IArticleRepository repoArticle;
         private ICategoryRepository repoCategory;
-        private TextBuilder textBuilder;
-        private User user;
+        private IConfigurationKeyRepository repoConfig;
+        private IAccount account;
+        private IFtp ftp;
+        private ITextBuilder textBuilder;
+        private IImageModifier imageModifier;
+        private ISessionHelper repoSession;
+        private IImageHelper imageHelper;
+        private const string NULLIMAGE = "null.png";
+        public int PageSize = 2;
 
-        public UserController(IUserRepository userRepo, ICommentRepository commentRepo, IArticleRepository articleRepo, ICategoryRepository categoryRepo)
+        private User user
+        {
+            get
+            {
+                return repoUser.User(email: repoSession.UserEmail);
+            }
+        }
+
+        public UserController(
+            IUserRepository userRepo,
+            ICommentRepository commentRepo,
+            IArticleRepository articleRepo,
+            ICategoryRepository categoryRepo,
+            IConfigurationKeyRepository configRepo,
+            IAccount accnt,
+            IFtp ft,
+            ITextBuilder txtBuilder,
+            IImageModifier imgModifier,
+            ISessionHelper sessionRepo,
+            IImageHelper imgHelper)
         {
             repoUser = userRepo;
             repoComment = commentRepo;
             repoArticle = articleRepo;
             repoCategory = categoryRepo;
-            user = repoUser.UserByEmail(System.Web.HttpContext.Current.User.Identity.Name);
-            textBuilder = new TextBuilder();
+            repoConfig = configRepo;
+            account = accnt;
+            ftp = ft;
+            textBuilder = txtBuilder;
+            imageModifier = imgModifier;
+            repoSession = sessionRepo;
+            imageHelper = imgHelper;
+            repoSession.Controller = this;
+
         }
 
         [HttpGet]
@@ -38,102 +74,133 @@ namespace LuzzedroCMS.Controllers
         public ViewResult EditAccount()
         {
             ViewBag.Title = Resources.EditData;
-            return View(user);
+            return View(new UserViewModel
+            {
+                User = user,
+                PhotoUrlPath = String.Format("{0}UserProfileImage/{1}", repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL), repoSession.UserPhotoUrl)
+            });
         }
 
         [HttpPost]
+        [SetTempDataModelState]
+        [ValidateAntiForgeryToken]
         public ActionResult EditAccount(User user)
         {
-            if (ModelState.IsValid)
-            {
-
-            }
             return Redirect(Url.Action("EditAccount", "User"));
         }
 
         [HttpPost]
         [SetTempDataModelState]
-        public ActionResult EditPassword(string OldPassword, ResetViewModel resetViewModel)
+        [ValidateAntiForgeryToken]
+        public ActionResult EditPassword(ChangePasswordViewModel changePasswordViewModel)
         {
             if (ModelState.IsValid)
             {
-                if (user.Password != OldPassword)
+                if (user.Password != changePasswordViewModel.OldPassword)
                 {
-                    TempData["Info.danger"] = Resources.PasswordIncorrect;
+                    this.SetMessage(InfoMessageType.Danger, Resources.PasswordIncorrect);
                     return Redirect(Url.Action("EditAccount", "User"));
-                }else
-                {
-                    user.Password = resetViewModel.Password;
-                    repoUser.Save(user);
-                    TempData["Info.success"] = Resources.ProperlyChangedPassword;
                 }
-                
+                else
+                {
+                    user.Password = changePasswordViewModel.NewPassword;
+                    repoUser.Save(user);
+                    this.SetMessage(InfoMessageType.Success, Resources.ProperlyChangedPassword);
+                }
+
             }
             return Redirect(Url.Action("EditAccount", "User"));
         }
 
         [HttpPost]
         [SetTempDataModelState]
+        [ValidateAntiForgeryToken]
         public ActionResult EditPhoto(string ImageCropped)
         {
-            if (ImageCropped != null)
+            bool isImage = false;
+            try
             {
-                byte[] bytes = Convert.FromBase64String(ImageCropped
+                Convert.FromBase64String(ImageCropped
                     .Replace("data:image/png;base64,", String.Empty)
                     .Replace("data:image/jpg;base64,", String.Empty)
                     .Replace("data:image/bmp;base64,", String.Empty)
                     .Replace("data:image/gif;base64,", String.Empty));
+                isImage = true;
+            }
+            catch (Exception)
+            {
+                isImage = false;
+            }
 
-                Image image;
-                using (MemoryStream ms = new MemoryStream(bytes))
-                {
-                    image = Image.FromStream(ms);
-                }
-                string imageName = repoUser.GetUniqueImageTitle("");
+            if (ImageCropped != null && isImage)
+            {
+                imageHelper.ImageString = ImageCropped;
 
-                ImageModifier imageModifier = new ImageModifier();
-                var path = Path.Combine(Server.MapPath("~/Content/UserProfileImage/"), imageName);
-                Image img = imageModifier.ResizeImage(image, 320, 240);
-                img.Save(path);
-                string oldPhoto = user.PhotoUrl;
-                if(oldPhoto != "null.png")
+                string imageName = repoUser.GetUniqueImageTitle(string.Empty);
+                bool isUploaded = true;
+                if (imageHelper.IsFtp())
                 {
-                    string fullPath = Request.MapPath("~/Content/UserProfileImage/" + oldPhoto);
-                    if (System.IO.File.Exists(fullPath))
+                    if (!imageHelper.UploadUserProfileImagesToFtp(imageName))
                     {
-                        System.IO.File.Delete(fullPath);
+                        this.SetMessage(InfoMessageType.Danger, Resources.ErrorOcurred);
+                        isUploaded = false;
+                    }
+
+                    if (!imageHelper.RemoveOldPhotoUserProfileImagesFromFtp(user.PhotoUrl))
+                    {
+                        this.SetMessage(InfoMessageType.Danger, Resources.ErrorOcurred);
+                        isUploaded = false;
                     }
                 }
-                user.PhotoUrl = imageName;
-                repoUser.Save(user);
-                SessionSaver sessionSaver = new SessionSaver(repoUser);
-                sessionSaver.SetSessionUserData();
-                TempData["Info.success"] = Resources.ProperlyAddedImage;
+                else
+                {
+                    if (!imageHelper.UploadUserProfileImagesToLocal(imageName, Server))
+                    {
+                        this.SetMessage(InfoMessageType.Danger, Resources.ErrorOcurred);
+                        isUploaded = false;
+                    }
+                    if (!imageHelper.RemoveOldPhotoUserProfileImagesFromLocal(user.PhotoUrl, Request))
+                    {
+                        this.SetMessage(InfoMessageType.Danger, Resources.ErrorOcurred);
+                        isUploaded = false;
+                    }
+                }
+
+                if (isUploaded)
+                {
+                    user.PhotoUrl = imageName;
+                    repoUser.Save(user);
+                    account.SaveUserInSession(this);
+                    this.SetMessage(InfoMessageType.Success, Resources.ProperlyAddedImage);
+                }
             }
             return Redirect(Url.Action("EditAccount", "User"));
         }
 
         [HttpGet]
-        public ViewResult Bookmarks()
+        [RestoreModelStateFromTempData]
+        public ViewResult Bookmarks(int page = 1)
         {
-            ViewBag.Title = Resources.ArticleByTag;
-            ViewBag.HideTitle = true;
-            IQueryable<Article> articles = repoArticle.ArticlesEnabledActualByBookmark(user.UserID);
-            IList<string> categories = new List<string>();
-            foreach (var article in articles)
+            ViewBag.Title = Resources.Bookmarks;
+            ViewBag.HideTitle = false;
+            IList<ArticleExtended> articlesExtended = repoArticle.ArticlesExtended(bookmarkUserID: user.UserID).OrderBy(x => x.Article.DateAdd).Skip((page - 1) * PageSize).Take(PageSize).ToList();
+            ArticlesExtendedViewModel articlesCategoriesPagingViewModel = new ArticlesExtendedViewModel
             {
-                Category category = repoCategory.CategoryByID(article.CategoryID);
-                categories.Add(category.Name);
-            }
-            ArticlesCategoriesViewModel articlesCategoriesViewModel = new ArticlesCategoriesViewModel
-            {
-                Articles = articles,
-                Categories = categories
+                ArticlesExtended = articlesExtended,
+                ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = repoArticle.Articles(bookmarkUserID: user.UserID).Count()
+                }
             };
-            return View(articlesCategoriesViewModel);
+            return View(articlesCategoriesPagingViewModel);
         }
 
         [HttpPost]
+        [SetTempDataModelState]
+        [ValidateAntiForgeryToken]
         public ActionResult EditBookmark(int articleID)
         {
             if (ModelState.IsValid)
@@ -144,6 +211,8 @@ namespace LuzzedroCMS.Controllers
         }
 
         [HttpPost]
+        [SetTempDataModelState]
+        [ValidateAntiForgeryToken]
         public ActionResult RemoveBookmark(int articleID)
         {
             if (ModelState.IsValid)
@@ -154,49 +223,66 @@ namespace LuzzedroCMS.Controllers
         }
 
         [HttpGet]
-        public ViewResult Comments()
+        public ViewResult Comments(int page = 1)
         {
             ViewBag.Title = Resources.ListMyComments;
-            IQueryable<Comment> comments = repoComment.CommentsEnabledByUserID(user.UserID);
-            IList<Category> categories = new List<Category>();
-            IList<Article> articles = new List<Article>();
-            foreach (var comment in comments)
+            IList<CommentExtended> commentsExtended = repoComment.CommentsExtended(userID: user.UserID, page: page, take: PageSize);
+            IList<CommentExtendedWithArticleViewModel> commentExtendedWithArticleViewModel = new List<CommentExtendedWithArticleViewModel>();
+            foreach (var commentExtended in commentsExtended)
             {
-                Article article = repoArticle.ArticleEnabledActualByComment(comment.CommentID);
-                Category category = repoCategory.CategoryByID(article.CategoryID);
-                categories.Add(category);
-                articles.Add(article);
+                commentExtendedWithArticleViewModel.Add(new CommentExtendedWithArticleViewModel
+                {
+                    CommentExtended = commentExtended,
+                    ArticleExtended = repoArticle.ArticleExtended(commentID: commentExtended.Comment.CommentID)
+                });
             }
-            CommentsArticlesViewModel commentsArticleViewModel = new CommentsArticlesViewModel
+            CommentsExtendedWithArticlesViewModel commentsExtendedViewModel = new CommentsExtendedWithArticlesViewModel
             {
-                Comments = comments,
-                Categories = categories,
-                Articles = articles
+                CommentExtendedWithArticleViewModel = commentExtendedWithArticleViewModel,
+                ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = repoComment.Comments(userID: user.UserID).Count()
+                }
             };
-            return View(commentsArticleViewModel);
+            return View(commentsExtendedViewModel);
         }
 
         [HttpGet]
+        [RestoreModelStateFromTempData]
         public ViewResult EditComment(int articleID, string returnUrl)
         {
-            return View(new EditCommentViewModel {
-            ArticleID = articleID,
-            ReturnUrl= returnUrl
+            ViewBag.Title = Resources.EditComment;
+            return View(new EditCommentViewModel
+            {
+                ArticleID = articleID,
+                ReturnUrl = returnUrl
             });
         }
 
         [HttpPost]
+        [SetTempDataModelState]
+        [ValidateAntiForgeryToken]
         public ActionResult EditComment(Comment comment, int articleID, string returnUrl)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(repoSession.UserNick))
             {
-                Comment newComment = new Comment
+                ModelState.AddModelError(string.Empty, Resources.YouMustCreateNick);
+            }
+            else
+            {
+                if (ModelState.IsValid)
                 {
-                    ArticleID = articleID,
-                    Content = comment.Content,
-                    UserID = user.UserID
-                };
-                int commentID = repoComment.Save(newComment);
+                    Comment newComment = new Comment
+                    {
+                        ArticleID = articleID,
+                        Content = comment.Content,
+                        UserID = user.UserID
+                    };
+                    int commentID = repoComment.Save(newComment);
+                }
             }
             return Redirect(returnUrl ?? Url.Action("Comments", "User"));
         }
@@ -205,7 +291,7 @@ namespace LuzzedroCMS.Controllers
         [ChildActionOnly]
         public int BookmarksCount()
         {
-            IQueryable<Article> articles = repoArticle.ArticlesEnabledActualByBookmark(user.UserID);
+            IList<Article> articles = repoArticle.Articles(bookmarkUserID: user.UserID);
             bool any = articles != null;
             return any ? articles.Count() : 0;
         }
@@ -214,10 +300,46 @@ namespace LuzzedroCMS.Controllers
         [ChildActionOnly]
         public int CommentsCount()
         {
-            IQueryable<Comment> comments = repoComment.CommentsEnabledByUserID(user.UserID);
+            IList<Comment> comments = repoComment.Comments(userID: user.UserID);
             bool any = comments != null;
             return any ? comments.Count() : 0;
         }
 
+        [HttpGet]
+        [ChildActionOnly]
+        public ActionResult EditNick()
+        {
+            return View("EditNick", new NickViewModel
+            {
+                Nick = repoSession.UserNick
+            });
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult EditNick(NickViewModel nickViewModel)
+        {
+            bool isNickAdded = false;
+            string error = string.Empty;
+            if (ModelState.IsValid)
+            {
+                User existingUser = repoUser.User(nick: nickViewModel.Nick);
+                if (existingUser == null)
+                {
+                    User user = repoUser.User(email: repoSession.UserEmail);
+                    user.Nick = nickViewModel.Nick;
+                    repoUser.Save(user);
+                    repoSession.UserNick = nickViewModel.Nick;
+                    isNickAdded = true;
+                }
+                else
+                {
+                    error = Resources.UserNickExists;
+                    isNickAdded = false;
+                }
+            }
+            return Json(new { IsNickAdded = isNickAdded, Error = error }); ;
+        }
     }
 }

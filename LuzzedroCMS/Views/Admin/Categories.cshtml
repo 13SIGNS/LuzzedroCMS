@@ -1,20 +1,18 @@
-﻿@model IQueryable<LuzzedroCMS.Domain.Entities.Category>
+﻿@model IList<LuzzedroCMS.Domain.Entities.Category>
 @using LuzzedroCMS.WebUI.Properties
 
 @foreach (var category in Model)
 {
     <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-body admin-panel">
             <div class="col-md-1">
                 <span class="label label-success">
-                    <span class="glyphicon glyphicon-sort-by-attributes"></span>
+                    <span class="fa fa-sort"></span>
                     @Html.DisplayFor(x => category.Order)
                 </span>
             </div>
             <div class="col-md-1">
-                <span class="label label-success">
-                    @(category.Status == 1 ? new HtmlString("<span class=\"label label-success\"><span class=\"glyphicon glyphicon-eye-open\"></span></span>") : new HtmlString("<span class=\"label label-danger\"><span class=\"glyphicon glyphicon-eye-close\"></span></span>"))
-                </span>
+                @(category.Status == 1 ? new HtmlString("<span class=\"label label-success\"><span class=\"fa fa-eye\"></span></span>") : new HtmlString("<span class=\"label label-danger\"><span class=\"fa fa-eye-slash\"></span></span>"))
             </div>
             <div class="col-md-7">
                 @Html.DisplayFor(x => category.Name)
@@ -23,10 +21,10 @@
                 @using (Html.BeginForm("RemoveCategory", "Admin", FormMethod.Post, new { @class = "inline-form" }))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
                     @Html.Hidden("CategoryID", category.CategoryID)
                     @Html.ActionLink(Resources.Edit, "EditCategory", new { category.CategoryID }, new { @class = "btn btn-default" })
-                    <input type="submit" value="@Resources.Remove" class="btn btn-default" />
+                    <input type="submit" value="@Resources.Remove" class="btn btn-danger" />
                 }
             </div>
         </div>

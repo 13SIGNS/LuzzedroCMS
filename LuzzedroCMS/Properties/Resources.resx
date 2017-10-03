@@ -546,4 +546,94 @@
   <data name="SelectedTagIDs" xml:space="preserve">
     <value>Selected tag ID's</value>
   </data>
+  <data name="CommentsToArticle" xml:space="preserve">
+    <value>comments</value>
+  </data>
+  <data name="CannotLogout" xml:space="preserve">
+    <value>Cannot logout, please try again</value>
+  </data>
+  <data name="ArticleNotFound" xml:space="preserve">
+    <value>Article was not found</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="Regulations" xml:space="preserve">
+    <value>Regulations</value>
+  </data>
+  <data name="SearchResult" xml:space="preserve">
+    <value>Search result</value>
+  </data>
+  <data name="UserPhoto" xml:space="preserve">
+    <value>User photo</value>
+  </data>
+  <data name="ProperlyAddedConfig" xml:space="preserve">
+    <value>Properly added configuration key</value>
+  </data>
+  <data name="ProperlyEditedConfig" xml:space="preserve">
+    <value>Properly edited configuration key</value>
+  </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="ConfigSite" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="SeeSimilarArticles" xml:space="preserve">
+    <value>See similar articles</value>
+  </data>
+  <data name="LoginWithFacebook" xml:space="preserve">
+    <value>Login with Facebook</value>
+  </data>
+  <data name="LoginWithGoogle" xml:space="preserve">
+    <value>Login with Google</value>
+  </data>
+  <data name="ShowPassword" xml:space="preserve">
+    <value>Show password</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="DontHaveAccountRegister" xml:space="preserve">
+    <value>Don't have an account? Please sign in via Facebook, Google or register setting an email</value>
+  </data>
+  <data name="OrTraditional" xml:space="preserve">
+    <value>or in traditinal way</value>
+  </data>
+  <data name="BySignInYouAgreedWith" xml:space="preserve">
+    <value>By sign in you agreed with</value>
+  </data>
+  <data name="Terms" xml:space="preserve">
+    <value>regulations</value>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="YouMustCreateNick" xml:space="preserve">
+    <value>To add comment you must create a nick. Invent the name, which will by displayed near your comments</value>
+  </data>
+  <data name="Wykop" xml:space="preserve">
+    <value>wykop</value>
+  </data>
+  <data name="AddToGoogle" xml:space="preserve">
+    <value>Share with Google</value>
+  </data>
+  <data name="AddToTwitter" xml:space="preserve">
+    <value>Twitter</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="ArticleNotFoundByCategory" xml:space="preserve">
+    <value>This category doesn't contain any article</value>
+  </data>
+  <data name="ArticleNotFoundByTag" xml:space="preserve">
+    <value>This tag doesn't contain any article</value>
+  </data>
+  <data name="NoResults" xml:space="preserve">
+    <value>No results</value>
+  </data>
+  <data name="Bookmarks" xml:space="preserve">
+    <value>Bookmarks</value>
+  </data>
 </root>

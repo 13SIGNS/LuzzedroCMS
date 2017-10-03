@@ -1,0 +1,30 @@
+﻿@model LuzzedroCMS.Models.EditCommentViewModel
+@using LuzzedroCMS.WebUI.Properties
+
+@{
+    Layout = null;
+}
+
+
+@using (Html.BeginForm("EditComment", "User"))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    <div class="form-horizontal">
+        <h2>@Resources.AddComment</h2>
+        @Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
+        @Html.HiddenFor(x => x.ArticleID)
+        @Html.HiddenFor(x => x.ReturnUrl)
+
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.EditorFor(x => x.Comment.Content, new { htmlAttributes = new { placeholder = "treść", @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" value="@Resources.Add" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}

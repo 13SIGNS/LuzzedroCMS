@@ -1,0 +1,27 @@
+﻿@model LuzzedroCMS.Models.ConfigurationViewModel
+@using LuzzedroCMS.Domain.Entities
+@using LuzzedroCMS.WebUI.Properties
+
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
+    @foreach (ConfigurationKey configurationKey in Model.ConfigurationKeys)
+    {
+        using (Html.BeginForm("EditConfiguration", "Admin", FormMethod.Post, new { @class = "inline-form" }))
+        {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <div class="col-md-4">
+                @Html.EditorFor(model => configurationKey.Key, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                @Html.ValidationMessageFor(model => configurationKey.Key, string.Empty, new { @class = "text-danger" })
+            </div>
+            <div class="col-md-4">
+                @Html.EditorFor(model => configurationKey.Value, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => configurationKey.Value, string.Empty, new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+                <input type="submit" value="@Resources.Save" class="btn btn-success" />
+            </div>
+        </div>
+        }
+    }
+</div>

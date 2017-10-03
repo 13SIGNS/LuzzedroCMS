@@ -115,6 +115,24 @@ namespace LuzzedroCMS.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration key.
+        /// </summary>
+        public static string ConfigurationKey {
+            get {
+                return ResourceManager.GetString("ConfigurationKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration value.
+        /// </summary>
+        public static string ConfigurationValue {
+            get {
+                return ResourceManager.GetString("ConfigurationValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content.
         /// </summary>
         public static string Content {

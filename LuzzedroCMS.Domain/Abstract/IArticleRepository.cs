@@ -1,25 +1,58 @@
 ﻿using LuzzedroCMS.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace LuzzedroCMS.Domain.Abstract
 {
     public interface IArticleRepository
     {
-        Article ArticleByUrl(string url);
-        IQueryable<Article> Articles { get; }
-        IQueryable<Article> ArticlesEnabled { get; }
-        IQueryable<Article> ArticlesEnabledActual { get; }
-        IQueryable<Article> ArticlesTotal { get; }
-        IQueryable<Article> ArticlesEnabledActualByCategoryID(int categoryID);
-        IQueryable<Article> ArticlesEnabledActualByTagName(string tagName);
-        IQueryable<Article> ArticlesEnabledActualByUserID(int userID);
-        IQueryable<Article> ArticlesEnabledActualByBookmark(int userID);
-        IQueryable<Article> ArticlesEnabledActualByKey(string key);
-        Article ArticleEnabledActualByComment(int commentID);
+        Article Article(
+            bool enabled = true,
+            bool actual = true,
+            string url = null,
+            int commentID = 0,
+            int articleID = 0);
+
+        ArticleExtended ArticleExtended(
+            bool enabled = true,
+            bool actual = true,
+            string url = null,
+            int commentID = 0,
+            int articleID = 0,
+            Article article = null);
+
+        IList<Article> Articles(
+            bool enabled = true,
+            bool actual = true,
+            int page = 1,
+            int take = 0,
+            int categoryID = 0,
+            string tagName = null,
+            int userID = 0,
+            int bookmarkUserID = 0,
+            string key = null,
+            Expression<Func<Article, bool>> orderBy = null,
+            Expression<Func<Article, bool>> orderByDescending = null);
+
+        IList<ArticleExtended> ArticlesExtended(
+            bool enabled = true,
+            bool actual = true,
+            int page = 1,
+            int take = 0,
+            int categoryID = 0,
+            string tagName = null,
+            int userID = 0,
+            int bookmarkUserID = 0,
+            string key = null,
+            Expression<Func<Article, bool>> orderBy = null,
+            Expression<Func<Article, bool>> orderByDescending = null,
+            IList<Article> articles = null);
+
+        BookmarkUserArticleAssociate BookmarkUserArticleAssociate(
+            int articleID = 0,
+            int userID = 0);
+
         void SaveBookmark(int articleID, int userID);
         void RemoveBookmark(int articleID, int userID);
         void AddTagToArticle(int articleID, int tagID);

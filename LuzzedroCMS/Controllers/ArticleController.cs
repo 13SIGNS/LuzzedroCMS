@@ -1,12 +1,16 @@
 ﻿using LuzzedroCMS.Domain.Abstract;
 using LuzzedroCMS.Domain.Entities;
+using LuzzedroCMS.Infrastructure.Abstract;
 using LuzzedroCMS.Models;
+using LuzzedroCMS.WebUI.Infrastructure.Enums;
+using LuzzedroCMS.WebUI.Infrastructure.Helpers;
+using LuzzedroCMS.WebUI.Infrastructure.Static;
+using LuzzedroCMS.WebUI.Properties;
+using LuzzedroCMS.WebUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using LuzzedroCMS.WebUI.Properties;
 
 namespace LuzzedroCMS.Controllers
 {
@@ -16,141 +20,177 @@ namespace LuzzedroCMS.Controllers
         private ICategoryRepository repoCategory;
         private ICommentRepository repoComment;
         private IUserRepository repoUser;
+        private IConfigurationKeyRepository repoConfig;
+        private ISessionHelper repoSession;
+        public int PageSize = 2;
 
-        public ArticleController(IArticleRepository articleRepository, ICategoryRepository categoryRepository, ICommentRepository commentRepository, IUserRepository userRepository)
+        public ArticleController(
+            IArticleRepository articleRepo,
+            ICategoryRepository categoryRepo,
+            ICommentRepository commentRepo,
+            IUserRepository userRepo,
+            IConfigurationKeyRepository configRepo,
+            ISessionHelper sessionRepo)
         {
-            repoArticle = articleRepository;
-            repoCategory = categoryRepository;
-            repoComment = commentRepository;
-            repoUser = userRepository;
+            repoArticle = articleRepo;
+            repoCategory = categoryRepo;
+            repoComment = commentRepo;
+            repoUser = userRepo;
+            repoConfig = configRepo;
+            repoSession = sessionRepo;
+            repoSession.Controller = this;
         }
 
         [HttpGet]
         public ViewResult Index()
         {
-            ViewBag.Title = Resources.Home;
             ViewBag.HideTitle = true;
-            IQueryable<Article> latestArticles = repoArticle.ArticlesEnabledActual.OrderByDescending(x => x.DatePub).Take(11);
-            IList<string> latestArticlesCategories = new List<string>();
-            foreach (var latestArticle in latestArticles)
-            {
-                latestArticlesCategories.Add(repoCategory.CategoryByID(latestArticle.CategoryID).Name);
-            }
-
-            IQueryable<Article> articlesByCategorySection1 = repoArticle.ArticlesEnabledActualByCategoryID(repoCategory.CategoriesEnabled.Take(1).Select(x => x.CategoryID).FirstOrDefault()).OrderByDescending(x => x.DatePub).Take(4);
-            IList<string> articlesByCategorySection1Categories = new List<string>();
-            foreach (var articleByCategorySection1 in articlesByCategorySection1)
-            {
-                articlesByCategorySection1Categories.Add(repoCategory.CategoryByID(articleByCategorySection1.CategoryID).Name);
-            }
-
-            IQueryable<Article> articlesByCategorySection2 = repoArticle.ArticlesEnabledActualByCategoryID(repoCategory.CategoriesEnabled.Skip(1).Take(1).Select(x => x.CategoryID).FirstOrDefault()).OrderByDescending(x => x.DatePub).Take(4);
-            IList<string> articlesByCategorySection2Categories = new List<string>();
-            foreach (var articleByCategorySection2 in articlesByCategorySection2)
-            {
-                articlesByCategorySection2Categories.Add(repoCategory.CategoryByID(articleByCategorySection2.CategoryID).Name);
-            }
-
-            IQueryable<Article> articlesByCategorySection3 = repoArticle.ArticlesEnabledActualByCategoryID(repoCategory.CategoriesEnabled.Skip(2).Take(1).Select(x => x.CategoryID).FirstOrDefault()).OrderByDescending(x => x.DatePub).Take(4);
-            IList<string> articlesByCategorySection3Categories = new List<string>();
-            foreach (var articleByCategorySection3 in articlesByCategorySection3)
-            {
-                articlesByCategorySection3Categories.Add(repoCategory.CategoryByID(articleByCategorySection3.CategoryID).Name);
-            }
-
-            IQueryable<Article> articlesByCategorySection4 = repoArticle.ArticlesEnabledActualByCategoryID(repoCategory.CategoriesEnabled.Skip(3).Take(1).Select(x => x.CategoryID).FirstOrDefault()).OrderByDescending(x => x.DatePub).Take(4);
-            IList<string> articlesByCategorySection4Categories = new List<string>();
-            foreach (var articleByCategorySection4 in articlesByCategorySection4)
-            {
-                articlesByCategorySection4Categories.Add(repoCategory.CategoryByID(articleByCategorySection4.CategoryID).Name);
-            }
-
-            ArticleListViewModel articleViewModel = new ArticleListViewModel
+            IList<ArticleExtended> latestArticles = repoArticle.ArticlesExtended(take: 11);
+            IList<ArticleExtended> articlesByCategorySection1 = repoCategory.Categories(page: 1, take: 1).FirstOrDefault() != null ? repoArticle.ArticlesExtended(categoryID: repoCategory.Categories(page: 1, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
+            IList<ArticleExtended> articlesByCategorySection2 = repoCategory.Categories(page: 2, take: 1).FirstOrDefault() != null ? repoArticle.ArticlesExtended(categoryID: repoCategory.Categories(page: 2, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
+            IList<ArticleExtended> articlesByCategorySection3 = repoCategory.Categories(page: 3, take: 1).FirstOrDefault() != null ? repoArticle.ArticlesExtended(categoryID: repoCategory.Categories(page: 3, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
+            IList<ArticleExtended> articlesByCategorySection4 = repoCategory.Categories(page: 4, take: 1).FirstOrDefault() != null ? repoArticle.ArticlesExtended(categoryID: repoCategory.Categories(page: 4, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
+            ArticleListPageViewModel articleListViewModel = new ArticleListPageViewModel
             {
                 LatestArticles = latestArticles,
-                LatestArticlesCategories = latestArticlesCategories,
                 ArticlesByCategorySection1 = articlesByCategorySection1,
-                ArticlesByCategorySection1Categories = articlesByCategorySection1Categories,
                 ArticlesByCategorySection2 = articlesByCategorySection2,
-                ArticlesByCategorySection2Categories = articlesByCategorySection2Categories,
                 ArticlesByCategorySection3 = articlesByCategorySection3,
-                ArticlesByCategorySection3Categories = articlesByCategorySection3Categories,
                 ArticlesByCategorySection4 = articlesByCategorySection4,
-                ArticlesByCategorySection4Categories = articlesByCategorySection4Categories,
+                ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL)
             };
-            return View(articleViewModel);
+            ViewBag.Title = repoConfig.Get(ConfigurationKeyStatic.MAIN_TITLE);
+            ViewBag.Description = repoConfig.Get(ConfigurationKeyStatic.MAIN_DESCRIPTION);
+            return View(articleListViewModel);
         }
+
+        [HttpGet]
+        [ChildActionOnly]
+        public ActionResult ArticlesMore()
+        {
+            ArticlesExtendedViewModel articlesExtendedViewModel = new ArticlesExtendedViewModel
+            {
+                ArticlesExtended = repoArticle.ArticlesExtended().OrderBy(x => Guid.NewGuid()).Take(4).ToList(),
+                ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL)
+            };
+            return View(articlesExtendedViewModel);
+        }
+
 
         [HttpGet]
         public ActionResult Article(string category, string url)
         {
-            ViewBag.Title = Resources.Article;
             ViewBag.HideTitle = true;
-            Article article = repoArticle.ArticleByUrl(url);
-            IQueryable<Comment> comments = repoComment.CommentsEnabledByArticleID(article.ArticleID);
-            IList<User> users = new List<User>();
-            foreach (var comment in comments)
+            ArticleExtended articleExtended = repoArticle.ArticleExtended(url: url);
+            if (articleExtended != null)
             {
-                users.Add(repoUser.UserByID(comment.UserID));
-            }
-            ArticleViewModel articleViewModel = new ArticleViewModel
-            {
-                Article = article,
-                Comments = comments,
-                CategoryName = category,
-                Users = users
-            };
-            return View(articleViewModel);
-        }
-
-        [HttpGet]
-        public ViewResult ArticlesByTag(string tag)
-        {
-            ViewBag.Title = Resources.ArticleByTag;
-            ViewBag.HideTitle = true;
-            IQueryable<Article> articles = repoArticle.ArticlesEnabledActualByTagName(tag);
-            IList<string> categories = new List<string>();
-            foreach (var article in articles)
-            {
-                Category category = repoCategory.CategoryByID(article.CategoryID);
-                categories.Add(category.Name);
-            }
-            ArticlesTagViewModel articlesViewModel = new ArticlesTagViewModel
-            {
-                Articles = articles,
-                ArticleCategories = categories,
-                TagName = tag
-            };
-            return View(articlesViewModel);
-        }
-
-        [HttpGet]
-        public ActionResult ArticlesByCategory(string category)
-        {
-            ViewBag.Title = Resources.ArticleByCategory;
-            ViewBag.HideTitle = true;
-            Category Category = repoCategory.CategoryByName(category);
-            if (Category != null)
-            {
-                int categoryID = Category.CategoryID;
-                IQueryable<Article> articles = repoArticle.ArticlesEnabledActualByCategoryID(categoryID);
-                return View(new ArticlesCategoryViewModel
+                User user = repoUser.User(email: repoSession.UserEmail);
+                ArticlePageViewModel articlePageViewModel = new ArticlePageViewModel()
                 {
-                    Articles = articles,
-                    Category = category
-                });
+                    Article = articleExtended.Article,
+                    Category = articleExtended.Category,
+                    User = articleExtended.User,
+                    CommentsExtended = articleExtended.CommentsExtended,
+                    ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
+                    HasUserNick = !string.IsNullOrEmpty(repoSession.UserNick),
+                    IsLogged = repoSession.IsLogged,
+                    HasBookmark = user != null ? repoArticle.BookmarkUserArticleAssociate(
+                        articleID: articleExtended.Article.ArticleID,
+                        userID: user.UserID) != null : false,
+                    Tags = articleExtended.Tags
+                };
+                ViewBag.Title = String.Format("{0} - {1}", articleExtended.Article.Title, Resources.Article);
+                if (articleExtended != null)
+                {
+                    ViewBag.Description = articleExtended.Article.Lead;
+                    ViewBag.Keywords = String.Format("{0} - {1}", articleExtended.Article.ImageDesc, Resources.Article);
+                }
+                return View(articlePageViewModel);
             }
             else
             {
+                this.SetMessage(InfoMessageType.Danger, Resources.ArticleNotFound);
                 return Redirect(Url.Action("Index", "Article"));
             }
         }
 
+        [HttpGet]
+        public ActionResult ArticlesByTag(string tag, int page = 1)
+        {
+            ViewBag.HideTitle = true;
+            IList<ArticleExtended> articlesExtended = repoArticle.ArticlesExtended(tagName: tag, page: page, take: PageSize).ToList();
+            if (articlesExtended.Any())
+            {
+                ArticlesTagViewModel articlesTagViewModel = new ArticlesTagViewModel
+                {
+                    ArticlesExtended = articlesExtended,
+                    TagName = tag,
+                    ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = repoArticle.Articles(tagName: tag).Count()
+                    }
+                };
+                ViewBag.Title = String.Format("{0} - {1}", tag, Resources.ArticleByTag);
+                if (articlesExtended.Count() != 0)
+                {
+                    ViewBag.Description = String.Format("{0} - {1}", articlesExtended.First().Article.Lead, Resources.ArticleByTag);
+                    ViewBag.Keywords = String.Format("{0} - {1}", articlesExtended.First().Article.ImageDesc, Resources.ArticleByTag);
+                }
+                return View(articlesTagViewModel);
+            }
+            else
+            {
+                this.SetMessage(InfoMessageType.Danger, Resources.ArticleNotFoundByTag);
+                return Redirect(Url.Action("Index", "Article"));
+            }
+        }
+
+        [HttpGet]
+        public ActionResult ArticlesByCategory(string category, int page = 1)
+        {
+            ViewBag.HideTitle = true;
+            Category Category = repoCategory.Category(categoryName: category);
+            if (Category != null)
+            {
+                int categoryID = Category.CategoryID;
+                IList<ArticleExtended> articlesExtended = repoArticle.ArticlesExtended(categoryID: categoryID, page: page, take: PageSize).ToList();
+                if (articlesExtended.Any())
+                {
+                    ViewBag.Title = String.Format("{0} - {1}", category, Resources.ArticleByCategory);
+                    if (articlesExtended.Count() != 0)
+                    {
+                        ViewBag.Description = String.Format("{0} - {1}", articlesExtended.First().Article.Lead, Resources.ArticleByCategory);
+                        ViewBag.Keywords = String.Format("{0} - {1}", articlesExtended.First().Article.ImageDesc, Resources.ArticleByCategory);
+                    }
+                    return View(new ArticlesCategoryViewModel
+                    {
+                        ArticlesExtended = articlesExtended,
+                        CategoryName = Category.Name,
+                        ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
+                        PagingInfo = new PagingInfo
+                        {
+                            CurrentPage = page,
+                            ItemsPerPage = PageSize,
+                            TotalItems = repoArticle.Articles(categoryID: categoryID).Count()
+                        }
+                    });
+                }
+            }
+
+            this.SetMessage(InfoMessageType.Danger, Resources.ArticleNotFoundByCategory);
+            return Redirect(Url.Action("Index", "Article"));
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin, User")]
         public string AddBookmark(string url)
         {
-            Article article = repoArticle.ArticleByUrl(url);
-            User user = repoUser.UserByEmail(System.Web.HttpContext.Current.User.Identity.Name);
-            if (user == null)
+            Article article = repoArticle.Article(url: url);
+            User user = repoUser.User(email: repoSession.UserEmail);
+            if (user == null || article == null)
             {
                 return Resources.MustBeLogged;
             }

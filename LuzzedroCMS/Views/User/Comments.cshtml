@@ -1,0 +1,22 @@
+﻿@model LuzzedroCMS.Models.CommentsExtendedWithArticlesViewModel
+@using LuzzedroCMS.WebUI.Properties
+
+@foreach (var commentExtendedWithArticle in Model.CommentExtendedWithArticleViewModel)
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            @commentExtendedWithArticle.CommentExtended.Comment.Date
+            |
+            @commentExtendedWithArticle.CommentExtended.Comment.Content.Substring(0, commentExtendedWithArticle.CommentExtended.Comment.Content.Length > 200 ? 240 : commentExtendedWithArticle.CommentExtended.Comment.Content.Length)
+            @if (commentExtendedWithArticle.CommentExtended.Comment.Content.Length > 200)
+            {
+                <span>...</span>
+            }
+            <p>@Html.ActionLink(Resources.GoToArticle, "Article", new { controller = "Article", action = "Article", url = commentExtendedWithArticle.ArticleExtended.Article.Url, category = commentExtendedWithArticle.ArticleExtended.Category.Name })</p>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Comments", new { controller = "User", action = "Comments", page = x }))
+</div>

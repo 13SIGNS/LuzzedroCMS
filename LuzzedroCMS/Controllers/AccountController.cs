@@ -1,38 +1,165 @@
-﻿using LuzzedroCMS.Abstract;
+﻿using Facebook;
+using Google.Apis.Auth.OAuth2.Mvc;
+using Google.Apis.Oauth2.v2;
+using Google.Apis.Services;
 using LuzzedroCMS.Domain.Abstract;
 using LuzzedroCMS.Domain.Entities;
-using LuzzedroCMS.Domain.Infrastructure;
-using LuzzedroCMS.Infrastructure.Concrete;
+using LuzzedroCMS.Domain.Infrastructure.Abstract;
+using LuzzedroCMS.Infrastructure.Abstract;
+using LuzzedroCMS.Infrastructure.Attributes;
 using LuzzedroCMS.Models;
-using System;
-using System.Configuration;
-using System.Text;
-using System.Web.Mvc;
-using System.Web.Security;
+using LuzzedroCMS.WebUI.Infrastructure.Authorization;
+using LuzzedroCMS.WebUI.Infrastructure.Helpers;
 using LuzzedroCMS.WebUI.Properties;
+using LuzzedroCMS.WebUI.Infrastructure.Static;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+using LuzzedroCMS.WebUI.Infrastructure.Enums;
+using LuzzedroCMS.Domain.Infrastructure.Concrete;
 
 namespace LuzzedroCMS.Controllers
 {
     public class AccountController : Controller
     {
-        private MyMembershipProvider myMembershipProvider;
         private IUserRepository repo;
         private IEmailSender sender;
+        private IConfigurationKeyRepository repoConfig;
+        private IAccount account;
+        private ITextBuilder textBuilder;
+        private ISessionHelper repoSession;
+        private const int SOURCE_FACEBOOK = 1;
+        private const int SOURCE_GOOGLE = 2;
 
-        public AccountController(IUserRepository userRepo, IEmailSender emailSender)
+        public AccountController(
+            IUserRepository userRepo,
+            IEmailSender emailSender,
+            IConfigurationKeyRepository configRepo,
+            IAccount accnt,
+            ITextBuilder txtBuilder,
+            ISessionHelper sessionRepo)
         {
-            myMembershipProvider = new MyMembershipProvider();
             repo = userRepo;
             sender = emailSender;
+            repoConfig = configRepo;
+            account = accnt;
+            textBuilder = txtBuilder;
+            repoSession = sessionRepo;
+            repoSession.Controller = this;
         }
 
+        [HttpGet]
+        [ChildActionOnly]
+        [Authorize(Roles = "Admin, User")]
+        public ViewResult LoggedInfo()
+        {
+            return View(new LoginViewModel
+            {
+                ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
+                ImageName = repoSession.UserPhotoUrl,
+                UserName = repoSession.UserNick
+            });
+        }
+
+        [HttpGet]
         public ActionResult Logout(string returnUrl)
         {
-            Session.Remove("User.Name");
-            Session.Remove("User.PhotoUrl");
-            FormsAuthentication.SignOut();
-            TempData["Info.success"] = Resources.ProperlyLoggedOut;
+            account.Logout(this);
+            this.SetMessage(InfoMessageType.Success, Resources.ProperlyLoggedOut);
             return Redirect(returnUrl ?? Url.Action("Index", "Home"));
+        }
+
+        [HttpGet]
+        public ActionResult LoginByFacebook(string returnUrl)
+        {
+            TempData["returnUrl"] = returnUrl;
+            var fb = new FacebookClient();
+            var uriBuilder = new UriBuilder(Request.Url);
+            uriBuilder.Query = null;
+            uriBuilder.Fragment = null;
+            uriBuilder.Path = Url.Action("FacebookCallback");
+            var loginUrl = fb.GetLoginUrl(new
+            {
+                client_id = repoConfig.Get(ConfigurationKeyStatic.FACEBOOK_APP_ID),
+                client_secret = repoConfig.Get(ConfigurationKeyStatic.FACEBOOK_APP_SECRET),
+                redirect_uri = uriBuilder.Uri.AbsoluteUri,
+                response_type = "code",
+                scope = "email"
+            });
+            return Redirect(loginUrl.AbsoluteUri);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> LoginByGoogle(CancellationToken cancellationToken, string returnUrl)
+        {
+            if (Session["UserRandomId"] == null)
+            {
+                Session["UserRandomId"] = new TextBuilder().GetRandomString(50);
+            }
+
+            var result = await new AuthorizationCodeMvcApp(this,
+                new AppFlowMetadata(
+                    repoConfig.Get(ConfigurationKeyStatic.GOOGLE_APP_ID),
+                    repoConfig.Get(ConfigurationKeyStatic.GOOGLE_APP_SECRET))).AuthorizeAsync(cancellationToken);
+
+            var service = new Oauth2Service(new BaseClientService.Initializer
+            {
+                HttpClientInitializer = result.Credential,
+                ApplicationName = "ASP.NET MVC Sample"
+            });
+
+            if (result.Credential != null)
+            {
+                var userInfo = await service.Userinfo.Get().ExecuteAsync();
+                if (!account.RegisterAndLogByEmail(userInfo.Email, SOURCE_GOOGLE, this))
+                {
+                    this.SetMessage(InfoMessageType.Danger, Resources.ErrorOcurred);
+                }
+                Session["UserRandomId"] = null;
+                return Redirect(returnUrl ?? Url.Action("Index", "Home"));
+            }
+            else
+            {
+                return new RedirectResult(result.RedirectUri);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult FacebookCallback(string code)
+        {
+            string returnUrl = TempData["returnUrl"].ToString();
+            var fb = new FacebookClient();
+            var uriBuilder = new UriBuilder(Request.Url);
+            uriBuilder.Query = null;
+            uriBuilder.Fragment = null;
+            uriBuilder.Path = Url.Action("FacebookCallback");
+            dynamic result = fb.Post("oauth/access_token", new
+            {
+                client_id = repoConfig.Get(ConfigurationKeyStatic.FACEBOOK_APP_ID),
+                client_secret = repoConfig.Get(ConfigurationKeyStatic.FACEBOOK_APP_SECRET),
+                redirect_uri = uriBuilder.Uri.AbsoluteUri,
+                code = code
+            });
+            if (result != null)
+            {
+                dynamic me = fb.Get("me?fields=name,email&access_token=" + result.access_token);
+                string email = me.email;
+
+                if (!account.RegisterAndLogByEmail(me.email, SOURCE_FACEBOOK, this))
+                {
+                    this.SetMessage(InfoMessageType.Danger, Resources.ErrorOcurred);
+                }
+            }
+            return Redirect(returnUrl ?? Url.Action("Index", "Home"));
+        }
+
+        [HttpGet]
+        [RestoreModelStateFromTempData]
+        public ViewResult Log()
+        {
+            ViewBag.Title = Resources.LogIn;
+            return View();
         }
 
         [HttpGet]
@@ -40,9 +167,15 @@ namespace LuzzedroCMS.Controllers
         [RestoreModelStateFromTempData]
         public ViewResult Login()
         {
-            SessionSaver sessionSaver = new SessionSaver(repo);
-            sessionSaver.SetSessionUserData();
-            return View();
+            return View(new LoginViewModel
+            {
+                IsFacebookConnected = Convert.ToBoolean(repoConfig.Get(ConfigurationKeyStatic.IS_FACEBOOK_CONNECTED)),
+                IsGoogleConnected = Convert.ToBoolean(repoConfig.Get(ConfigurationKeyStatic.IS_GOOGLE_CONNECTED)),
+                ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
+                ImageName = repoSession.UserPhotoUrl,
+                UserName = repoSession.UserNick,
+                IsLogged = repoSession.IsLogged
+            });
         }
 
         [HttpPost]
@@ -51,30 +184,16 @@ namespace LuzzedroCMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!SetUserLogged(model.Email, model.Password))
+                if (account.SetUserLogged(model.LoginEmail, model.LoginPassword, repo, this))
                 {
-                    ModelState.AddModelError("", Resources.IncorectoUserNamePassword);
+                    this.SetMessage(InfoMessageType.Success, Resources.ProperlyLogged);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, Resources.IncorectoUserNamePassword);
                 }
             }
             return Redirect(returnUrl ?? Url.Action("Index", "Home"));
-        }
-
-
-
-        public bool SetUserLogged(string email, string password)
-        {
-            if (myMembershipProvider.ValidateUser(email, password))
-            {
-                TempData["Info.success"] = Resources.ProperlyLogged;
-                SessionSaver sessionSaver = new SessionSaver(repo);
-                sessionSaver.SetSessionUserData();
-                FormsAuthentication.SetAuthCookie(email, true);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         [HttpGet]
@@ -82,95 +201,33 @@ namespace LuzzedroCMS.Controllers
         [RestoreModelStateFromTempData]
         public ViewResult Register()
         {
-            ViewBag.Title = Resources.Registration;
-            return View();
+            return View(new RegisterViewModel()
+            {
+                IsLogged = repoSession.IsLogged
+            });
         }
 
         [HttpPost]
         [SetTempDataModelState]
         public ActionResult Register(RegisterViewModel model, string returnUrl)
         {
-            bool result = false;
             if (ModelState.IsValid)
             {
-                User userByEmail = repo.UserByEmail(model.RegisterEmail);
-                User userByNick = repo.UserByNick(model.RegisterNick);
-                if (userByEmail != null || userByNick != null || (model.RegisterPassword != model.RegisterPasswordConfirm))
+                User userByEmail = repo.User(email: model.RegisterEmail);
+                string randomToken = account.GetUniqueToken(textBuilder.GetRandomString(), repo);
+                string action = Url.AbsoluteAction("ConfirmEmail", "Account", new { token = randomToken }, repoConfig);
+                if (account.SetUserTemp(repo, model, randomToken) != null &&
+                    account.SendInviteUserEmail(model, action))
                 {
-                    string info = "";
-                    if (userByEmail != null)
-                    {
-                        info = Resources.UserEmailExists;
-                    }
-                    if (userByNick != null)
-                    {
-                        info += Resources.UserNickExists;
-                    }
-
-                    TempData["Info.danger"] = info;
+                    this.SetMessage(InfoMessageType.Success, Resources.SentLink);
                 }
                 else
                 {
-
-                    TextBuilder textBuilder = new TextBuilder();
-                    string randomToken = GetUniqueToken(textBuilder.GetRandomString());
-                    UserTemp savedUserTemp = repo.SaveUserTemp(new UserTemp
-                    {
-                        Date = DateTime.Now,
-                        Email = model.RegisterEmail,
-                        Nick = model.RegisterNick,
-                        Password = model.RegisterPassword,
-                        Token = randomToken
-                    });
-                    if (savedUserTemp != null)
-                    {
-                        StringBuilder builder = new StringBuilder();
-                        builder.AppendFormat(Resources.ConfirmationRegistration, ConfigurationManager.AppSettings["ApplicationName"]);
-                        sender.IsBodyHtml(true);
-                        sender.AddTo(model.RegisterEmail);
-                        sender.SetSubject(builder.ToString());
-                        builder.Clear();
-                        builder.AppendFormat("<h2 style=\"border-bottom: 2px solid #bbcc28; font-weight: normal; font-family: verdana, arial, sans-serif; color: #515151;\">"+Resources.Hello+"</h2>", model.RegisterNick);
-                        builder.AppendFormat("<p>"+ Resources.ThanksForRegistering + "</p>", ConfigurationManager.AppSettings["ApplicationName"]);
-                        builder.AppendFormat("<p>"+ Resources.ClickToFinish + " <a href=\"{0}\">"+Resources.Here+".</a></p>", Url.Action("ConfirmEmail", "Account", new { token = savedUserTemp.Token }, Request.Url.Scheme));
-                        builder.Append("<p style=\"background: #f6f5f3; border-top:2px solid #d0d0d0;border-bottom:2px solid #d0d0d0; padding: 10px\">"+Resources.IfReceivedMistake + ".</p>");
-                        builder.Append("<p>"+ Resources.Regards + "<br>");
-                        builder.AppendFormat(Resources.Team+"</p>", ConfigurationManager.AppSettings["ApplicationName"]);
-                        sender.SetContent(builder.ToString());
-                        result = sender.SendEmail();
-                        if (result)
-                        {
-                            TempData["Info.success"] = Resources.SentLink;
-                        }
-                        else
-                        {
-                            TempData["Info.danger"] = Resources.SentLinkProblem;
-                        }
-                    }
-                    else
-                    {
-                        TempData["Info.danger"] = Resources.ErrorOcurred;
-                    }
+                    this.SetMessage(InfoMessageType.Danger, Resources.SentLinkProblem);
                 }
-
             }
             return Redirect(returnUrl ?? Url.Action("Index", "Home"));
         }
-
-        private string GetUniqueToken(string token)
-        {
-            TextBuilder textBuilder = new TextBuilder();
-            UserTemp userTemp = repo.UserTempByToken(token);
-            if (userTemp != null)
-            {
-                return GetUniqueToken(textBuilder.GetRandomString());
-            }
-            else
-            {
-                return token;
-            }
-        }
-
 
         [HttpGet]
         public ActionResult ConfirmEmail(string token)
@@ -179,17 +236,21 @@ namespace LuzzedroCMS.Controllers
             User user = repo.TransferUserTemp(token);
             if (user != null)
             {
-                TempData["Info.success"] = Resources.CorrectlySetUp;
-                SetUserLogged(user.Email, user.Password);
+                this.SetMessage(InfoMessageType.Success, Resources.CorrectlySetUp);
+                if (!account.SetUserLogged(user.Email, user.Password, repo, this))
+                {
+                    this.SetMessage(InfoMessageType.Danger, Resources.ErrorOcurred);
+                }
             }
             else
             {
-                TempData["Info.danger"] = Resources.RegisterError;
+                this.SetMessage(InfoMessageType.Danger, Resources.RegisterError);
             }
             return Redirect(Url.Action("Index", "Home"));
         }
 
         [HttpGet]
+        [RestoreModelStateFromTempData]
         public ViewResult Remind()
         {
             ViewBag.Title = Resources.EnterEmailReset;
@@ -197,92 +258,82 @@ namespace LuzzedroCMS.Controllers
         }
 
         [HttpPost]
+        [SetTempDataModelState]
         public ActionResult Remind(RemindViewModel model, string returnUrl)
         {
-
-            bool result = false;
             if (ModelState.IsValid)
             {
-                TextBuilder textBuilder = new TextBuilder();
-                try
+                User user = repo.User(email: model.Email);
+                string randomToken = textBuilder.GetRandomString(50);
+                UserToken userToken = account.GetNewUserToken(repo, user, randomToken);
+                string action = Url.AbsoluteAction("Reset", "Account", new { token = randomToken }, repoConfig);
+                if (userToken != null)
                 {
-                    User user = repo.UserByEmail(model.Email);
-                    string randomToken = textBuilder.GetRandomString(50);
-                    UserToken userToken = repo.SaveUserToken(new UserToken
+                    if (account.SendRemindUserEmail(model, action, user))
                     {
-                        ExpiryDate = DateTime.Now.AddHours(3),
-                        UserID = user.UserID,
-                        Token = randomToken
-                    });
-                    if (userToken != null)
+                        this.SetMessage(InfoMessageType.Success, Resources.SentLinkFurther);
+                    }
+                    else
                     {
-                        StringBuilder builder = new StringBuilder();
-                        builder.AppendFormat(Resources.ResettingPassword, ConfigurationManager.AppSettings["ApplicationName"]);
-                        sender.IsBodyHtml(true);
-                        sender.AddTo(model.Email);
-                        sender.SetSubject(builder.ToString());
-                        builder.Clear();
-                        builder.AppendFormat("<h2 style=\"border-bottom: 2px solid #bbcc28; font-weight: normal; font-family: verdana, arial, sans-serif; color: #515151;\">" + Resources.Hello + "</h2>", user.Nick);
-                        builder.AppendFormat("<p>"+ Resources.ToResetPassword+" <a href=\"{0}\">"+Resources.Here+".</a></p>", Url.Action("Reset", "Account", new { token = randomToken }, Request.Url.Scheme));
-                        builder.Append("<p style=\"background: #f6f5f3; border-top:2px solid #d0d0d0;border-bottom:2px solid #d0d0d0; padding: 10px\">"+Resources.IfReceivedMistake + "</p>");
-                        builder.Append("<p>"+Resources.Regards+"<br>");
-                        builder.AppendFormat(Resources.Team+"</p>", ConfigurationManager.AppSettings["ApplicationName"]);
-                        sender.SetContent(builder.ToString());
-                        result = sender.SendEmail();
-                        if (result)
-                        {
-                            TempData["Info.success"] = Resources.SentLinkFurther;
-                        }
-                        else
-                        {
-                            TempData["Info.danger"] = Resources.SentLinkProblem;
-                        }
+                        this.SetMessage(InfoMessageType.Danger, Resources.SentLinkProblem);
                     }
                 }
-                catch
+                else
                 {
-                    TempData["Info.danger"] = Resources.NoUserEmail;
+                    this.SetMessage(InfoMessageType.Danger, Resources.NoUserEmail);
                 }
             }
             return Redirect(returnUrl ?? Url.Action("Index", "Home"));
         }
 
         [HttpGet]
-        public ViewResult Reset(string token)
+        [RestoreModelStateFromTempData]
+        public ActionResult Reset(string token)
         {
-            ViewBag.Title = Resources.PasswordReset;
-            return View();
+            ViewBag.Title = Resources.InventPassword;
+            UserToken userToken = repo.UserTokenByToken(token);
+            User user = repo.User(token: token);
+            if (user == null)
+            {
+                this.SetMessage(InfoMessageType.Danger, Resources.CodeNotExists);
+                return Redirect(Url.Action("Index", "Home"));
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpPost]
-        public ActionResult Reset(ResetViewModel resetViewModel, string token, string returnUrl)
+        [SetTempDataModelState]
+        public ActionResult Reset(ResetPasswordViewModel resetPasswordViewModel, string token, string returnUrl)
         {
             if (ModelState.IsValid)
             {
                 UserToken userToken = repo.UserTokenByToken(token);
-                User user = repo.UserByToken(token);
+                User user = repo.User(token: token);
                 if (user != null)
                 {
-                    if (DateTime.Now > userToken.ExpiryDate)
+                    if (account.IsTokenValid(userToken.ExpiryDate))
                     {
-                        user.Password = resetViewModel.Password;
+                        user.Password = resetPasswordViewModel.Password;
                         repo.Save(user);
                         repo.RemoveUserToken(token);
-                        TempData["Info.success"] = Resources.PasswordChanged;
+                        this.SetMessage(InfoMessageType.Success, Resources.PasswordChanged);
                     }
                     else
                     {
-                        TempData["Info.danger"] = Resources.CodeExpired;
+                        this.SetMessage(InfoMessageType.Danger, Resources.CodeExpired);
                     }
                 }
                 else
                 {
-                    TempData["Info.danger"] = Resources.CodeNotExists;
+                    this.SetMessage(InfoMessageType.Danger, Resources.CodeNotExists);
                 }
             }
             else
             {
-                TempData["Info.danger"] = Resources.PasswordsDontMatch;
+                this.SetMessage(InfoMessageType.Danger, Resources.PasswordsDontMatch);
                 return Redirect(Url.Action("Reset", "Account", new { token = Request.QueryString["token"] }));
             }
             return Redirect(returnUrl ?? Url.Action("Index", "Home"));

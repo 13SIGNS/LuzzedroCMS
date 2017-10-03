@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using LuzzedroCMS.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace LuzzedroCMS.Domain.Concrete
 {
@@ -11,48 +12,108 @@ namespace LuzzedroCMS.Domain.Concrete
     {
         private EFDbContext context = new EFDbContext();
 
-        public Tag TagByName(string name)
+        public Tag Tag(
+            bool enabled = true,
+            string name = null,
+            int tagID = 0)
         {
-            return context.Tags.Where(p => p.Name == name).FirstOrDefault();
-        }
-        public Tag TagByID(int tagID)
-        {
-            return context.Tags.Find(tagID);
-        }
+            IQueryable<Tag> tags = context.Tags;
 
-        public IQueryable<Tag> TagsEnabled
-        {
-            get
+            if (enabled)
             {
-                return context.Tags.Where(p => p.Status == 1);
+                tags = tags.Where(p => p.Status == 1);
             }
+
+            if (name != null)
+            {
+                tags = tags.Where(p => p.Name == name);
+            }
+
+            if (tagID != 0)
+            {
+                tags = tags.Where(p => p.TagID == tagID);
+            }
+
+            return tags.FirstOrDefault();
         }
 
-        public IDictionary<string, int> TagsEnabledByAssociate
+        public IList<Tag> Tags(
+            bool enabled = true,
+            int page = 1,
+            int take = 0,
+            int articleID = 0,
+            Expression<Func<Tag, bool>> orderBy = null,
+            Expression<Func<Tag, bool>> orderByDescending = null
+            )
         {
-            get
+            IQueryable<Tag> tags = context.Tags;
+
+            if (enabled)
             {
-                IDictionary<string, int> tags = new Dictionary<string, int>();
-                IQueryable<int> tagIDs = context.ArticleTagAssociates.Select(x => x.TagID);
-                foreach (var tagID in tagIDs)
+                tags = tags.Where(p => p.Status == 1);
+            }
+
+            if (articleID != 0)
+            {
+                var tagIDs = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID).Select(x => x.TagID).ToList();
+                if (tagIDs != null)
                 {
-                    string tagName = context.Tags.Where(x => x.TagID == tagID).Select(x => x.Name).FirstOrDefault();
-                    int tagCount = context.ArticleTagAssociates.Where(x => x.TagID== tagID).Select(x => x.TagID).Count();
-                    if (!tags.ContainsKey(tagName))
+                    tags = tags.Where(p => tagIDs.Contains(p.TagID));
+                }
+            }
+
+            if (orderByDescending != null)
+            {
+                tags = tags.OrderByDescending(orderByDescending);
+            }
+
+            if (orderBy != null)
+            {
+                tags = tags.OrderBy(orderBy);
+            }
+
+            if (orderBy == null && orderByDescending == null)
+            {
+                tags = tags.OrderByDescending(p => p.TagID);
+            }
+
+            if (page != 0 && take != 0)
+            {
+                tags = tags.Skip((page - 1) * take);
+            }
+
+            if (take != 0)
+            {
+                tags = tags.Take(take);
+            }
+
+            return tags.ToList();
+        }
+
+        public IDictionary<string, int> TagsCounted(
+            bool enabled = true,
+            int page = 1,
+            int take = 0,
+            int articleID = 0,
+            Expression<Func<Tag, bool>> orderBy = null,
+            Expression<Func<Tag, bool>> orderByDescending = null)
+        {
+            IList<Tag> tags = Tags(enabled, page, take, articleID, orderBy, orderByDescending);
+            IDictionary<string, int> tagsCounted = new Dictionary<string, int>();
+
+            foreach (var tag in tags)
+            {
+                string tagName = tag.Name;
+                int tagCount = context.ArticleTagAssociates.Where(x => x.TagID == tag.TagID).Select(x => x.TagID).Count();
+                if (tagCount != 0)
+                {
+                    if (!tagsCounted.ContainsKey(tagName))
                     {
-                        tags.Add(tagName, tagCount);
+                        tagsCounted.Add(tagName, tagCount);
                     }
                 }
-                return tags;
             }
-        }
-
-        public IQueryable<Tag> TagsTotal
-        {
-            get
-            {
-                return context.Tags;
-            }
+            return tagsCounted;
         }
 
         public void Remove(int tagID)
@@ -95,32 +156,6 @@ namespace LuzzedroCMS.Domain.Concrete
                 }
             }
             context.SaveChanges();
-        }
-
-        public IQueryable<Tag> TagsEnabledByArticleID(int articleID)
-        {
-            IQueryable<Tag> tags = null;
-            IQueryable<ArticleTagAssociate> articleTagAssociates = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID && p.Status == 1);
-            foreach (var articleTagAssociate in articleTagAssociates)
-            {
-                tags.AsEnumerable().Concat(context.Tags.Where(p => p.TagID == articleTagAssociate.TagID && p.Status == 1));
-            }
-            return tags;
-        }
-
-        public IQueryable<int> TagIDsEnabledByArticleID(int articleID)
-        {
-            List<int> tagsList = new List<int>();
-            IQueryable<ArticleTagAssociate> articleTagAssociates = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID && p.Status == 1);
-            foreach (var articleTagAssociate in articleTagAssociates)
-            {
-                IQueryable<Tag> tags = context.Tags.Where(p => p.TagID == articleTagAssociate.TagID && p.Status == 1);
-                foreach (Tag tag in tags)
-                {
-                    tagsList.Add(tag.TagID);
-                }
-            }
-            return tagsList.AsQueryable();
         }
     }
 }

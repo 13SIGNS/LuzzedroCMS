@@ -1,9 +1,6 @@
 ﻿using LuzzedroCMS.Domain.Abstract;
 using LuzzedroCMS.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace LuzzedroCMS.Controllers
@@ -23,7 +20,7 @@ namespace LuzzedroCMS.Controllers
         [ChildActionOnly]
         public ActionResult TagCloud()
         {
-            IDictionary<string, int> tags = repoTag.TagsEnabledByAssociate;
+            IDictionary<string, int> tags = repoTag.TagsCounted();
             TagCloudViewModel tagCloudViewModel = new TagCloudViewModel
             {
                 Tags = tags

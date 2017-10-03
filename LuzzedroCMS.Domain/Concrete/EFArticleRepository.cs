@@ -1,11 +1,10 @@
 ﻿using LuzzedroCMS.Domain.Abstract;
+using LuzzedroCMS.Domain.Entities;
+using LuzzedroCMS.Domain.Infrastructure.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using LuzzedroCMS.Domain.Entities;
-using LuzzedroCMS.Domain.Infrastructure;
-using System.IO;
+using System.Linq.Expressions;
 
 namespace LuzzedroCMS.Domain.Concrete
 {
@@ -14,122 +13,199 @@ namespace LuzzedroCMS.Domain.Concrete
         private EFDbContext context = new EFDbContext();
         private TextBuilder textBuilder = new TextBuilder();
 
-        public string GetUniqueArticleTitle(string title)
+        public Article Article(
+            bool enabled = true,
+            bool actual = true,
+            string url = null,
+            int commentID = 0,
+            int articleID = 0)
         {
-            int dbEntry = context.Articles.Where(p => p.Url == title).Select(p => p.ArticleID).FirstOrDefault();
-            if (dbEntry != 0)
+            IQueryable<Article> articles = context.Articles;
+
+            if (enabled)
             {
-                return GetUniqueArticleTitle(textBuilder.RandomizeText(title));
+                articles = articles.Where(p => p.Status == 1);
+            }
+
+            if (actual)
+            {
+                articles = articles.Where(p => p.DatePub < DateTime.Now && p.DateExp > DateTime.Now);
+            }
+
+            if (url != null)
+            {
+                articles = articles.Where(p => p.Url == url);
+            }
+
+            if (commentID != 0)
+            {
+                Comment comment = context.Comments.Find(commentID);
+                if (comment != null)
+                {
+                    articles = articles.Where(p => p.ArticleID == comment.ArticleID);
+                }
+            }
+
+            if (articleID != 0)
+            {
+                articles = articles.Where(p => p.ArticleID == articleID);
+            }
+
+            return articles.FirstOrDefault();
+        }
+
+        public ArticleExtended ArticleExtended(
+            bool enabled = true,
+            bool actual = true,
+            string url = null,
+            int commentID = 0,
+            int articleID = 0,
+            Article article = null)
+        {
+            Article articleSelected = article != null ? article : Article(enabled, actual, url, commentID, articleID);
+            IList<CommentExtended> commentsExtended = new List<CommentExtended>();
+            IList<Tag> tags = new List<Tag>();
+            Category category = new Category();
+
+            var tagIDs = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID).Select(x => x.TagID).ToList();
+
+            if (tagIDs.Any())
+            {
+                tags = context.Tags.Where(p => tagIDs.Contains(p.TagID)).ToList();
+            }
+
+            if (articleSelected != null)
+            {
+                category = context.Categories.FirstOrDefault(p => p.CategoryID == articleSelected.CategoryID);
+                foreach (var comment in context.Comments.Where(p => p.ArticleID == articleSelected.ArticleID).ToList())
+                {
+                    commentsExtended.Add(new CommentExtended()
+                    {
+                        Comment = comment,
+                        User = context.Users.FirstOrDefault(p => p.UserID == comment.UserID)
+                    });
+                }
+                return new ArticleExtended()
+                {
+                    Article = articleSelected,
+                    CommentsExtended = commentsExtended,
+                    User = context.Users.FirstOrDefault(p => p.UserID == articleSelected.UserID),
+                    Category = category,
+                    Tags = tags
+                };
             }
             else
             {
-                return title;
+                return null;
             }
         }
 
-        public string GetUniqueImageTitle(string title)
+        public IList<Article> Articles(
+            bool enabled = true,
+            bool actual = true,
+            int page = 0,
+            int take = 0,
+            int categoryID = 0,
+            string tagName = null,
+            int userID = 0,
+            int bookmarkUserID = 0,
+            string key = null,
+            Expression<Func<Article, bool>> orderBy = null,
+            Expression<Func<Article, bool>> orderByDescending = null)
         {
-            int dbEntry = context.Articles.Where(p => p.ImageName == title).Select(p => p.ArticleID).FirstOrDefault();
-            if (dbEntry != 0)
+            IQueryable<Article> articles = context.Articles;
+
+            if (enabled)
             {
-                string imageName = Path.GetFileNameWithoutExtension("~/Content/ArticleImage/" + title);
-                string ext = Path.GetExtension("~/Content/ArticleImage/" + title);
-                return GetUniqueImageTitle(textBuilder.RandomizeText(imageName) + ext);
+                articles = articles.Where(p => p.Status == 1);
             }
-            else
+
+            if (actual)
             {
-                return title;
+                articles = articles.Where(p => p.DatePub < DateTime.Now && p.DateExp > DateTime.Now);
             }
-        }
 
-        public IQueryable<Article> ArticlesEnabled
-        {
-            get
+            if (categoryID != 0)
             {
-                return context.Articles.Where(p => p.Status == 1);
+                articles = articles.Where(p => p.CategoryID == categoryID);
             }
-        }
 
-        public IQueryable<Article> Articles
-        {
-            get
+            if (tagName != null)
             {
-                return context.Articles;
-            }
-        }
-
-        public IQueryable<Article> ArticlesEnabledActual
-        {
-            get
-            {
-                return context.Articles.Where(p => p.Status == 1 && p.DatePub < DateTime.Now && p.DateExp > DateTime.Now);
-            }
-        }
-
-        public IQueryable<Article> ArticlesTotal
-        {
-            get
-            {
-                return context.Articles;
-            }
-        }
-
-        public Article ArticleByUrl(string url)
-        {
-            return context.Articles.Where(p => p.Url == url).FirstOrDefault();
-        }
-
-        public IQueryable<Article> ArticlesEnabledActualByCategoryID(int categoryID)
-        {
-            return context.Articles.Where(p => p.CategoryID == categoryID && p.Status == 1);
-        }
-
-        public IQueryable<Article> ArticlesEnabledActualByTagName(string tagName)
-        {
-            Tag tag = context.Tags.Where(x => x.Name == tagName).FirstOrDefault();
-            IQueryable<int> articleIDs = context.ArticleTagAssociates.Where(p => p.TagID == tag.TagID).Select(p => p.ArticleID);
-            IList<Article> articles = new List<Article>();
-            foreach (var articleID in articleIDs)
-            {
-                Article article = context.Articles.Find(articleID);
-                if (article != null)
+                Tag tag = context.Tags.Where(x => x.Name == tagName).FirstOrDefault();
+                if (tag != null)
                 {
-                    articles.Add(context.Articles.Find(articleID));
+                    var articleByTagIDs = context.ArticleTagAssociates.Where(p => p.TagID == tag.TagID).Select(p => p.ArticleID).ToList();
+                    if (articleByTagIDs.Any())
+                    {
+                        articles = articles.Where(p => articleByTagIDs.Contains(p.ArticleID));
+                    }
                 }
             }
-            return articles.AsQueryable();
-        }
 
-        public IQueryable<Article> ArticlesEnabledActualByKey(string key)
-        {
-            return context.Articles.Where(p => p.Status == 1 && p.DatePub < DateTime.Now && p.DateExp > DateTime.Now && (p.Content.Contains(key) || p.Title.Contains(key)));
-        }
-
-
-        public IQueryable<Article> ArticlesEnabledActualByUserID(int userID)
-        {
-            return context.Articles.Where(p => p.UserID == userID && p.Status == 1);
-        }
-
-        public IQueryable<Article> ArticlesEnabledActualByBookmark(int userID)
-        {
-            IQueryable<BookmarkUserArticleAssociate> bookmarkUserArticleAssociates = context.BookmarkUserArticleAssociates.Where(p => p.UserID == userID);
-            IList<Article> articles = new List<Article>();
-            foreach (var bookmarkUserArticleAssociate in bookmarkUserArticleAssociates)
+            if (bookmarkUserID != 0)
             {
-                Article article = context.Articles.Find(bookmarkUserArticleAssociate.ArticleID);
-                if (article != null)
+                var articleByBookmarkIDs = context.BookmarkUserArticleAssociates.Where(p => p.UserID == bookmarkUserID).Select(p => p.ArticleID).ToList();
+                if (articleByBookmarkIDs.Any())
                 {
-                    articles.Add(context.Articles.Find(bookmarkUserArticleAssociate.ArticleID));
+                    articles = articles.Where(p => articleByBookmarkIDs.Contains(p.ArticleID));
                 }
             }
-            return articles.AsQueryable();
+
+            if (key != null)
+            {
+                articles = articles.Where(p => p.Content.Contains(key) || p.Title.Contains(key));
+            }
+
+            if (orderByDescending != null)
+            {
+                articles = articles.OrderByDescending(orderByDescending);
+            }
+
+            if (orderBy != null)
+            {
+                articles = articles.OrderBy(orderBy);
+            }
+
+            if (orderBy == null && orderByDescending == null)
+            {
+                articles = articles.OrderByDescending(p => p.DateAdd);
+            }
+
+            if (page != 0 && take != 0)
+            {
+                articles = articles.Skip((page - 1) * take);
+            }
+
+            if (take != 0)
+            {
+                articles = articles.Take(take);
+            }
+
+            return articles.ToList();
         }
 
-        public Article ArticleEnabledActualByComment(int commentID)
+        public IList<ArticleExtended> ArticlesExtended(
+            bool enabled = true,
+            bool actual = true,
+            int page = 1,
+            int take = 0,
+            int categoryID = 0,
+            string tagName = null,
+            int userID = 0,
+            int bookmarkUserID = 0,
+            string key = null,
+            Expression<Func<Article, bool>> orderBy = null,
+            Expression<Func<Article, bool>> orderByDescending = null,
+            IList<Article> articles = null)
         {
-            Comment comment = context.Comments.Find(commentID);
-            return context.Articles.Find(comment.ArticleID);
+            IList<Article> articlesSelected = articles != null ? articles : Articles(enabled, actual, page, take, categoryID, tagName, userID, bookmarkUserID, key, orderBy, orderByDescending);
+            IList<ArticleExtended> articlesExtended = new List<ArticleExtended>();
+            foreach (Article article in articlesSelected)
+            {
+                articlesExtended.Add(ArticleExtended(article: article));
+            }
+            return articlesExtended;
         }
 
         public void Remove(int articleID)
@@ -143,7 +219,7 @@ namespace LuzzedroCMS.Domain.Concrete
             IQueryable<BookmarkUserArticleAssociate> bookmarkUserArticleAssociates = context.BookmarkUserArticleAssociates.Where(p => p.ArticleID == articleID);
             if (bookmarkUserArticleAssociates.Any())
             {
-                foreach (var bookmarkUserArticleAssociate in bookmarkUserArticleAssociates)
+                foreach (var bookmarkUserArticleAssociate in bookmarkUserArticleAssociates.ToList())
                 {
                     bookmarkUserArticleAssociate.Status = 0;
                 }
@@ -151,7 +227,7 @@ namespace LuzzedroCMS.Domain.Concrete
             IQueryable<ArticleTagAssociate> articleTagAssociates = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID);
             if (articleTagAssociates.Any())
             {
-                foreach (var articleTagAssociate in articleTagAssociates)
+                foreach (var articleTagAssociate in articleTagAssociates.ToList())
                 {
                     articleTagAssociate.Status = 0;
                 }
@@ -159,7 +235,7 @@ namespace LuzzedroCMS.Domain.Concrete
             IQueryable<Comment> comments = context.Comments.Where(p => p.ArticleID == articleID);
             if (comments.Any())
             {
-                foreach (var comment in comments)
+                foreach (var comment in comments.ToList())
                 {
                     comment.Status = 0;
                 }
@@ -175,7 +251,7 @@ namespace LuzzedroCMS.Domain.Concrete
                 context.Articles.Remove(article);
             }
 
-            IQueryable<BookmarkUserArticleAssociate> bookmarkUserArticleAssociates = context.BookmarkUserArticleAssociates.Where(p => p.ArticleID == articleID);
+            IList<BookmarkUserArticleAssociate> bookmarkUserArticleAssociates = context.BookmarkUserArticleAssociates.Where(p => p.ArticleID == articleID).ToList();
             if (bookmarkUserArticleAssociates.Any())
             {
                 foreach (var bookmarkUserArticleAssociate in bookmarkUserArticleAssociates)
@@ -183,7 +259,7 @@ namespace LuzzedroCMS.Domain.Concrete
                     context.BookmarkUserArticleAssociates.Remove(bookmarkUserArticleAssociate);
                 }
             }
-            IQueryable<ArticleTagAssociate> articleTagAssociates = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID);
+            IList<ArticleTagAssociate> articleTagAssociates = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID).ToList();
             if (articleTagAssociates.Any())
             {
                 foreach (var articleTagAssociate in articleTagAssociates)
@@ -192,7 +268,7 @@ namespace LuzzedroCMS.Domain.Concrete
                 }
             }
 
-            IQueryable<Comment> comments = context.Comments.Where(p => p.ArticleID == articleID);
+            IList<Comment> comments = context.Comments.Where(p => p.ArticleID == articleID).ToList();
             if (comments.Any())
             {
                 foreach (var comment in comments)
@@ -234,7 +310,7 @@ namespace LuzzedroCMS.Domain.Concrete
                     if (dbEntry.Status == 0 && article.Status == 1)
                     {
 
-                        IQueryable<BookmarkUserArticleAssociate> bookmarkUserArticleAssociates = context.BookmarkUserArticleAssociates.Where(p => p.ArticleID == article.ArticleID);
+                        IList<BookmarkUserArticleAssociate> bookmarkUserArticleAssociates = context.BookmarkUserArticleAssociates.Where(p => p.ArticleID == article.ArticleID).ToList();
                         if (bookmarkUserArticleAssociates.Any())
                         {
                             foreach (var bookmarkUserArticleAssociate in bookmarkUserArticleAssociates)
@@ -242,7 +318,7 @@ namespace LuzzedroCMS.Domain.Concrete
                                 bookmarkUserArticleAssociate.Status = 1;
                             }
                         }
-                        IQueryable<ArticleTagAssociate> articleTagAssociates = context.ArticleTagAssociates.Where(p => p.ArticleID == article.ArticleID);
+                        IList<ArticleTagAssociate> articleTagAssociates = context.ArticleTagAssociates.Where(p => p.ArticleID == article.ArticleID).ToList();
                         if (articleTagAssociates.Any())
                         {
                             foreach (var articleTagAssociate in articleTagAssociates)
@@ -250,7 +326,7 @@ namespace LuzzedroCMS.Domain.Concrete
                                 articleTagAssociate.Status = 1;
                             }
                         }
-                        IQueryable<Comment> comments = context.Comments.Where(p => p.ArticleID == article.ArticleID);
+                        IList<Comment> comments = context.Comments.Where(p => p.ArticleID == article.ArticleID).ToList();
                         if (comments.Any())
                         {
                             foreach (var comment in comments)
@@ -274,34 +350,33 @@ namespace LuzzedroCMS.Domain.Concrete
                     dbEntry.Status = 1;
                 }
             }
-            try
+            context.SaveChanges();
+            return dbEntry.ArticleID;
+        }
+
+        public BookmarkUserArticleAssociate BookmarkUserArticleAssociate(
+            int articleID = 0,
+            int userID = 0)
+        {
+            IQueryable<BookmarkUserArticleAssociate> bookmarkUserArticleAssociates = context.BookmarkUserArticleAssociates;
+
+            if (articleID != 0)
             {
-                context.SaveChanges();
-                return dbEntry.ArticleID;
+                bookmarkUserArticleAssociates = bookmarkUserArticleAssociates.Where(p => p.ArticleID == articleID);
             }
-            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+
+            if (userID != 0)
             {
-                Exception raise = dbEx;
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
-                {
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                    {
-                        string message = string.Format("{0}:{1}",
-                            validationErrors.Entry.Entity.ToString(),
-                            validationError.ErrorMessage);
-                        // raise a new exception nesting
-                        // the current instance as InnerException
-                        raise = new InvalidOperationException(message, raise);
-                    }
-                }
-                throw raise;
+                bookmarkUserArticleAssociates = bookmarkUserArticleAssociates.Where(p => p.UserID == userID);
             }
+
+            return bookmarkUserArticleAssociates.FirstOrDefault();
         }
 
 
         public void SaveBookmark(int articleID, int userID)
         {
-            IQueryable<BookmarkUserArticleAssociate> bookmarkUserArticleAssociates = context.BookmarkUserArticleAssociates.Where(p => p.ArticleID == articleID && p.UserID == userID);
+            IList<BookmarkUserArticleAssociate> bookmarkUserArticleAssociates = context.BookmarkUserArticleAssociates.Where(p => p.ArticleID == articleID && p.UserID == userID).ToList();
             if (!bookmarkUserArticleAssociates.Any())
             {
                 context.BookmarkUserArticleAssociates.Add(new BookmarkUserArticleAssociate
@@ -317,7 +392,7 @@ namespace LuzzedroCMS.Domain.Concrete
 
         public void RemoveBookmark(int articleID, int userID)
         {
-            IQueryable<BookmarkUserArticleAssociate> bookmarkUserArticleAssociates = context.BookmarkUserArticleAssociates.Where(p => p.ArticleID == articleID && p.UserID == userID);
+            IList<BookmarkUserArticleAssociate> bookmarkUserArticleAssociates = context.BookmarkUserArticleAssociates.Where(p => p.ArticleID == articleID && p.UserID == userID).ToList();
             if (bookmarkUserArticleAssociates.Any())
             {
                 foreach (var bookmarkUserArticleAssociate in bookmarkUserArticleAssociates)
@@ -344,7 +419,7 @@ namespace LuzzedroCMS.Domain.Concrete
 
         public void RemoveTagFromArticle(int articleID, int tagID)
         {
-            IQueryable<ArticleTagAssociate> articleTagAssociates = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID && p.TagID == tagID);
+            IList<ArticleTagAssociate> articleTagAssociates = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID && p.TagID == tagID).ToList();
             if (articleTagAssociates.Any())
             {
                 foreach (var articleTagAssociate in articleTagAssociates)
@@ -361,6 +436,34 @@ namespace LuzzedroCMS.Domain.Concrete
             {
                 article.Status = 1;
                 context.SaveChanges();
+            }
+        }
+
+        public string GetUniqueArticleTitle(string title)
+        {
+            Article dbEntry = context.Articles.FirstOrDefault(p => p.Url == title);
+            if (dbEntry != null)
+            {
+                return GetUniqueArticleTitle(textBuilder.RandomizeText(title));
+            }
+            else
+            {
+                return title;
+            }
+        }
+
+        public string GetUniqueImageTitle(string title)
+        {
+            Article dbEntry = context.Articles.FirstOrDefault(p => p.ImageName == title);
+            if (dbEntry != null)
+            {
+                string imageName = title.Substring(0, title.Length - 4);
+                string ext = title.Substring(title.Length - 4);
+                return GetUniqueImageTitle(textBuilder.RandomizeText(imageName) + ext);
+            }
+            else
+            {
+                return title;
             }
         }
     }

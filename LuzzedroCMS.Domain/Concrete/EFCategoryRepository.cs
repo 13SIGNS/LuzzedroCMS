@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using LuzzedroCMS.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace LuzzedroCMS.Domain.Concrete
 {
@@ -11,33 +12,79 @@ namespace LuzzedroCMS.Domain.Concrete
     {
         private EFDbContext context = new EFDbContext();
 
-        public Category CategoryByID(int categoryID)
+        public Category Category(
+            bool enabled = true,
+            int categoryID = 0,
+            string categoryName = null)
         {
-            return context.Categories.Find(categoryID);
-        }
+            IQueryable<Category> categories = context.Categories;
 
-        public Category CategoryByName(string categoryName)
-        {
-            return context.Categories.Where(x => x.Name ==  categoryName).FirstOrDefault();
-        }
-
-        public IQueryable<Category> CategoriesTotal
-        {
-            get
+            if (enabled)
             {
-                return context.Categories.OrderBy(x => x.Order);
+                categories = categories.Where(p => p.Status == 1);
             }
-        }
 
-        public IQueryable<Category> CategoriesEnabled
-        {
-            get
+            if (categoryID != 0)
             {
-                return context.Categories.Where(p => p.Status == 1).OrderBy(x => x.Order); ;
+                categories = categories.Where(p => p.CategoryID == categoryID);
             }
+
+            if (categoryName != null)
+            {
+                categories = categories.Where(p => p.Name == categoryName);
+            }
+
+            return categories.FirstOrDefault();
         }
 
-        
+        public IList<Category> Categories(
+            bool enabled = true,
+            int page = 1,
+            int take = 0,
+            string categoryName = null,
+            Expression<Func<Category, bool>> orderBy = null,
+            Expression<Func<Category, bool>> orderByDescending = null)
+        {
+            IQueryable<Category> categories = context.Categories;
+
+            if (enabled)
+            {
+                categories = categories.Where(p => p.Status == 1);
+            }
+
+            if (categoryName != null)
+            {
+                categories = categories.Where(p => p.Name == categoryName);
+            }
+
+            if (orderByDescending != null)
+            {
+                categories = categories.OrderByDescending(orderByDescending);
+            }
+
+            if (orderBy != null)
+            {
+                categories = categories.OrderBy(orderBy);
+            }
+
+            if (orderBy == null && orderByDescending == null)
+            {
+                categories = categories.OrderByDescending(p => p.Order);
+            }
+
+            if (page != 0 && take != 0)
+            {
+                categories = categories.Skip((page - 1) * take);
+            }
+
+            if (take != 0)
+            {
+                categories = categories.Take(take);
+            }
+
+
+            return categories.ToList();
+        }
 
         public void Remove(int categoryID)
         {
@@ -45,9 +92,9 @@ namespace LuzzedroCMS.Domain.Concrete
             if (dbEntry != null)
             {
                 dbEntry.Status = 0;
-                
+
             }
-            IQueryable<ArticleCategoryAssociate> dbEntryAssociates = context.ArticleCategoryAssociates.Where(p => p.CategoryID == categoryID);
+            IList<ArticleCategoryAssociate> dbEntryAssociates = context.ArticleCategoryAssociates.Where(p => p.CategoryID == categoryID).ToList();
             foreach (var dbEntryAssociate in dbEntryAssociates)
             {
                 if (dbEntryAssociate != null)
@@ -65,7 +112,7 @@ namespace LuzzedroCMS.Domain.Concrete
             {
                 context.Categories.Remove(dbEntry);
             }
-            IQueryable<ArticleCategoryAssociate> dbEntryAssociates = context.ArticleCategoryAssociates.Where(p => p.CategoryID == categoryID);
+            IList<ArticleCategoryAssociate> dbEntryAssociates = context.ArticleCategoryAssociates.Where(p => p.CategoryID == categoryID).ToList();
             foreach (var dbEntryAssociate in dbEntryAssociates)
             {
                 if (dbEntryAssociate != null)
