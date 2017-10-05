@@ -12,7 +12,7 @@
 - MSSQL, Entity Framework
 - Ninject
 
-# Demo
+# Live Demo
 
 [LuzzedroCMS Demo](http://luzzedrocms.13signs.pl)
 
@@ -31,11 +31,6 @@
 - has responsive design
 - fits to all modern browsers and devices
 - is SEO improved 
-
-## Screenshots
-<h4>Main view:</h4>
-![Main view](http://signs.civ.pl/demos/screenshots/lcms_all.PNG)
-<hr>
 
 ## Licence
 This project is licensed under the GNU GPL 3.0
