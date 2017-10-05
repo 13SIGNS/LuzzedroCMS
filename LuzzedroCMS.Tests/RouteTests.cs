@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Routing;
 using Moq;
 using System.Reflection;
+using LuzzedroCMS.WebUI.Properties;
 
 namespace LuzzedroCMS.Tests
 {
@@ -93,31 +94,31 @@ namespace LuzzedroCMS.Tests
         [TestMethod]
         public void TestIncomingRoutesTags()
         {
-            TestRouteMatch("~/Tags/Tagexample", "Article", "ArticlesByTag");
+            TestRouteMatch("~/" + Resources.RoutingTags + "/Tagexample", "Article", "ArticlesByTag");
         }
 
         [TestMethod]
         public void TestIncomingRoutesSearch()
         {
-            TestRouteMatch("~/Search", "Search", "Result");
+            TestRouteMatch("~/" + Resources.RoutingSearch + "/Key", "Search", "Result");
         }
 
         [TestMethod]
         public void TestIncomingRoutesEditAccount()
         {
-            TestRouteMatch("~/Account", "User", "EditAccount");
+            TestRouteMatch("~/" + Resources.RoutingAccount, "User", "EditAccount");
         }
 
         [TestMethod]
         public void TestIncomingRoutesBookmarks()
         {
-            TestRouteMatch("~/Favs", "User", "Bookmarks");
+            TestRouteMatch("~/" + Resources.RoutingFavs, "User", "Bookmarks");
         }
 
         [TestMethod]
         public void TestIncomingRoutesComments()
         {
-            TestRouteMatch("~/Comments", "User", "Comments");
+            TestRouteMatch("~/" + Resources.RoutingComments, "User", "Comments");
         }
 
         [TestMethod]
