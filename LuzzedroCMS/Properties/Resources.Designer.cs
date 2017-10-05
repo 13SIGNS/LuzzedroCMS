@@ -1312,6 +1312,69 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account.
+        /// </summary>
+        public static string RoutingAccount {
+            get {
+                return ResourceManager.GetString("RoutingAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comments.
+        /// </summary>
+        public static string RoutingComments {
+            get {
+                return ResourceManager.GetString("RoutingComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Favs.
+        /// </summary>
+        public static string RoutingFavs {
+            get {
+                return ResourceManager.GetString("RoutingFavs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        public static string RoutingLogout {
+            get {
+                return ResourceManager.GetString("RoutingLogout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to page.
+        /// </summary>
+        public static string RoutingPage {
+            get {
+                return ResourceManager.GetString("RoutingPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string RoutingSearch {
+            get {
+                return ResourceManager.GetString("RoutingSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags.
+        /// </summary>
+        public static string RoutingTags {
+            get {
+                return ResourceManager.GetString("RoutingTags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {

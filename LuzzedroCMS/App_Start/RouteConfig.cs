@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using LuzzedroCMS.WebUI.Properties;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace LuzzedroCMS
@@ -28,19 +29,19 @@ namespace LuzzedroCMS
 
             routes.MapRoute(
                 name: "FavsPaged",
-                url: "Favs/strona-{page}",
+                url: Resources.RoutingFavs + "/" + Resources.RoutingPage + "-{page}",
                 defaults: new { controller = "User", action = "Bookmarks" }
             );
 
             routes.MapRoute(
                 name: "Favs",
-                url: "Favs/",
+                url: Resources.RoutingFavs + "/",
                 defaults: new { controller = "User", action = "Bookmarks" }
             );
 
             routes.MapRoute(
                 name: "ArticlePaged",
-                url: "{category}/{url}-art/strona-{page}",
+                url: "{category}/{url}-art/" + Resources.RoutingPage + "-{page}",
                 defaults: new { controller = "Article", action = "Article" }
             );
 
@@ -53,61 +54,73 @@ namespace LuzzedroCMS
 
             routes.MapRoute(
                 name: "CategoryPaged",
-                url: "{category}/strona-{page}",
+                url: "{category}/" + Resources.RoutingPage + "-{page}",
                 defaults: new { controller = "Article", action = "ArticlesByCategory" }
             );
 
             routes.MapRoute(
                 name: "TagPaged",
-                url: "Tags/{tag}/strona-{page}",
+                url: Resources.RoutingTags + "/{tag}/" + Resources.RoutingPage + "-{page}",
                 defaults: new { controller = "Article", action = "ArticlesByTag" }
             );
 
             routes.MapRoute(
                 name: "Tag",
-                url: "Tags/{tag}/",
+                url: Resources.RoutingTags + "/{tag}/",
                 defaults: new { controller = "Article", action = "ArticlesByTag" }
             );
 
             routes.MapRoute(
                 name: "SearchPaged",
-                url: "Search/strona-{page}",
+                url: Resources.RoutingSearch + "/{Key}/" + Resources.RoutingPage + "-{page}",
                 defaults: new { controller = "Search", action = "Result" }
             );
 
             routes.MapRoute(
                 name: "Search",
-                url: "Search/",
+                url: Resources.RoutingSearch + "/{Key}",
                 defaults: new { controller = "Search", action = "Result" }
             );
 
             routes.MapRoute(
                 name: "Account",
-                url: "Account/",
+                url: Resources.RoutingAccount + "/",
                 defaults: new { controller = "User", action = "EditAccount" }
             );
 
             routes.MapRoute(
+                name: "AccountLogout",
+                url: Resources.RoutingAccount + "/" + Resources.RoutingLogout,
+                defaults: new { controller = "Account", action = "Logout" }
+            );
+
+            routes.MapRoute(
+                name: "AccountLogoutWithReturn",
+                url: Resources.RoutingAccount + "/" + Resources.RoutingLogout + "/{returnUrl}",
+                defaults: new { controller = "Account", action = "Logout" }
+            );
+
+            routes.MapRoute(
                 name: "UserComments",
-                url: "Comments/",
+                url: Resources.RoutingComments + "/",
                 defaults: new { controller = "User", action = "Comments" }
             );
 
             routes.MapRoute(
                 name: "UserCommentsPaged",
-                url: "Comments/strona-{page}",
+                url: Resources.RoutingComments + "/" + Resources.RoutingPage + "-{page}",
                 defaults: new { controller = "User", action = "Comments" }
             );
 
             routes.MapRoute(
                 name: "AdminCommentsPaged",
-                url: "Admin/Comments/strona-{page}",
+                url: "Admin/" + Resources.RoutingComments + "/" + Resources.RoutingPage + "-{page}",
                 defaults: new { controller = "Admin", action = "Comments" }
             );
 
             routes.MapRoute(
                 name: "AdminComments",
-                url: "Admin/Comments/",
+                url: "Admin/" + Resources.RoutingComments + "/",
                 defaults: new { controller = "Admin", action = "Comments" }
             );
 
@@ -120,7 +133,7 @@ namespace LuzzedroCMS
 
             routes.MapRoute(
                 name: "defaultPaged",
-                url: "{controller}/{action}/strona-{page}",
+                url: "{controller}/{action}/" + Resources.RoutingPage + "-{page}",
                 defaults: new { controller = "Article", action = "Index" }
             );
 

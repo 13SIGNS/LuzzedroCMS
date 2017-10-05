@@ -77,7 +77,7 @@ namespace LuzzedroCMS.Controllers
             {
                 ViewBag.Title = String.Format("{0} - {1}", searchViewModel.Key, Resources.SearchResult);
                 ViewBag.Description = String.Format("{0} - {1}", searchViewModel.Key, Resources.SearchResult);
-                return Redirect("Search?Key=" + searchViewModel.Key);
+                return RedirectToRoute("Search", new { Key = searchViewModel.Key });
             }
             else
             {

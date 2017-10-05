@@ -636,4 +636,25 @@
   <data name="Bookmarks" xml:space="preserve">
     <value>Zakładki</value>
   </data>
+  <data name="RoutingAccount" xml:space="preserve">
+    <value>Konto</value>
+  </data>
+  <data name="RoutingComments" xml:space="preserve">
+    <value>Komentarze</value>
+  </data>
+  <data name="RoutingFavs" xml:space="preserve">
+    <value>Ulubione</value>
+  </data>
+  <data name="RoutingLogout" xml:space="preserve">
+    <value>Wyloguj</value>
+  </data>
+  <data name="RoutingPage" xml:space="preserve">
+    <value>strona</value>
+  </data>
+  <data name="RoutingSearch" xml:space="preserve">
+    <value>Szukaj</value>
+  </data>
+  <data name="RoutingTags" xml:space="preserve">
+    <value>Tagi</value>
+  </data>
 </root>

@@ -9,7 +9,7 @@
         <a href="@Url.Action("Article", "Article", new { category = articleExtended.Category, url = articleExtended.Article.Url })" title="@articleExtended.Category">
             <div class="row">
                 <div class="col-md-2">
-                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{0}", Model.ContentExternalUrl, articleExtended.Article.ImageName))" alt="@articleExtended.Article.ImageDesc" title="@articleExtended.Article.ImageDesc" />
+                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, articleExtended.Article.ImageName))" alt="@articleExtended.Article.ImageDesc" title="@articleExtended.Article.ImageDesc" />
                 </div>
                 <div class="col-md-10">
                     <h4>@articleExtended.Article.Title</h4>
@@ -26,6 +26,6 @@
         </div>
     }
     <div>
-        @Html.PageLinks(Model.PagingInfo, x => Url.Action("SearchPaged", new { controller = "Search", action = "Result", page = x }))
+        @Html.PageLinks(Model.PagingInfo, x => Url.RouteUrl("SearchPaged", new { controller = "Search", action = "Result", Key = Model.SearchKey, page = x }))
     </div>
 }
