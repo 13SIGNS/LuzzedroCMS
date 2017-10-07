@@ -122,7 +122,14 @@
     </div>
     <div class="jumbotron jumbotron-logo">
         <div class="container">
-            <img src="@Url.Content("~/Content/Graphics/logo.png")" alt="@Resources.Logo" title="@configRepo.Get(ConfigurationKeyStatic.APPLICATION_NAME)" />
+            <div class="row">
+                <div class="col-md-6">
+                    <img class="main-logo-left" src="@Url.Content("~/Content/Graphics/logo.png")" alt="@Resources.Logo" title="@configRepo.Get(ConfigurationKeyStatic.APPLICATION_NAME)" />
+                </div>
+                <div class="col-md-6">
+                    <img class="main-logo-right" src="@Url.Content("~/Content/Graphics/logo-right.png")" alt="@Resources.Logo" title="@configRepo.Get(ConfigurationKeyStatic.APPLICATION_NAME)" />
+                </div>
+            </div>
         </div>
     </div>
     @Html.Action("CategoryList", "Category")
@@ -199,6 +206,7 @@
                 <div class="col-md-12 copyright">
                     <hr />
                     <i class="fa fa-copyright"></i> @DateTime.Now.Year - @Resources.SiteName
+                    | <a href="#" data-toggle="modal" data-target=".regulations">@Resources.Regulations</a>
                 </div>
             </div>
             <div class="row">
