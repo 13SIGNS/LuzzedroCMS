@@ -45,7 +45,7 @@
 </head>
 <body>
     @if (isFacebookConnected)
-            {
+    {
         <div id="fb-root"></div>
         <script>
             (function (d, s, id) {
@@ -124,10 +124,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <img class="main-logo-left" src="@Url.Content("~/Content/Graphics/logo.png")" alt="@Resources.Logo" title="@configRepo.Get(ConfigurationKeyStatic.APPLICATION_NAME)" />
+                    <img class="main-logo-left" src="@(configRepo.Get(ConfigurationKeyStatic.USE_FTP_FOR_EXTERNAL_CONTENT).Equals("true") ?
+                            Url.Content(String.Format("{0}Graphics/logo.png", configRepo.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL))) :
+                            Url.Content("~/Content/Graphics/logo.png"))"
+                         alt="@Resources.Logo" title="@configRepo.Get(ConfigurationKeyStatic.APPLICATION_NAME)" />
                 </div>
                 <div class="col-md-6">
-                    <img class="main-logo-right" src="@Url.Content("~/Content/Graphics/logo-right.png")" alt="@Resources.Logo" title="@configRepo.Get(ConfigurationKeyStatic.APPLICATION_NAME)" />
+                    <img class="main-logo-right" src="@(configRepo.Get(ConfigurationKeyStatic.USE_FTP_FOR_EXTERNAL_CONTENT).Equals("true") ?
+                            Url.Content(String.Format("{0}Graphics/logo-right.png", configRepo.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL))) :
+                            Url.Content("~/Content/Graphics/logo-right.png"))"
+                         alt="@Resources.Logo" title="@configRepo.Get(ConfigurationKeyStatic.APPLICATION_NAME)" />
                 </div>
             </div>
         </div>
