@@ -161,6 +161,8 @@
                 {
                     @Html.Partial("_FBPlugin", configRepo.Get(ConfigurationKeyStatic.FACEBOOK_APP_LINK));
                 }
+                <hr />
+                @MvcHtmlString.Create(configRepo.Get(ConfigurationKeyStatic.ABOUT))
             </div>
         </div>
         <div class="row">
