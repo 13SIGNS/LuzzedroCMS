@@ -20,14 +20,16 @@ namespace LuzzedroCMS.Infrastructure.Concrete
         public bool SendEmail()
         {
             bool feedback = true;
-            try
+            using (SmtpClient smtp = new SmtpClient())
             {
-                SmtpClient smtp = new SmtpClient();
-                smtp.Send(message);
-            }
-            catch
-            {
-                feedback = false;
+                try
+                {
+                    smtp.Send(message);
+                }
+                catch
+                {
+                    feedback = false;
+                }
             }
             return feedback;
         }
