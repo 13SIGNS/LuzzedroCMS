@@ -23,6 +23,7 @@ namespace LuzzedroCMS.Controllers
 {
     public class AccountController : Controller
     {
+
         private IUserRepository repo;
         private IEmailSender sender;
         private IConfigurationKeyRepository repoConfig;
@@ -187,13 +188,14 @@ namespace LuzzedroCMS.Controllers
                 if (account.SetUserLogged(model.LoginEmail, model.LoginPassword, repo, this))
                 {
                     this.SetMessage(InfoMessageType.Success, Resources.ProperlyLogged);
+                    return Redirect(returnUrl ?? Url.Action("Index", "Home"));
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, Resources.IncorectoUserNamePassword);
                 }
             }
-            return Redirect(returnUrl ?? Url.Action("Index", "Home"));
+            return Redirect(Url.Action("Log", "Account"));
         }
 
         [HttpGet]
