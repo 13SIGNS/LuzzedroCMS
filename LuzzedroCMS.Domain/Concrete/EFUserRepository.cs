@@ -195,8 +195,8 @@ namespace LuzzedroCMS.Domain.Concrete
                 };
                 context.UserTemps.Add(newdbEntry);
                 result = newdbEntry;
-                context.SaveChanges();
             }
+            context.SaveChanges();
             return result;
         }
 

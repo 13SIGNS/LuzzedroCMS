@@ -150,6 +150,10 @@ namespace LuzzedroCMS.Domain.Concrete
                 {
                     articles = articles.Where(p => articleByBookmarkIDs.Contains(p.ArticleID));
                 }
+                else
+                {
+                    return null;
+                }
             }
 
             if (key != null)
