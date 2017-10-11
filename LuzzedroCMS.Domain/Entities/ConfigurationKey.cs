@@ -17,6 +17,7 @@ namespace LuzzedroCMS.Domain.Entities
         [MaxLength(2048, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "FieldMustHaveNoMoreChars")]
         public string Key { get; set; }
 
+        [AllowHtml]
         [Display(Name = "ConfigurationValue", ResourceType = typeof(Resources))]
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Required")]
         [MinLength(2, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "FieldMustHaveMoreChars")]
