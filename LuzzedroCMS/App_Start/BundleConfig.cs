@@ -7,7 +7,7 @@ namespace bundles
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.UseCdn = true;
-            BundleTable.EnableOptimizations = false;
+            BundleTable.EnableOptimizations = true;
 
             var bundleJquery = new ScriptBundle("~/bundles/jquery").Include("~/Content/Scripts/jquery-2.2.4.js");
             bundleJquery.CdnFallbackExpression = "window.jQuery";
