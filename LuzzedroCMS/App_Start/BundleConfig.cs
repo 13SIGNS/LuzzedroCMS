@@ -16,7 +16,7 @@ namespace bundles
 
             var bundleBootstrap = new ScriptBundle("~/bundles/bootstrap").Include("~/Content/Scripts/bootstrap.js");
             bundleBootstrap.CdnFallbackExpression = "$.fn.modal";
-            bundleBootstrap.CdnPath = "http://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js";
+            bundleBootstrap.CdnPath = "https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js";
             bundles.Add(bundleBootstrap);
 
             var bundleJqueryValidate = new ScriptBundle("~/bundles/jqueryvalidate").Include("~/Content/Scripts/jquery.validate.js");
