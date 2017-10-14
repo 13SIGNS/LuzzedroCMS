@@ -24,12 +24,20 @@
         <div class="form-group">
             @Html.LabelFor(model => model.User.Nick, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayFor(model => model.User.Nick, new { htmlAttributes = new { @class = "form-control" } })
+                @if (string.IsNullOrEmpty(Model.User.Nick))
+                {
+                    @Resources.ToAddNickNameGoToArticle;
+                }
+                else
+                {
+                    Html.DisplayFor(model => model.User.Nick, new { htmlAttributes = new { @class = "form-control" } });
+                }
             </div>
         </div>
         <hr />
         @using (Html.BeginForm("EditPassword", "User"))
         {
+            @Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
             @Html.HiddenFor(model => model.User.UserID)
             @Html.AntiForgeryToken()
             <div class="form-group">
@@ -37,21 +45,21 @@
                 <div class="col-md-10">
                     <div class="form-group">
                         <div class="input-group">
-                            @Html.Password("PasswordConfirm", string.Empty, new { @class = "form-control  existing-password", placeholder = Resources.ExistingPassword })
+                            @Html.PasswordFor(model => model.changePasswordViewModel.OldPassword, new { @class = "form-control  existing-password", placeholder = Resources.ExistingPassword })
                             <span class="input-group-btn">
                                 <button class="btn btn-default ShowPasswordLS" data-target=".existing-password" type="button">@Resources.ShowPassword</button>
                             </span>
-                            @Html.ValidationMessage("PasswordConfirm", string.Empty, new { @class = "text-danger" })
                         </div>
+                        @Html.ValidationMessageFor(model => model.changePasswordViewModel.OldPassword, string.Empty, new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         <div class="input-group">
-                            @Html.Password("Password", string.Empty, new { @class = "form-control password", placeholder = Resources.NewPassword })
+                            @Html.PasswordFor(model => model.changePasswordViewModel.NewPassword, new { @class = "form-control password", placeholder = Resources.NewPassword })
                             <span class="input-group-btn">
                                 <button class="btn btn-default ShowPasswordLS" data-target=".password" type="button">@Resources.ShowPassword</button>
                             </span>
-                            @Html.ValidationMessage("Password", string.Empty, new { @class = "text-danger" })
                         </div>
+                        @Html.ValidationMessageFor(model => model.changePasswordViewModel.NewPassword, string.Empty, new { @class = "text-danger" })
                     </div>
                 </div>
             </div>

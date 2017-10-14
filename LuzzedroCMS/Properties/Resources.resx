@@ -657,4 +657,7 @@
   <data name="RoutingTags" xml:space="preserve">
     <value>Tags</value>
   </data>
+  <data name="ToAddNickNameGoToArticle" xml:space="preserve">
+    <value>You have not nick name. You can create a nick when you add a comment to article</value>
+  </data>
 </root>

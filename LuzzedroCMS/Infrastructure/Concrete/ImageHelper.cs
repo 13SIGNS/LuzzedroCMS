@@ -138,11 +138,12 @@ namespace LuzzedroCMS.Infrastructure.Concrete
             {
                 string path = repoConfig.Get(ConfigurationKeyStatic.FTP_PATH);
                 Image img320 = imageModifier.ResizeImage(Image, 320, 240);
-                ftp.UploadImage(img320, String.Format("{0}UserProFileImage/{1}", path, imageName));
+                ftp.UploadImage(img320, String.Format("{0}UserProfileImage/{1}", path, imageName));
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                throw ex;
                 return false;
             }
         }
@@ -154,7 +155,7 @@ namespace LuzzedroCMS.Infrastructure.Concrete
                 if (oldPhoto != NULL_IMG)
                 {
                     string path = repoConfig.Get(ConfigurationKeyStatic.FTP_PATH);
-                    string fullPath = String.Format("{0}UserProFileImage/{1}", path, oldPhoto);
+                    string fullPath = String.Format("{0}UserProfileImage/{1}", path, oldPhoto);
                     bool isOldPhotoExist = ftp.GetFileSize(fullPath) != string.Empty;
                     if (isOldPhotoExist)
                     {
@@ -173,7 +174,7 @@ namespace LuzzedroCMS.Infrastructure.Concrete
         {
             try
             {
-                var path = Path.Combine(server.MapPath(String.Format("{0}UserProFileImage", repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL))), imageName);
+                var path = Path.Combine(server.MapPath(String.Format("{0}UserProfileImage", repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL))), imageName);
                 Image img = imageModifier.ResizeImage(Image, 320, 240);
                 img.Save(path);
                 return true;
@@ -188,7 +189,7 @@ namespace LuzzedroCMS.Infrastructure.Concrete
         {
             try
             {
-                string fullPath = request.MapPath(String.Format("{0}UserProFileImage/" + oldPhoto, repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL)));
+                string fullPath = request.MapPath(String.Format("{0}UserProfileImage/" + oldPhoto, repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL)));
                 if (oldPhoto != NULL_IMG)
                 {
                     if (System.IO.File.Exists(fullPath))

@@ -1555,6 +1555,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have not nick name. You can create a nick when you add a comment to article.
+        /// </summary>
+        public static string ToAddNickNameGoToArticle {
+            get {
+                return ResourceManager.GetString("ToAddNickNameGoToArticle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To reset password, click.
         /// </summary>
         public static string ToResetPassword {

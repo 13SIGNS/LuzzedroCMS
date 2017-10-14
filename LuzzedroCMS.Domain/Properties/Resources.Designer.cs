@@ -187,6 +187,15 @@ namespace LuzzedroCMS.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Existing password.
+        /// </summary>
+        public static string ExistingPassword {
+            get {
+                return ResourceManager.GetString("ExistingPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field {0} must have a number of characters greater than {1}.
         /// </summary>
         public static string FieldMustHaveMoreChars {
@@ -201,6 +210,15 @@ namespace LuzzedroCMS.Domain.Properties {
         public static string FieldMustHaveNoMoreChars {
             get {
                 return ResourceManager.GetString("FieldMustHaveNoMoreChars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New password.
+        /// </summary>
+        public static string InventPassword {
+            get {
+                return ResourceManager.GetString("InventPassword", resourceCulture);
             }
         }
         

@@ -657,4 +657,7 @@
   <data name="RoutingTags" xml:space="preserve">
     <value>Tagi</value>
   </data>
+  <data name="ToAddNickNameGoToArticle" xml:space="preserve">
+    <value>Nie masz jeszcze ustawionego pseudonimu, który będzie się wyświetlać przy komentarzach. Pseudonim możesz dodać przy dodawaniu pierwszego komentarza przy dowolnym artykule</value>
+  </data>
 </root>

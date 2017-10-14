@@ -159,11 +159,17 @@
   <data name="EnterSequence" xml:space="preserve">
     <value>Enter a sentence, which will be replaced with the name images</value>
   </data>
+  <data name="ExistingPassword" xml:space="preserve">
+    <value>Existing password</value>
+  </data>
   <data name="FieldMustHaveMoreChars" xml:space="preserve">
     <value>Field {0} must have a number of characters greater than {1}</value>
   </data>
   <data name="FieldMustHaveNoMoreChars" xml:space="preserve">
     <value>Field {0} must have a number of characters no larger than {1}</value>
+  </data>
+  <data name="InventPassword" xml:space="preserve">
+    <value>New password</value>
   </data>
   <data name="Lead" xml:space="preserve">
     <value>Lead</value>

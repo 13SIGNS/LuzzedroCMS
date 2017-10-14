@@ -159,11 +159,17 @@
   <data name="EnterSequence" xml:space="preserve">
     <value>Wpisz treść, która może być wyświetlana zamiast zdjęcia</value>
   </data>
+  <data name="ExistingPassword" xml:space="preserve">
+    <value>Istniejące hasło</value>
+  </data>
   <data name="FieldMustHaveMoreChars" xml:space="preserve">
     <value>Pole {0} musi posiadać więcej znaków niż {1}</value>
   </data>
   <data name="FieldMustHaveNoMoreChars" xml:space="preserve">
     <value>Pole {0} musi posiadać mniej znaków niż {1}</value>
+  </data>
+  <data name="InventPassword" xml:space="preserve">
+    <value>Wymyśl hasło</value>
   </data>
   <data name="Lead" xml:space="preserve">
     <value>Zajawka</value>
