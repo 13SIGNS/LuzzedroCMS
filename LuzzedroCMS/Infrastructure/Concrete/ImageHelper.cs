@@ -58,10 +58,10 @@ namespace LuzzedroCMS.Infrastructure.Concrete
                 string path = repoConfig.Get(ConfigurationKeyStatic.FTP_PATH);
                 Image img320 = imageModifier.ResizeImage(File, 320, 240);
                 Image img120 = imageModifier.ResizeImage(File, 120, 90);
-                Image img800 = imageModifier.ResizeImage(File, 900, 600);
+                Image img900 = imageModifier.ResizeImage(File, 900, 600);
                 ftp.UploadImage(img320, String.Format("{0}ArticleImage/Images320/{1}", path, imageName));
                 ftp.UploadImage(img120, String.Format("{0}ArticleImage/Images120/{1}", path, imageName));
-                ftp.UploadImage(img800, String.Format("{0}ArticleImage/Images800/{1}", path, imageName));
+                ftp.UploadImage(img900, String.Format("{0}ArticleImage/Images900/{1}", path, imageName));
                 return true;
             }
             catch
@@ -93,8 +93,7 @@ namespace LuzzedroCMS.Infrastructure.Concrete
 
         public string GetImageName(string imageDesc)
         {
-            string imageName = textBuilder.RemovePolishChars(textBuilder.RemoveSpaces(imageDesc)) + Path.GetExtension(File.FileName);
-            return String.Format("{0}ArticleImage/{1}", repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL), imageName);
+            return textBuilder.RemovePolishChars(textBuilder.RemoveSpaces(imageDesc)) + Path.GetExtension(File.FileName);
         }
 
         public bool IsFileSet()
@@ -207,7 +206,12 @@ namespace LuzzedroCMS.Infrastructure.Concrete
 
         public IList<string> GetAllImagesForArticleFromFtp()
         {
-            return ftp.DirectoryListSimple(repoConfig.Get(ConfigurationKeyStatic.FTP_PATH) + "ArticleImage/Images120").ToList<string>();
+            IList<string> rawList = ftp.DirectoryListSimple(repoConfig.Get(ConfigurationKeyStatic.FTP_PATH) + "ArticleImage/Images120").ToList<string>();
+            rawList.Remove(string.Empty);
+            rawList.Remove("Images120/.");
+            rawList.Remove("Images120/..");
+            rawList.Remove("Images120/index.php");
+            return rawList;
         }
 
         public IList<string> GetAllImagesForArticleFromLocal(HttpServerUtilityBase server)
