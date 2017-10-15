@@ -3,6 +3,7 @@ using LuzzedroCMS.Infrastructure.Abstract;
 using LuzzedroCMS.WebUI.Infrastructure.Static;
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
 
@@ -111,8 +112,15 @@ namespace LuzzedroCMS.Infrastructure.Concrete
             {
                 using (MemoryStream m = new MemoryStream())
                 {
-                    img.Save(m, img.RawFormat);
-                    data = m.ToArray();
+                    try
+                    {
+                        img.Save(m, ImageFormat.Jpeg);
+                        data = m.ToArray();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
             }
             MemoryStream stream = new MemoryStream(data);
