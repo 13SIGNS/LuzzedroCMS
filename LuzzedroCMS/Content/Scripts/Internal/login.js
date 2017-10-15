@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     ShowPasswordLS();
     ShowTooltips();
+    DisableButtonOnSubmitLS();
 });
 
 function ShowPasswordLS() {
@@ -19,4 +20,13 @@ function ShowPasswordLS() {
 
 function ShowTooltips() {
     $('[data-toggle="tooltip"]').tooltip();
+}
+
+function DisableButtonOnSubmitLS() {
+    $(".DisableButtonOnSubmitLS").on("submit", function () {
+        var el = $(this);
+        if (el.valid()) {
+            el.find("input[type='submit']").prop("disabled", true);
+        }
+    });
 }

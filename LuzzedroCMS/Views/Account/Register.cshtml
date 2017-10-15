@@ -9,7 +9,7 @@
 {
     <div class="col-md-6">
         <div class="form-vertical  account-form">
-            @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "DisableButtonOnSubmitLS" }))
             {
                 @Html.AntiForgeryToken()
                 <div class="form-vertical account-form">
