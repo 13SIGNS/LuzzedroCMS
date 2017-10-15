@@ -577,8 +577,6 @@ h3.caption-article-title {
 }
 
 .externals-title {
-    font-style: italic;
-    font-size: 18px;
 }
 
 .externals-date {
@@ -587,9 +585,12 @@ h3.caption-article-title {
 }
 
 .article-content {
-    font-family: Arial, sans-serif;
-    line-height: 1.8;
-    font-size: 17px;
+}
+
+.article-sources {
+    font-size: 11px;
+    color: lightgrey;
+    font-style: italic;
 }
 
 .comments {
