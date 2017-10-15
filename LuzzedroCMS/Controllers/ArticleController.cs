@@ -22,7 +22,7 @@ namespace LuzzedroCMS.Controllers
         private IUserRepository repoUser;
         private IConfigurationKeyRepository repoConfig;
         private ISessionHelper repoSession;
-        public int PageSize = 2;
+        public int PageSize = 10;
 
         public ArticleController(
             IArticleRepository articleRepo,

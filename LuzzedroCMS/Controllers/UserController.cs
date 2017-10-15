@@ -31,7 +31,7 @@ namespace LuzzedroCMS.Controllers
         private ISessionHelper repoSession;
         private IImageHelper imageHelper;
         private const string NULLIMAGE = "null.png";
-        public int PageSize = 2;
+        public int PageSize = 10;
 
         private User user
         {

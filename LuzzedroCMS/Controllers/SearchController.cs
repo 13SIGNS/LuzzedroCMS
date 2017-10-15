@@ -17,7 +17,7 @@ namespace LuzzedroCMS.Controllers
         private IArticleRepository repoArticle;
         private ICategoryRepository repoCategory;
         private IConfigurationKeyRepository repoConfig;
-        public int PageSize = 2;
+        public int PageSize = 10;
 
         public SearchController(
             IArticleRepository articleRepo,

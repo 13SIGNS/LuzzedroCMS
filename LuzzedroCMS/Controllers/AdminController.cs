@@ -29,7 +29,7 @@ namespace LuzzedroCMS.Controllers
         private ITextBuilder textBuilder;
         private ISessionHelper repoSession;
         private IImageHelper imageHelper;
-        public int PageSize = 2;
+        public int PageSize = 10;
 
         private User user
         {
