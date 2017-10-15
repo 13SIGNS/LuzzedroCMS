@@ -660,4 +660,7 @@
   <data name="ToAddNickNameGoToArticle" xml:space="preserve">
     <value>You have not nick name. You can create a nick when you add a comment to article</value>
   </data>
+  <data name="Sources" xml:space="preserve">
+    <value>Sources</value>
+  </data>
 </root>

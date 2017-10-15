@@ -1501,6 +1501,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sources.
+        /// </summary>
+        public static string Sources {
+            get {
+                return ResourceManager.GetString("Sources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tags.
         /// </summary>
         public static string Tags {

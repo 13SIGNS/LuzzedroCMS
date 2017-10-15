@@ -660,4 +660,7 @@
   <data name="ToAddNickNameGoToArticle" xml:space="preserve">
     <value>Nie masz jeszcze ustawionego pseudonimu, który będzie się wyświetlać przy komentarzach. Pseudonim możesz dodać przy dodawaniu pierwszego komentarza przy dowolnym artykule</value>
   </data>
+  <data name="Sources" xml:space="preserve">
+    <value>Źródła</value>
+  </data>
 </root>
