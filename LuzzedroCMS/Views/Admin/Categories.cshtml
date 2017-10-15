@@ -11,10 +11,10 @@
                     @Html.DisplayFor(x => category.Order)
                 </span>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-2">
                 @(category.Status == 1 ? new HtmlString("<span class=\"label label-success\"><span class=\"fa fa-eye\"></span></span>") : new HtmlString("<span class=\"label label-danger\"><span class=\"fa fa-eye-slash\"></span></span>"))
             </div>
-            <div class="col-md-7">
+            <div class="col-md-6">
                 @Html.DisplayFor(x => category.Name)
             </div>
             <div class="col-md-3">

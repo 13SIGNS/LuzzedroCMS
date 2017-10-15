@@ -67,7 +67,7 @@ namespace LuzzedroCMS.Domain.Concrete
             IList<Tag> tags = new List<Tag>();
             Category category = new Category();
 
-            var tagIDs = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID).Select(x => x.TagID).ToList();
+            var tagIDs = context.ArticleTagAssociates.Where(p => p.ArticleID == articleSelected.ArticleID).Select(x => x.TagID).ToList();
 
             if (tagIDs.Any())
             {

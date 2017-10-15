@@ -156,13 +156,14 @@
                 {
                     @Html.Action("LoggedInfo", "Account")
                 }
-                @Html.Action("TagCloud", "Tag")
                 @if (isFacebookConnected)
                 {
                     @Html.Partial("_FBPlugin", configRepo.Get(ConfigurationKeyStatic.FACEBOOK_APP_LINK));
                 }
                 <hr />
                 @MvcHtmlString.Create(configRepo.Get(ConfigurationKeyStatic.ABOUT))
+                <br />
+                @Html.Action("TagCloud", "Tag")
             </div>
         </div>
         <div class="row">
