@@ -185,7 +185,7 @@ namespace LuzzedroCMS.Controllers
         public ViewResult Articles()
         {
             ViewBag.Title = Resources.ListOfArticles;
-            IList<Article> articles = repoArticle.Articles();
+            IList<Article> articles = repoArticle.Articles(actual: false, enabled: false);
             return View(articles);
         }
 
