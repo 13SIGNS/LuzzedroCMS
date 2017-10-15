@@ -232,6 +232,16 @@ span.thumbnail {
     span.thumbnail:hover, span.thumbnail.active, span.thumbnail:focus {
         border-color: #428bca;
     }
+
+        span.thumbnail.active:before {
+            font-family: FontAwesome;
+            content: "\f00c";
+            color: #5cb85c;
+            font-size: 50px;
+            position: absolute;
+            right: -10px;
+            top: 5px;
+        }
 /*span:hover, span:focus {
     color: #2a6496;
     text-decoration: underline;
