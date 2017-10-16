@@ -570,6 +570,10 @@ h3.caption-article-title {
     .main-logo-right {
         display: none;
     }
+
+    .carousel-caption.full-width-caption p {
+        display: none;
+    }
 }
 
 .article-carousel-img {
