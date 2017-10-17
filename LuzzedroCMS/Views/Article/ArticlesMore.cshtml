@@ -14,7 +14,7 @@
     @foreach (ArticleExtended articleExtended in Model.ArticlesExtended)
     {
         <div class="col-sm-6 col-md-3">
-            <a href="@Url.RouteUrl("Article", new { controller = "Article", action = "Article", url = articleExtended.Article.Url, category = articleExtended.Category.Name })" class="thumbnail thumbnail-link" title="@articleExtended.Article.Title">
+            <a href="@Url.RouteUrl("Article", new { url = articleExtended.Article.Url})" class="thumbnail thumbnail-link" title="@articleExtended.Article.Title">
                 <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, articleExtended.Article.ImageName))" alt="@articleExtended.Article.ImageDesc" title="@articleExtended.Article.ImageDesc" />
                 <div class="caption">
                     <div>

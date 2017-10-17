@@ -7,7 +7,7 @@
 if (articles.Any() && articles.Skip(number).Any())
 {
     ArticleExtended article = articles.Skip(number).First();
-        <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = article.Article.Url, category = article.Category.Name })" class="thumbnail thumbnail-link" title="@article.Article.Title">
+        <a href="@Url.RouteUrl("Article", new { url = article.Article.Url })" class="thumbnail thumbnail-link" title="@article.Article.Title">
             <div class="row">
                 <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, article.Article.ImageName))" class="col-md-4" alt="@article.Article.ImageDesc" title="@article.Article.ImageDesc" />
                 <div class="caption col-md-8">
@@ -30,7 +30,7 @@ if (articles.Any() && articles.Skip(number).Any())
 {
     ArticleExtended article = articles.Skip(number).First();
         <div class="default-title">@article.Category.Name</div>
-        <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = article.Article.Url, category = article.Category.Name })" class="thumbnail thumbnail-link" title="@article.Article.Title">
+        <a href="@Url.RouteUrl("Article", new { url = article.Article.Url })" class="thumbnail thumbnail-link" title="@article.Article.Title">
             <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, article.Article.ImageName))" alt="@article.Article.ImageDesc" title="@article.Article.ImageDesc" />
             <div class="caption">
                 <h3 class="caption-article-title">
@@ -59,12 +59,9 @@ if (articles.Any() && articles.Skip(number).Any())
             if (Model.LatestArticles.Any() && Model.LatestArticles.Skip(i).Any())
             {
                 string active = i == 0 ? "active" : string.Empty;
-                <a href="@Url.Action("Article", new
+                <a href="@Url.RouteUrl("Article", new
                     {
-                        controller = "Article",
-                        action = "Article",
-                        url = Model.LatestArticles.Skip(i).First().Article.Url,
-                        category = Model.LatestArticles.Skip(i).First().Category.Name
+                        url = Model.LatestArticles.Skip(i).First().Article.Url
                     })"
                    class="item @active article-carousel-img"
                    title="@Model.LatestArticles.Skip(i).First().Article.Title">
@@ -99,7 +96,7 @@ if (articles.Any() && articles.Skip(number).Any())
         if (Model.LatestArticles.Any() && Model.LatestArticles.Skip(y).Any())
         {
             <div class="col-sm-6 col-md-4">
-                <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.LatestArticles.Skip(y).First().Article.Url, category = Model.LatestArticles.Skip(y).First().Category.Name })" class="thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(y).First().Article.Title">
+                <a href="@Url.RouteUrl("Article", new { url = Model.LatestArticles.Skip(y).First().Article.Url })" class="thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(y).First().Article.Title">
                     <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(y).First().Article.ImageName))" alt="@Model.LatestArticles.Skip(y).First().Article.ImageDesc" title="@Model.LatestArticles.Skip(y).First().Article.ImageDesc" />
                     <div class="caption">
                         <div class="image-category">
@@ -123,7 +120,7 @@ if (articles.Any() && articles.Skip(number).Any())
         if (Model.LatestArticles.Any() && Model.LatestArticles.Skip(z).Any())
         {
             <div class="col-sm-6 col-md-4">
-                <a href="@Url.Action("Article", new { controller = "Article", action = "Article", url = Model.LatestArticles.Skip(z).First().Article.Url, category = Model.LatestArticles.Skip(z).First().Category.Name })" class="thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(z).First().Article.Title">
+                <a href="@Url.RouteUrl("Article", new { url = Model.LatestArticles.Skip(z).First().Article.Url })" class="thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(z).First().Article.Title">
                     <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(z).First().Article.ImageName))" alt="@Model.LatestArticles.Skip(z).First().Article.ImageDesc" title="@Model.LatestArticles.Skip(z).First().Article.ImageDesc" />
                     <div class="caption">
                         <div class="image-category">
@@ -147,25 +144,23 @@ if (articles.Any() && articles.Skip(number).Any())
     {
         <div class="row articles-row">
             <div class="col-md-12">
-                <a href="@Url.Action("Article", new
+                <a href="@Url.RouteUrl("Article", new
                     {
-                        controller = "Article",
-                        action = "Article",
-                        url = Model.LatestArticles.Skip(x).First().Article.Url,
-                        category = Model.LatestArticles.Skip(x).First().Category.Name
+                        url = Model.LatestArticles.Skip(x).First().Article.Url
                     })"
-                   class="media typical-color thumbnail thumbnail-link"
-                   title="@Model.LatestArticles.Skip(x).First().Article.Title">
-                    <div class="media-left">
-                        <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(x).First().Article.ImageName))" alt="@Model.LatestArticles.Skip(x).First().Article.ImageDesc" title="@Model.LatestArticles.Skip(x).First().Article.ImageDesc" />
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">@Model.LatestArticles.Skip(x).First().Article.Title</h4>
-                        @Model.LatestArticles.Skip(x).First().Article.Lead
-                        @if (Model.LatestArticles.Skip(x).First().CommentsExtended.Count() > 0)
-                        {
-                            <span class="comment-number"><i class="fa fa-comment"></i> @Model.LatestArticles.Skip(x).First().CommentsExtended.Count()</span>
-                        }
+                   class="media typical-color thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(x).First().Article.Title">
+                    <div class="media typical-color thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(x).First().Article.Title">
+                        <div class="media-left">
+                            <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(x).First().Article.ImageName))" alt="@Model.LatestArticles.Skip(x).First().Article.ImageDesc" title="@Model.LatestArticles.Skip(x).First().Article.ImageDesc" />
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">@Model.LatestArticles.Skip(x).First().Article.Title</h4>
+                            @Model.LatestArticles.Skip(x).First().Article.Lead
+                            @if (Model.LatestArticles.Skip(x).First().CommentsExtended.Count() > 0)
+                            {
+                                <span class="comment-number"><i class="fa fa-comment"></i> @Model.LatestArticles.Skip(x).First().CommentsExtended.Count()</span>
+                            }
+                        </div>
                     </div>
                 </a>
             </div>

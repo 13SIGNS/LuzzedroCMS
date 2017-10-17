@@ -41,13 +41,13 @@ namespace LuzzedroCMS
 
             routes.MapRoute(
                 name: "ArticlePaged",
-                url: "{category}/{url}-art/" + Resources.RoutingPage + "-{page}",
+                url: "{url}-art/" + Resources.RoutingPage + "-{page}",
                 defaults: new { controller = "Article", action = "Article" }
             );
 
             routes.MapRoute(
                 name: "Article",
-                url: "{category}/{url}-art",
+                url: "{url}-art",
                 defaults: new { controller = "Article", action = "Article" }
             );
 

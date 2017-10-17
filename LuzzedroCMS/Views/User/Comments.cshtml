@@ -12,7 +12,7 @@
             {
                 <span>...</span>
             }
-            <p>@Html.ActionLink(Resources.GoToArticle, "Article", new { controller = "Article", action = "Article", url = commentExtendedWithArticle.ArticleExtended.Article.Url, category = commentExtendedWithArticle.ArticleExtended.Category.Name })</p>
+            <p>@Html.RouteLink(Resources.GoToArticle, "Article", new { url = commentExtendedWithArticle.ArticleExtended.Article.Url })</p>
         </div>
     </div>
 }

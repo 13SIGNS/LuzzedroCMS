@@ -3,10 +3,10 @@
 
 @foreach (var articleExtended in Model.ArticlesExtended)
 {
-    <a href="@Url.Action("Article", "Article", new {category = articleExtended.Category.Name, url = articleExtended.Article.Url})" title="@articleExtended.Article.Title">
+    <a href="@Url.RouteUrl("Article", new { url = articleExtended.Article.Url })" title="@articleExtended.Article.Title">
         <div class="row">
             <div class="col-md-2">
-                <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl,  articleExtended.Article.ImageName))" alt="@articleExtended.Article.ImageDesc" title="@articleExtended.Article.ImageDesc" />
+                <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, articleExtended.Article.ImageName))" alt="@articleExtended.Article.ImageDesc" title="@articleExtended.Article.ImageDesc" />
             </div>
             <div class="col-md-10">
                 <h4>@articleExtended.Article.Title</h4>

@@ -6,7 +6,7 @@
 {
     foreach (var articleExtended in Model.ArticlesExtended)
     {
-        <a href="@Url.Action("Article", new { controller = "Article", action = "Article", category = Model.CategoryName, url = articleExtended.Article.Url })">
+        <a href="@Url.RouteUrl("Article", new { url = articleExtended.Article.Url })">
             <div class="row">
                 <div class="col-md-2">
                     <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, articleExtended.Article.ImageName))" alt="@articleExtended.Article.ImageDesc" title="@articleExtended.Article.ImageDesc" />
