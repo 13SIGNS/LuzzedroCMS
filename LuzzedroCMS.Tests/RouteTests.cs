@@ -88,7 +88,7 @@ namespace LuzzedroCMS.Tests
         [TestMethod]
         public void TestIncomingRoutesArticle()
         {
-            TestRouteMatch("~/Categoryexample/Articleexample-art", "Article", "Article");
+            TestRouteMatch("~/Articleexample-art", "Article", "Article");
         }
 
         [TestMethod]
