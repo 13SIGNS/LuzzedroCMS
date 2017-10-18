@@ -20,6 +20,7 @@ namespace LuzzedroCMS.Domain.Abstract
             string url = null,
             int commentID = 0,
             int articleID = 0,
+            bool commentEnabled = true,
             Article article = null);
 
         IList<Article> Articles(

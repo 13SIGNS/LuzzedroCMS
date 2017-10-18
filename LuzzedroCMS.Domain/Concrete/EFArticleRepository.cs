@@ -60,6 +60,7 @@ namespace LuzzedroCMS.Domain.Concrete
             string url = null,
             int commentID = 0,
             int articleID = 0,
+            bool commentEnabled = true,
             Article article = null)
         {
             Article articleSelected = article != null ? article : Article(enabled, actual, url, commentID, articleID);
@@ -77,7 +78,7 @@ namespace LuzzedroCMS.Domain.Concrete
             if (articleSelected != null)
             {
                 category = context.Categories.FirstOrDefault(p => p.CategoryID == articleSelected.CategoryID);
-                foreach (var comment in context.Comments.Where(p => p.ArticleID == articleSelected.ArticleID).ToList())
+                foreach (var comment in context.Comments.Where(p => p.ArticleID == articleSelected.ArticleID && p.Status == (commentEnabled ? 1 : 0)).ToList())
                 {
                     commentsExtended.Add(new CommentExtended()
                     {
