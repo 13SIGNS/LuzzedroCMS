@@ -29,7 +29,7 @@
         <div class="form-group">
             @Html.LabelFor(x => x.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.ListBoxFor(x => x.SelectedTagsId, new MultiSelectList(Model.Tags.AsEnumerable(), "TagID", "Name"), new { @class = "form-control md-2 chosen", data_placeholder = Resources.Choose })
+                @Html.ListBoxFor(x => x.SelectedTagsId, new MultiSelectList(Model.Tags.AsEnumerable(), "TagID", "Name"), new { @class = "full-width chosen", data_placeholder = Resources.Choose })
                 @Html.ActionLink(Resources.AddTag, "EditTag", "Admin", new { target = "_blank" })
                 @Html.ValidationMessageFor(x => x.ArticleExtended.Tags, string.Empty, new { @class = "text-danger" })
             </div>
