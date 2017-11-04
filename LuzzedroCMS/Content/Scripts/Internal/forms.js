@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     activateChosen();
     activateFileInputs();
+    activateDatepickers();
 });
 
 function activateChosen() {
@@ -27,4 +28,8 @@ function activateFileInputs() {
             }
         });
     });
+}
+
+function activateDatepickers() {
+    $('.datepicker').datepicker();
 }

@@ -33,6 +33,7 @@ namespace bundles
             bundles.Add(new ScriptBundle("~/bundles/highlight").Include("~/Content/Scripts/highlight.js"));
             bundles.Add(new ScriptBundle("~/bundles/croppie").Include("~/Content/Scripts/croppie.js"));
             bundles.Add(new ScriptBundle("~/bundles/login").Include("~/Content/Scripts/Internal/login.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include("~/Content/Scripts/jquery.ui.js"));
             bundles.Add(new ScriptBundle("~/bundles/editarticle").Include("~/Content/Scripts/Internal/editarticle.js"));
             bundles.Add(new ScriptBundle("~/bundles/editaccount").Include("~/Content/Scripts/Internal/editaccount.js"));
             bundles.Add(new ScriptBundle("~/bundles/editnick").Include("~/Content/Scripts/Internal/editnick.js"));
@@ -42,6 +43,7 @@ namespace bundles
             bundles.Add(new StyleBundle("~/bundles/style/chosen").Include("~/Content/Styles/Chosen.css"));
             bundles.Add(new StyleBundle("~/bundles/style/highlight").Include("~/Content/Styles/highlight-atelier-cave-dark.css"));
             bundles.Add(new StyleBundle("~/bundles/style/croppie").Include("~/Content/Styles/croppie.css"));
+            bundles.Add(new StyleBundle("~/bundles/style/jqueryui").Include("~/Content/Styles/jquery.ui.css"));
             bundles.Add(new StyleBundle("~/bundles/style/fontawesome").Include("~/Content/Styles/font-awesome.css"));
         }
     }

@@ -26,6 +26,7 @@
     <title>@ViewBag.Title - @configRepo.Get(ConfigurationKeyStatic.APPLICATION_NAME)</title>
     @Styles.Render("~/bundles/style/bootstrap")
     @RenderSection("Style", false)
+    @Styles.Render("~/bundles/style/jqueryui")
     @Styles.Render("~/bundles/style/index")
     @if (isGoogleAnalyticsConnected)
     {
@@ -275,6 +276,7 @@
         </div>
     </div>
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryvalidate")
     @Scripts.Render("~/bundles/jqueryvalidateunobtrusive")

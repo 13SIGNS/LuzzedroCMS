@@ -85,14 +85,14 @@
         <div class="form-group">
             @Html.LabelFor(x => x.ArticleExtended.Article.DateExp, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(x => x.ArticleExtended.Article.DateExp, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(x => x.ArticleExtended.Article.DateExp, new { htmlAttributes = new { @class = "form-control datepicker" } })
                 @Html.ValidationMessageFor(x => x.ArticleExtended.Article.DateExp, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(x => x.ArticleExtended.Article.DatePub, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(x => x.ArticleExtended.Article.DatePub, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(x => x.ArticleExtended.Article.DatePub, new { htmlAttributes = new { @class = "form-control datepicker" } })
                 @Html.ValidationMessageFor(x => x.ArticleExtended.Article.DatePub, string.Empty, new { @class = "text-danger" })
             </div>
         </div>

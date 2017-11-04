@@ -206,6 +206,12 @@
     <Content Include="android-chrome-384x384.png" />
     <Content Include="apple-touch-icon.png" />
     <Content Include="browserconfig.xml" />
+    <Content Include="Content\Graphics\ui-icons_444444_256x240.png" />
+    <Content Include="Content\Graphics\ui-icons_555555_256x240.png" />
+    <Content Include="Content\Graphics\ui-icons_777620_256x240.png" />
+    <Content Include="Content\Graphics\ui-icons_777777_256x240.png" />
+    <Content Include="Content\Graphics\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\Graphics\ui-icons_ffffff_256x240.png" />
     <Content Include="Content\Graphics\wykop-bg.png" />
     <Content Include="Content\Scripts\chosen.jquery.js" />
     <Content Include="Content\Scripts\croppie.js" />
@@ -215,6 +221,8 @@
     <Content Include="Content\Scripts\Internal\editnick.js" />
     <Content Include="Content\Scripts\highlight.js" />
     <Content Include="Content\Scripts\Internal\login.js" />
+    <Content Include="Content\Scripts\jquery.ui.js" />
+    <Content Include="Content\Scripts\jquery.ui.min.js" />
     <Content Include="Content\Styles\bootstrap.css" />
     <Content Include="Content\Styles\bootstrap.min.css" />
     <Content Include="Content\Fonts\OpenSans-Light.ttf" />
@@ -404,6 +412,8 @@
     <Content Include="Content\Styles\font-awesome.min.css" />
     <Content Include="Content\Styles\highlight-atelier-cave-dark.css" />
     <Content Include="Content\Styles\index.css" />
+    <Content Include="Content\Styles\jquery.ui.css" />
+    <Content Include="Content\Styles\jquery.ui.min.css" />
     <Content Include="favicon-16x16.png" />
     <Content Include="favicon-32x32.png" />
     <Content Include="favicon.ico" />
