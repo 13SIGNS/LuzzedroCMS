@@ -286,7 +286,7 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Category&apos;s list.
+        ///   Looks up a localized string similar to Categories list.
         /// </summary>
         public static string CategoryList {
             get {

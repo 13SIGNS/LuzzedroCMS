@@ -496,7 +496,7 @@
     <value>Article by tag</value>
   </data>
   <data name="CategoryList" xml:space="preserve">
-    <value>Category's list</value>
+    <value>Categories list</value>
   </data>
   <data name="EditCategory" xml:space="preserve">
     <value>Edit category</value>

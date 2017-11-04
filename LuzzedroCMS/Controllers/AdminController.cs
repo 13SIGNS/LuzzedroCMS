@@ -465,7 +465,7 @@ namespace LuzzedroCMS.Controllers
             else
             {
                 category = repoCategory.Category(categoryID: categoryID);
-                ViewBag.Title = Resources.EditArticle;
+                ViewBag.Title = Resources.EditCategory;
             }
             return View(category);
         }
