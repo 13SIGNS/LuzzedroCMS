@@ -164,6 +164,8 @@ namespace LuzzedroCMS.Controllers
                     Status = articleExtended.Article.Status
                 });
 
+                repoArticle.RemoveAllTagsFromArticle(articleID);
+
                 if (SelectedTagsID != null)
                 {
                     foreach (int selectedTagID in SelectedTagsID)

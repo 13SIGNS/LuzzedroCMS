@@ -403,6 +403,7 @@ namespace LuzzedroCMS.Domain.Concrete
                 foreach (var bookmarkUserArticleAssociate in bookmarkUserArticleAssociates)
                 {
                     context.BookmarkUserArticleAssociates.Remove(bookmarkUserArticleAssociate);
+                    context.SaveChanges();
                 }
             }
         }
@@ -430,6 +431,20 @@ namespace LuzzedroCMS.Domain.Concrete
                 foreach (var articleTagAssociate in articleTagAssociates)
                 {
                     context.ArticleTagAssociates.Remove(articleTagAssociate);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void RemoveAllTagsFromArticle(int articleID)
+        {
+            IList<ArticleTagAssociate> articleTagAssociates = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID).ToList();
+            if (articleTagAssociates.Any())
+            {
+                foreach (var articleTagAssociate in articleTagAssociates)
+                {
+                    context.ArticleTagAssociates.Remove(articleTagAssociate);
+                    context.SaveChanges();
                 }
             }
         }

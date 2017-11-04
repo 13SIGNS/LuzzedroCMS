@@ -58,6 +58,7 @@ namespace LuzzedroCMS.Domain.Abstract
         void RemoveBookmark(int articleID, int userID);
         void AddTagToArticle(int articleID, int tagID);
         void RemoveTagFromArticle(int articleID, int tagID);
+        void RemoveAllTagsFromArticle(int articleID);
         int Save(Article article);
         void Enable(int articleID);
         void Remove(int articleID);
