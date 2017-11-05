@@ -174,7 +174,7 @@ namespace LuzzedroCMS.Domain.Concrete
 
             if (orderBy == null && orderByDescending == null)
             {
-                articles = articles.OrderByDescending(p => p.DateAdd);
+                articles = articles.OrderByDescending(p => p.DatePub);
             }
 
             if (page != 0 && take != 0)
