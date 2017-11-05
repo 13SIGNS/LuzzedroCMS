@@ -82,7 +82,6 @@ namespace LuzzedroCMS.Domain.Concrete
                 categories = categories.Take(take);
             }
 
-
             return categories.ToList();
         }
 

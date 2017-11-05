@@ -9,5 +9,12 @@ namespace LuzzedroCMS.Models
     public class ArticlesCategoryViewModel : ArticlesExtendedViewModel
     {
         public string CategoryName { get; set; }
+        public string CategoryNameEscaped
+        {
+            get
+            {
+                return CategoryName.Replace(" ", "-");
+            }
+        }
     }
 }

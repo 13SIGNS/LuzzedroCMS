@@ -214,6 +214,15 @@ namespace LuzzedroCMS.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This field can contain only chars and numbers.
+        /// </summary>
+        public static string FieldMustHaveOnlyNumbersChars {
+            get {
+                return ResourceManager.GetString("FieldMustHaveOnlyNumbersChars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New password.
         /// </summary>
         public static string InventPassword {

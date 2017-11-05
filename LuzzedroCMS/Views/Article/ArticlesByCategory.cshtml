@@ -20,6 +20,6 @@
     }
 
     <div>
-        @Html.PageLinks(Model.PagingInfo, x => Url.Action("ArticlesByCategory", new { controller = "Article", action = "ArticlesByCategory", category = Model.CategoryName, page = x }))
+        @Html.PageLinks(Model.PagingInfo, x => Url.Action("ArticlesByCategory", new { controller = "Article", action = "ArticlesByCategory", category = Model.CategoryNameEscaped, page = x }))
     </div>
 }

@@ -682,6 +682,15 @@ namespace LuzzedroCMS.WebUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This field can contains only chars and numbers.
+        /// </summary>
+        public static string FieldMustHaveOnlyNumbersChars {
+            get {
+                return ResourceManager.GetString("FieldMustHaveOnlyNumbersChars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File cannot be more than 4MB.
         /// </summary>
         public static string FileCannotBeMore {

@@ -498,6 +498,7 @@
     <Compile Include="ViewModels\ArticlesSearchedViewModel.cs" />
     <Compile Include="ViewModels\ArticlesTagViewModel.cs" />
     <Compile Include="ViewModels\ArticlePageViewModel.cs" />
+    <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\CommentExtendedWithArticleViewModel.cs" />
     <Compile Include="ViewModels\CommentsExtendedWithArticlesViewModel.cs" />

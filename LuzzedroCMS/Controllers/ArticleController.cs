@@ -10,6 +10,7 @@ using LuzzedroCMS.WebUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace LuzzedroCMS.Controllers
@@ -152,7 +153,7 @@ namespace LuzzedroCMS.Controllers
         public ActionResult ArticlesByCategory(string category, int page = 1)
         {
             ViewBag.HideTitle = true;
-            Category Category = repoCategory.Category(categoryName: category);
+            Category Category = repoCategory.Category(categoryName: category.Replace("-", " "));
             if (Category != null)
             {
                 int categoryID = Category.CategoryID;

@@ -19,6 +19,7 @@ namespace LuzzedroCMS.Domain.Entities
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Required")]
         [MinLength(1, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "FieldMustHaveMoreChars")]
         [MaxLength(50, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "FieldMustHaveNoMoreChars")]
+        [RegularExpression("[a-zA-Z0-9 ]+", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "FieldMustHaveOnlyNumbersChars")]
         public string Name { get; set; }
 
         [Display(Name = "Order", ResourceType = typeof(Resources))]

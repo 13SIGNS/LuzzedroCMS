@@ -168,6 +168,9 @@
   <data name="FieldMustHaveNoMoreChars" xml:space="preserve">
     <value>Pole {0} musi posiadać mniej znaków niż {1}</value>
   </data>
+  <data name="FieldMustHaveOnlyNumbersChars" xml:space="preserve">
+    <value>To pole może zawierać tylko litery, spacje i cyfry</value>
+  </data>
   <data name="InventPassword" xml:space="preserve">
     <value>Wymyśl hasło</value>
   </data>

@@ -663,4 +663,7 @@
   <data name="Sources" xml:space="preserve">
     <value>Źródła</value>
   </data>
+  <data name="FieldMustHaveOnlyNumbersChars" xml:space="preserve">
+    <value>To pole może zawierać tylko litery, spacje i cyfry</value>
+  </data>
 </root>

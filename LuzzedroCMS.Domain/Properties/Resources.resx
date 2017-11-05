@@ -168,6 +168,9 @@
   <data name="FieldMustHaveNoMoreChars" xml:space="preserve">
     <value>Field {0} must have a number of characters no larger than {1}</value>
   </data>
+  <data name="FieldMustHaveOnlyNumbersChars" xml:space="preserve">
+    <value>This field can contain only chars and numbers</value>
+  </data>
   <data name="InventPassword" xml:space="preserve">
     <value>New password</value>
   </data>

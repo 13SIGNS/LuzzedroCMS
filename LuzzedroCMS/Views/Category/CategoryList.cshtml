@@ -1,4 +1,4 @@
-﻿@model IList<LuzzedroCMS.Domain.Entities.Category>
+﻿@model IList<LuzzedroCMS.Models.CategoryViewModel>
 @using LuzzedroCMS.WebUI.Properties
 
 @{
@@ -19,7 +19,7 @@
                 @foreach (var cat in Model)
             {
                 string active = Request.Params["category"] == cat.Name ? "active" : string.Empty;
-                    <li class="@active category-nav">@Html.RouteLink(@cat.Name, "Category", new { controller = "Article", action = "ArticlesByCategory", category = @cat.Name })</li>
+                    <li class="@active category-nav">@Html.RouteLink(@cat.Name, "Category", new { controller = "Article", action = "ArticlesByCategory", category = @cat.CategoryNameEscaped })</li>
                 }
             </ul>
         </div>
