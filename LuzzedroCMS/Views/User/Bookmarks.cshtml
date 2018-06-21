@@ -1,21 +1,21 @@
-﻿@model LuzzedroCMS.Models.ArticlesExtendedViewModel
+﻿@model LuzzedroCMS.Models.ArticlesViewModel
 @using LuzzedroCMS.WebUI.Properties
 
-@foreach (var articleExtended in Model.ArticlesExtended)
+@foreach (var article in Model.Articles)
 {
-    <a href="@Url.RouteUrl("Article", new { url = articleExtended.Article.Url })" title="@articleExtended.Article.Title">
+    <a href="@Url.RouteUrl("Article", new { url = article.Url })" title="@article.Title">
         <div class="row">
             <div class="col-md-2">
-                <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, articleExtended.Article.ImageName))" alt="@articleExtended.Article.ImageDesc" title="@articleExtended.Article.ImageDesc" />
+                <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, article.ImageName))" alt="@article.ImageDesc" title="@article.ImageDesc" />
             </div>
             <div class="col-md-10">
-                <h4>@articleExtended.Article.Title</h4>
+                <h4>@article.Title</h4>
             </div>
         </div>
     </a>
     <hr />
 }
-@if (!Model.ArticlesExtended.Any())
+@if (!Model.Articles.Any())
 {
     <h4>@Resources.NoResults</h4>
 }

@@ -93,14 +93,6 @@ namespace LuzzedroCMS.Domain.Concrete
                 dbEntry.Status = 0;
 
             }
-            IList<ArticleCategoryAssociate> dbEntryAssociates = context.ArticleCategoryAssociates.Where(p => p.CategoryID == categoryID).ToList();
-            foreach (var dbEntryAssociate in dbEntryAssociates)
-            {
-                if (dbEntryAssociate != null)
-                {
-                    dbEntryAssociate.Status = 0;
-                }
-            }
             context.SaveChanges();
         }
 
@@ -111,14 +103,7 @@ namespace LuzzedroCMS.Domain.Concrete
             {
                 context.Categories.Remove(dbEntry);
             }
-            IList<ArticleCategoryAssociate> dbEntryAssociates = context.ArticleCategoryAssociates.Where(p => p.CategoryID == categoryID).ToList();
-            foreach (var dbEntryAssociate in dbEntryAssociates)
-            {
-                if (dbEntryAssociate != null)
-                {
-                    context.ArticleCategoryAssociates.Remove(dbEntryAssociate);
-                }
-            }
+
             context.SaveChanges();
         }
 

@@ -16,13 +16,13 @@
 @using (Html.BeginForm("EditArticle", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(x => x.ArticleExtended.Article.ArticleID)
+    @Html.HiddenFor(x => x.ArticleID)
     <div class="form-horizontal">
         @Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(x => x.Categories, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(x => x.ArticleExtended.Article.CategoryID, new SelectList(Model.Categories.AsEnumerable(), "CategoryID", "Name"), new { @class = "form-control md-2" })
+                @Html.DropDownListFor(x => x.Article.Category.CategoryID, new SelectList(Model.Categories.AsEnumerable(), "CategoryID", "Name"), new { @class = "form-control md-2" })
                 @Html.ActionLink(Resources.AddCategory, "EditCategory", "Admin", new { target = "_blank" })
             </div>
         </div>
@@ -31,28 +31,30 @@
             <div class="col-md-10">
                 @Html.ListBoxFor(x => x.SelectedTagsId, new MultiSelectList(Model.Tags.AsEnumerable(), "TagID", "Name"), new { @class = "full-width chosen", data_placeholder = Resources.Choose })
                 @Html.ActionLink(Resources.AddTag, "EditTag", "Admin", new { target = "_blank" })
-                @Html.ValidationMessageFor(x => x.ArticleExtended.Tags, string.Empty, new { @class = "text-danger" })
+                @Html.ValidationMessageFor(x => x.Article.Tags, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
-        @if (Model.ArticleExtended.Article.ImageName != null)
+        @if (Model.Article.ImageName != null)
                 {
             <div class="form-group">
                 @Html.Label("Image", Resources.CurrentMainPhoto, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, Model.ArticleExtended.Article.ImageName))" />
+                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, Model.Article.ImageName))" />
+    />
+                    />
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(x => x.ArticleExtended.Article.ImageName, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(x => x.Article.ImageName, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DisplayFor(x => x.ArticleExtended.Article.ImageName)
+                    @Html.DisplayFor(x => x.Article.ImageName)
                 </div>
             </div>
         }
         <div class="form-group">
-            @Html.LabelFor(x => x.ArticleExtended.Article.ImageDesc, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(x => x.Article.ImageDesc, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(x => x.ArticleExtended.Article.ImageDesc, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(x => x.Article.ImageDesc, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <div class="form-group">
@@ -74,57 +76,57 @@
                 @Html.ActionLink(Resources.AddImage, "EditPhoto", "Admin", new { target = "_blank" })
             </div>
         </div>
-        @Html.Hidden("ExistingImageName", Model.ArticleExtended.Article.ImageName)
+        @Html.Hidden("ExistingImageName", Model.Article.ImageName)
         <div class="form-group">
-            @Html.LabelFor(x => x.ArticleExtended.Article.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(x => x.Article.Content, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(x => x.ArticleExtended.Article.Content, new { htmlAttributes = new { @class = "form-control editor" } })
-                @Html.ValidationMessageFor(x => x.ArticleExtended.Article.Content, string.Empty, new { @class = "text-danger" })
+                @Html.EditorFor(x => x.Article.Content, new { htmlAttributes = new { @class = "form-control editor" } })
+                @Html.ValidationMessageFor(x => x.Article.Content, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(x => x.ArticleExtended.Article.DateExp, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(x => x.Article.DateExp, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(x => x.ArticleExtended.Article.DateExp, new { htmlAttributes = new { @class = "form-control datepicker" } })
-                @Html.ValidationMessageFor(x => x.ArticleExtended.Article.DateExp, string.Empty, new { @class = "text-danger" })
+                @Html.EditorFor(x => x.Article.DateExp, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                @Html.ValidationMessageFor(x => x.Article.DateExp, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(x => x.ArticleExtended.Article.DatePub, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(x => x.Article.DatePub, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(x => x.ArticleExtended.Article.DatePub, new { htmlAttributes = new { @class = "form-control datepicker" } })
-                @Html.ValidationMessageFor(x => x.ArticleExtended.Article.DatePub, string.Empty, new { @class = "text-danger" })
+                @Html.EditorFor(x => x.Article.DatePub, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                @Html.ValidationMessageFor(x => x.Article.DatePub, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(x => x.ArticleExtended.Article.Lead, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(x => x.Article.Lead, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(x => x.ArticleExtended.Article.Lead, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(x => x.ArticleExtended.Article.Lead, string.Empty, new { @class = "text-danger" })
+                @Html.EditorFor(x => x.Article.Lead, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.Article.Lead, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(x => x.ArticleExtended.Article.Source, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(x => x.Article.Source, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(x => x.ArticleExtended.Article.Source, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(x => x.ArticleExtended.Article.Source, string.Empty, new { @class = "text-danger" })
+                @Html.EditorFor(x => x.Article.Source, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.Article.Source, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(x => x.ArticleExtended.Article.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(x => x.Article.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(x => x.ArticleExtended.Article.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(x => x.ArticleExtended.Article.Title, string.Empty, new { @class = "text-danger" })
+                @Html.EditorFor(x => x.Article.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.Article.Title, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(x => x.ArticleExtended.Article.Status, Resources.Visibility, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(x => x.Article.Status, Resources.Visibility, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default @((Model.ArticleExtended.Article.Status)==1?"active":string.Empty)">@Html.RadioButtonFor(x => x.ArticleExtended.Article.Status, 1, true) <span class="fa fa-eye"></span></label>
-                    <label class="btn btn-default @((Model.ArticleExtended.Article.Status)==0?"active":string.Empty)">@Html.RadioButtonFor(x => x.ArticleExtended.Article.Status, 0, false) <span class="fa fa-eye-slash"></span></label>
+                    <label class="btn btn-default @((Model.Article.Status)==1?"active":string.Empty)">@Html.RadioButtonFor(x => x.Article.Status, 1, true) <span class="fa fa-eye"></span></label>
+                    <label class="btn btn-default @((Model.Article.Status)==0?"active":string.Empty)">@Html.RadioButtonFor(x => x.Article.Status, 0, false) <span class="fa fa-eye-slash"></span></label>
                 </div>
-                @Html.ValidationMessageFor(x => x.ArticleExtended.Article.Status, string.Empty, new { @class = "text-danger" })
+                @Html.ValidationMessageFor(x => x.Article.Status, string.Empty, new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">

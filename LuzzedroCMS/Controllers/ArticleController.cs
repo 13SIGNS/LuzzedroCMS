@@ -44,11 +44,11 @@ namespace LuzzedroCMS.Controllers
         public ViewResult Index()
         {
             ViewBag.HideTitle = true;
-            IList<ArticleExtended> latestArticles = repoArticle.ArticlesExtended(take: 11);
-            IList<ArticleExtended> articlesByCategorySection1 = repoCategory.Categories(page: 1, take: 1).FirstOrDefault() != null ? repoArticle.ArticlesExtended(categoryID: repoCategory.Categories(page: 1, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
-            IList<ArticleExtended> articlesByCategorySection2 = repoCategory.Categories(page: 2, take: 1).FirstOrDefault() != null ? repoArticle.ArticlesExtended(categoryID: repoCategory.Categories(page: 2, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
-            IList<ArticleExtended> articlesByCategorySection3 = repoCategory.Categories(page: 3, take: 1).FirstOrDefault() != null ? repoArticle.ArticlesExtended(categoryID: repoCategory.Categories(page: 3, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
-            IList<ArticleExtended> articlesByCategorySection4 = repoCategory.Categories(page: 4, take: 1).FirstOrDefault() != null ? repoArticle.ArticlesExtended(categoryID: repoCategory.Categories(page: 4, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
+            IList<Article> latestArticles = repoArticle.Articles(take: 11);
+            IList<Article> articlesByCategorySection1 = repoCategory.Categories(page: 1, take: 1).FirstOrDefault() != null ? repoArticle.Articles(categoryID: repoCategory.Categories(page: 1, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
+            IList<Article> articlesByCategorySection2 = repoCategory.Categories(page: 2, take: 1).FirstOrDefault() != null ? repoArticle.Articles(categoryID: repoCategory.Categories(page: 2, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
+            IList<Article> articlesByCategorySection3 = repoCategory.Categories(page: 3, take: 1).FirstOrDefault() != null ? repoArticle.Articles(categoryID: repoCategory.Categories(page: 3, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
+            IList<Article> articlesByCategorySection4 = repoCategory.Categories(page: 4, take: 1).FirstOrDefault() != null ? repoArticle.Articles(categoryID: repoCategory.Categories(page: 4, take: 1).FirstOrDefault().CategoryID, take: 4) : null;
             ArticleListPageViewModel articleListViewModel = new ArticleListPageViewModel
             {
                 LatestArticles = latestArticles,
@@ -67,12 +67,12 @@ namespace LuzzedroCMS.Controllers
         [ChildActionOnly]
         public ActionResult ArticlesMore()
         {
-            ArticlesExtendedViewModel articlesExtendedViewModel = new ArticlesExtendedViewModel
+            ArticlesViewModel articlesViewModel = new ArticlesViewModel
             {
-                ArticlesExtended = repoArticle.ArticlesExtended().OrderBy(x => Guid.NewGuid()).Take(4).ToList(),
+                Articles = repoArticle.Articles().OrderBy(x => Guid.NewGuid()).Take(4).ToList(),
                 ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL)
             };
-            return View(articlesExtendedViewModel);
+            return View(articlesViewModel);
         }
 
 
@@ -80,29 +80,24 @@ namespace LuzzedroCMS.Controllers
         public ActionResult Article(string category, string url)
         {
             ViewBag.HideTitle = true;
-            ArticleExtended articleExtended = repoArticle.ArticleExtended(url: url);
-            if (articleExtended != null)
+            Article article = repoArticle.Article(url: url);
+            if (article != null)
             {
                 User user = repoUser.User(email: repoSession.UserEmail);
                 ArticlePageViewModel articlePageViewModel = new ArticlePageViewModel()
                 {
-                    Article = articleExtended.Article,
-                    Category = articleExtended.Category,
-                    User = articleExtended.User,
-                    CommentsExtended = articleExtended.CommentsExtended,
+                    Category = article.Category,
+                    Comments = article.Comments,
                     ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
                     HasUserNick = !string.IsNullOrEmpty(repoSession.UserNick),
                     IsLogged = repoSession.IsLogged,
-                    HasBookmark = user != null ? repoArticle.BookmarkUserArticleAssociate(
-                        articleID: articleExtended.Article.ArticleID,
-                        userID: user.UserID) != null : false,
-                    Tags = articleExtended.Tags
+                    Tags = article.Tags
                 };
-                ViewBag.Title = String.Format("{0} - {1}", articleExtended.Article.Title, Resources.Article);
-                if (articleExtended != null)
+                ViewBag.Title = String.Format("{0} - {1}", article.Title, Resources.Article);
+                if (article != null)
                 {
-                    ViewBag.Description = articleExtended.Article.Lead;
-                    ViewBag.Keywords = String.Format("{0} - {1}", articleExtended.Article.ImageDesc, Resources.Article);
+                    ViewBag.Description = article.Lead;
+                    ViewBag.Keywords = String.Format("{0} - {1}", article.ImageDesc, Resources.Article);
                 }
                 return View(articlePageViewModel);
             }
@@ -117,12 +112,12 @@ namespace LuzzedroCMS.Controllers
         public ActionResult ArticlesByTag(string tag, int page = 1)
         {
             ViewBag.HideTitle = true;
-            IList<ArticleExtended> articlesExtended = repoArticle.ArticlesExtended(tagName: tag, page: page, take: PageSize).ToList();
-            if (articlesExtended.Any())
+            IList<Article> articles = repoArticle.Articles(tagName: tag, page: page, take: PageSize).ToList();
+            if (articles.Any())
             {
                 ArticlesTagViewModel articlesTagViewModel = new ArticlesTagViewModel
                 {
-                    ArticlesExtended = articlesExtended,
+                    Articles = articles,
                     TagName = tag,
                     ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
                     PagingInfo = new PagingInfo
@@ -133,10 +128,10 @@ namespace LuzzedroCMS.Controllers
                     }
                 };
                 ViewBag.Title = String.Format("{0} - {1}", tag, Resources.ArticleByTag);
-                if (articlesExtended.Count() != 0)
+                if (articles.Count() != 0)
                 {
-                    ViewBag.Description = String.Format("{0} - {1}", articlesExtended.First().Article.Lead, Resources.ArticleByTag);
-                    ViewBag.Keywords = String.Format("{0} - {1}", articlesExtended.First().Article.ImageDesc, Resources.ArticleByTag);
+                    ViewBag.Description = String.Format("{0} - {1}", articles.First().Lead, Resources.ArticleByTag);
+                    ViewBag.Keywords = String.Format("{0} - {1}", articles.First().ImageDesc, Resources.ArticleByTag);
                 }
                 return View(articlesTagViewModel);
             }
@@ -155,18 +150,18 @@ namespace LuzzedroCMS.Controllers
             if (Category != null)
             {
                 int categoryID = Category.CategoryID;
-                IList<ArticleExtended> articlesExtended = repoArticle.ArticlesExtended(categoryID: categoryID, page: page, take: PageSize).ToList();
-                if (articlesExtended.Any())
+                IList<Article> articles = repoArticle.Articles(categoryID: categoryID, page: page, take: PageSize).ToList();
+                if (articles.Any())
                 {
                     ViewBag.Title = String.Format("{0} - {1}", category, Resources.ArticleByCategory);
-                    if (articlesExtended.Count() != 0)
+                    if (articles.Count() != 0)
                     {
-                        ViewBag.Description = String.Format("{0} - {1}", articlesExtended.First().Article.Lead, Resources.ArticleByCategory);
-                        ViewBag.Keywords = String.Format("{0} - {1}", articlesExtended.First().Article.ImageDesc, Resources.ArticleByCategory);
+                        ViewBag.Description = String.Format("{0} - {1}", articles.First().Lead, Resources.ArticleByCategory);
+                        ViewBag.Keywords = String.Format("{0} - {1}", articles.First().ImageDesc, Resources.ArticleByCategory);
                     }
                     return View(new ArticlesCategoryViewModel
                     {
-                        ArticlesExtended = articlesExtended,
+                        Articles = articles,
                         CategoryName = Category.Name,
                         ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
                         PagingInfo = new PagingInfo
@@ -195,7 +190,7 @@ namespace LuzzedroCMS.Controllers
             }
             else
             {
-                repoArticle.SaveBookmark(article.ArticleID, user.UserID);
+                repoArticle.SaveBookmark(articleID, user.UserID);
                 return Resources.ProperlyAddedBookmark;
             }
         }

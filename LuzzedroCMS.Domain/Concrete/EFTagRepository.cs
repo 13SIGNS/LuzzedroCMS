@@ -53,15 +53,6 @@ namespace LuzzedroCMS.Domain.Concrete
                 tags = tags.Where(p => p.Status == 1);
             }
 
-            if (articleID != 0)
-            {
-                var tagIDs = context.ArticleTagAssociates.Where(p => p.ArticleID == articleID).Select(x => x.TagID).ToList();
-                if (tagIDs != null)
-                {
-                    tags = tags.Where(p => tagIDs.Contains(p.TagID));
-                }
-            }
-
             if (orderByDescending != null)
             {
                 tags = tags.OrderByDescending(orderByDescending);
@@ -88,32 +79,6 @@ namespace LuzzedroCMS.Domain.Concrete
             }
 
             return tags.ToList();
-        }
-
-        public IDictionary<string, int> TagsCounted(
-            bool enabled = true,
-            int page = 1,
-            int take = 0,
-            int articleID = 0,
-            Expression<Func<Tag, bool>> orderBy = null,
-            Expression<Func<Tag, bool>> orderByDescending = null)
-        {
-            IList<Tag> tags = Tags(enabled, page, take, articleID, orderBy, orderByDescending);
-            IDictionary<string, int> tagsCounted = new Dictionary<string, int>();
-
-            foreach (var tag in tags)
-            {
-                string tagName = tag.Name;
-                int tagCount = context.ArticleTagAssociates.Where(x => x.TagID == tag.TagID).Select(x => x.TagID).Count();
-                if (tagCount != 0)
-                {
-                    if (!tagsCounted.ContainsKey(tagName))
-                    {
-                        tagsCounted.Add(tagName, tagCount);
-                    }
-                }
-            }
-            return tagsCounted;
         }
 
         public void Remove(int tagID)

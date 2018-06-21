@@ -1,6 +1,7 @@
 ﻿using LuzzedroCMS.Domain.Infrastructure.Concrete;
 using LuzzedroCMS.Domain.Properties;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
@@ -35,6 +36,8 @@ namespace LuzzedroCMS.Domain.Entities
 
         [Display(Name = "MainPhotoName", ResourceType = typeof(Resources))]
         public string PhotoUrl { get; set; }
+
+        public virtual IList<Article> BookmarkArticles { get; set; }
 
         [Display(Name = "Visibility", ResourceType = typeof(Resources))]
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Required")]

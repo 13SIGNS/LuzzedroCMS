@@ -23,14 +23,6 @@ namespace LuzzedroCMS.Domain.Abstract
             Expression<Func<Tag, bool>> orderBy = null,
             Expression<Func<Tag, bool>> orderByDescending = null);
 
-        IDictionary<string, int> TagsCounted(
-            bool enabled = true,
-            int page = 1,
-            int take = 0,
-            int articleID = 0,
-            Expression<Func<Tag, bool>> orderBy = null,
-            Expression<Func<Tag, bool>> orderByDescending = null);
-
         void Save(Tag tag);
         void Remove(int tagID);
         void RemovePermanently(int tagID);

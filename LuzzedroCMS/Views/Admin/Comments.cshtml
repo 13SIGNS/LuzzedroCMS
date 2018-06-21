@@ -1,7 +1,7 @@
 ﻿@model LuzzedroCMS.Models.CommentsViewModel
 @using LuzzedroCMS.WebUI.Properties
 
-@foreach (var commentExtended in Model.CommentsExtended)
+@foreach (var comment in Model.Comments)
 {
     <div class="panel panel-default">
         <div class="panel-body">
@@ -18,7 +18,7 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    @if (commentExtended.Comment.Status == 1)
+                    @if (comment.Status == 1)
                     {
                         <i class="fa fa-eye"></i>
                     }
@@ -26,21 +26,21 @@
                     {
                         <i class="fa fa-eye-slash"></i>
                     }
-                    @commentExtended.Comment.Content
+                    @comment.Content
                 </div>
                 <div class="col-md-2">
-                    @commentExtended.Comment.Date.ToString()
+                    @comment.Date.ToString()
                 </div>
                 <div class="col-md-3">
-                    @commentExtended.User.Nick<br />@commentExtended.User.Email
+                    @comment.User.Nick<br />@comment.User.Email
                 </div>
                 <div class="col-md-3">
                     @using (Html.BeginForm("RemoveComment", "Admin", FormMethod.Post, new { @class = "inline-form" }))
                     {
                         @Html.AntiForgeryToken()
-                        @Html.Hidden("CommentID", commentExtended.Comment.CommentID)
+                        @Html.Hidden("CommentID", comment.CommentID)
                         <input type="submit" value="@Resources.Remove" class="btn btn-danger" />
-                        @Html.ActionLink(Resources.Edit, "EditComment", new { commentExtended.Comment.CommentID }, new { @class = "btn btn-default" })
+                        @Html.ActionLink(Resources.Edit, "EditComment", new { comment.CommentID }, new { @class = "btn btn-default" })
                     }
                 </div>
             </div>

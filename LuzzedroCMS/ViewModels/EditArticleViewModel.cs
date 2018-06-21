@@ -8,7 +8,7 @@ namespace LuzzedroCMS.Models
 {
     public class EditArticleViewModel
     {
-        public ArticleExtended ArticleExtended { get; set; }
+        public Article Article { get; set; }
 
         [Display(Name = "ChooseTags", ResourceType = typeof(Resources))]
         public IList<int> SelectedTagsId { get; set; }

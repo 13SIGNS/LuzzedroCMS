@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LuzzedroCMS.Models
 {
-    public class ArticlesTagViewModel : ArticlesExtendedViewModel
+    public class ArticlesTagViewModel : ArticlesViewModel
     {
         public string TagName { get; set; }
     }

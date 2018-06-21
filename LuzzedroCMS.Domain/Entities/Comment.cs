@@ -19,10 +19,12 @@ namespace LuzzedroCMS.Domain.Entities
         public int ParentCommentID { get; set; }
 
         [Display(Name = "ArticleID", ResourceType = typeof(Resources))]
-        public int ArticleID { get; set; }
+        public virtual Article Article { get; set; }
 
         [HiddenInput(DisplayValue = false)]
-        public int UserID { get; set; }
+        public virtual User User { get; set; }
+
+        public virtual Comment ParentComment { get; set; }
 
         [HiddenInput]
         public DateTime Date { get; set; }

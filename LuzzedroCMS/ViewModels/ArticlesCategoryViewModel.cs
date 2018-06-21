@@ -6,7 +6,7 @@ using System.Web;
 
 namespace LuzzedroCMS.Models
 {
-    public class ArticlesCategoryViewModel : ArticlesExtendedViewModel
+    public class ArticlesCategoryViewModel : ArticlesViewModel
     {
         public string CategoryName { get; set; }
         public string CategoryNameEscaped

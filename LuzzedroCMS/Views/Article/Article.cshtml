@@ -26,7 +26,7 @@
 {
     <div class="row">
         <div class="col-md-12">
-            <h2>@Model.Article.Title</h2>
+            <h2>@Model.Title</h2>
         </div>
     </div>
     <div class="row">
@@ -36,7 +36,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <img src="@Url.Content(String.Format("{0}ArticleImage/Images900/{1}", Model.ContentExternalUrl, Model.Article.ImageName))" alt="@Model.Article.ImageDesc" title="@Model.Article.ImageDesc" class="image-article" />
+            <img src="@Url.Content(String.Format("{0}ArticleImage/Images900/{1}", Model.ContentExternalUrl, Model.ImageName))" alt="@Model.ImageDesc" title="@Model.ImageDesc" class="image-article" />
         </div>
     </div>
     <div class="row">
@@ -52,20 +52,20 @@
     </div>
     <div class="row">
         <div id="article-content" class="col-md-9 pull-right article-content">
-            <div>@Html.Raw(Model.Article.Content)</div>
-            <div class="article-sources"><p>@Resources.Sources: @Html.Raw(Model.Article.Source)</p></div>
+            <div>@Html.Raw(Model.Content)</div>
+            <div class="article-sources"><p>@Resources.Sources: @Html.Raw(Model.Source)</p></div>
         </div>
         <div class="col-md-3">
             <div class="article-externals">
                 <div class="user-photo pull-left">
-                    <img src="@Url.Content(String.Format("{0}UserProfileImage/{1}", @Model.ContentExternalUrl, @Model.User.PhotoUrl ?? "null.png"))" alt="@Model.User.Nick" title="" class="img-circle" />
-                    <span>@Model.User.Nick</span>
+                    <img src="@Url.Content(String.Format("{0}UserProfileImage/{1}", @Model.ContentExternalUrl, @Model.PhotoUrl ?? "null.png"))" alt="@Model.Nick" title="" class="img-circle" />
+                    <span>@Model.Nick</span>
                 </div>
                 <div class="externals-title">
-                    @Model.Article.Title
+                    @Model.Title
                 </div>
                 <div class="externals-date">
-                    @Model.Article.DatePub
+                    @Model.DatePub
                 </div>
             </div>
         </div>
@@ -76,7 +76,7 @@
             <div class="col-md-12">
                 @using (Ajax.BeginForm("AddBookmark", null, ajaxOptions, new { @class = "pull-right" }))
                 {
-                    @Html.Hidden("url", @Model.Article.Url)
+                    @Html.Hidden("url", @Model.Url)
                     <button type="submit" class="btn btn-danger add-bookmark">
                         <span id="loading" class="spinner">
                             <span class="fa fa-refresh fa-spin"></span>
@@ -93,19 +93,19 @@
     <div class="row comments">
         <div class="col-md-12">
             <div class="default-title">@Resources.Comments</div>
-            @if (Model.CommentsExtended.Any())
+            @if (Model.Comments.Any())
             {
-                foreach (var commentsExtended in Model.CommentsExtended)
+                foreach (var Comments in Model.Comments)
                 {
                     <div class="media">
                         <div class="media-left">
                             <span class="user-photo" href="#">
-                                <img class="media-object img-circle" src="@Url.Content(String.Format("{0}UserProfileImage/{1}", @Model.ContentExternalUrl, commentsExtended.User.PhotoUrl ?? "null.png"))" alt="@Resources.UserPhoto" title="@Resources.UserPhoto" />
+                                <img class="media-object img-circle" src="@Url.Content(String.Format("{0}UserProfileImage/{1}", @Model.ContentExternalUrl, Comments.User.PhotoUrl ?? "null.png"))" alt="@Resources.UserPhoto" title="@Resources.UserPhoto" />
                             </span>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading comment-heading">@commentsExtended.User.Nick | <span class="comment-heading-date">@commentsExtended.Comment.Date</span></h4>
-                            <p>@commentsExtended.Comment.Content</p>
+                            <h4 class="media-heading comment-heading">@Comments.User.Nick | <span class="comment-heading-date">@Comments.Date</span></h4>
+                            <p>@Comments.Content</p>
                         </div>
                     </div>
                     <hr />
@@ -131,7 +131,7 @@
             @Html.Action("EditNick", "User")
         </div>
         <div class="@(Model.HasUserNick ? string.Empty : "hidden")" id="edit-comment-form">
-            @Html.Action("EditComment", "User", new { articleID = Model.Article.ArticleID, returnUrl = Url.RouteUrl("Article", new { category = Model.Category.Name, url = Model.Article.Url }) })
+            @Html.Action("EditComment", "User", new { articleID = Model.ArticleID, returnUrl = Url.RouteUrl("Article", new { category = Model.Category.Name, url = Model.Url }) })
         </div>
     }
     @Html.Action("ArticlesMore", "Article")

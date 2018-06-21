@@ -1,18 +1,18 @@
-﻿@model LuzzedroCMS.Models.CommentsExtendedWithArticlesViewModel
+﻿@model LuzzedroCMS.Models.CommentsWithArticlesViewModel
 @using LuzzedroCMS.WebUI.Properties
 
-@foreach (var commentExtendedWithArticle in Model.CommentExtendedWithArticleViewModel)
+@foreach (var commentWithArticle in Model.CommentWithArticleViewModel)
 {
     <div class="panel panel-default">
         <div class="panel-body">
-            @commentExtendedWithArticle.CommentExtended.Comment.Date
+            @commentWithArticle.Comment.Date
             |
-            @commentExtendedWithArticle.CommentExtended.Comment.Content.Substring(0, commentExtendedWithArticle.CommentExtended.Comment.Content.Length > 200 ? 240 : commentExtendedWithArticle.CommentExtended.Comment.Content.Length)
-            @if (commentExtendedWithArticle.CommentExtended.Comment.Content.Length > 200)
+            @commentWithArticle.Comment.Content.Substring(0, commentWithArticle.Comment.Content.Length > 200 ? 240 : commentWithArticle.Comment.Content.Length)
+            @if (commentWithArticle.Comment.Content.Length > 200)
             {
                 <span>...</span>
             }
-            <p>@Html.RouteLink(Resources.GoToArticle, "Article", new { url = commentExtendedWithArticle.ArticleExtended.Article.Url })</p>
+            <p>@Html.RouteLink(Resources.GoToArticle, "Article", new { url = commentWithArticle.Article.Url })</p>
         </div>
     </div>
 }

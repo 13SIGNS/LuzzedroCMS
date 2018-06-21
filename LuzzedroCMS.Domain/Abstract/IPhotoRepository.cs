@@ -19,7 +19,6 @@ namespace LuzzedroCMS.Domain.Abstract
             Expression<Func<Photo, bool>> orderByDescending = null);
 
         void Save(Photo photo, int userId);
-        void Remove(int photoID);
         void RemovePermanently(int photoID);
     }
 }

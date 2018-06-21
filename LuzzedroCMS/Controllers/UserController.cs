@@ -183,10 +183,10 @@ namespace LuzzedroCMS.Controllers
         {
             ViewBag.Title = Resources.Bookmarks;
             ViewBag.HideTitle = false;
-            IList<ArticleExtended> articlesExtended = repoArticle.ArticlesExtended(bookmarkUserID: user.UserID).OrderBy(x => x.Article.DateAdd).Skip((page - 1) * PageSize).Take(PageSize).ToList();
-            ArticlesExtendedViewModel articlesCategoriesPagingViewModel = new ArticlesExtendedViewModel
+            IList<Article> articles = repoArticle.Articles(bookmarkUserID: user.UserID).OrderBy(x => x.DateAdd).Skip((page - 1) * PageSize).Take(PageSize).ToList();
+            ArticlesViewModel articlesCategoriesPagingViewModel = new ArticlesViewModel
             {
-                ArticlesExtended = articlesExtended,
+                Articles = articles,
                 ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
                 PagingInfo = new PagingInfo
                 {
@@ -226,19 +226,19 @@ namespace LuzzedroCMS.Controllers
         public ViewResult Comments(int page = 1)
         {
             ViewBag.Title = Resources.ListMyComments;
-            IList<CommentExtended> commentsExtended = repoComment.CommentsExtended(userID: user.UserID, page: page, take: PageSize);
-            IList<CommentExtendedWithArticleViewModel> commentExtendedWithArticleViewModel = new List<CommentExtendedWithArticleViewModel>();
-            foreach (var commentExtended in commentsExtended)
+            IList<Comment> Comments = repoComment.Comments(userID: user.UserID, page: page, take: PageSize);
+            IList<CommentWithArticleViewModel> commentWithArticleViewModel = new List<CommentWithArticleViewModel>();
+            foreach (var comment in Comments)
             {
-                commentExtendedWithArticleViewModel.Add(new CommentExtendedWithArticleViewModel
+                commentWithArticleViewModel.Add(new CommentWithArticleViewModel
                 {
-                    CommentExtended = commentExtended,
-                    ArticleExtended = repoArticle.ArticleExtended(commentID: commentExtended.Comment.CommentID)
+                    Comment = comment,
+                    Article = repoArticle.Article(commentID: comment.CommentID)
                 });
             }
-            CommentsExtendedWithArticlesViewModel commentsExtendedViewModel = new CommentsExtendedWithArticlesViewModel
+            CommentsWithArticlesViewModel CommentsViewModel = new CommentsWithArticlesViewModel
             {
-                CommentExtendedWithArticleViewModel = commentExtendedWithArticleViewModel,
+                CommentWithArticleViewModel = commentWithArticleViewModel,
                 ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
                 PagingInfo = new PagingInfo
                 {
@@ -247,7 +247,7 @@ namespace LuzzedroCMS.Controllers
                     TotalItems = repoComment.Comments(userID: user.UserID).Count()
                 }
             };
-            return View(commentsExtendedViewModel);
+            return View(CommentsViewModel);
         }
 
         [HttpGet]
@@ -277,9 +277,7 @@ namespace LuzzedroCMS.Controllers
                 {
                     Comment newComment = new Comment
                     {
-                        ArticleID = articleID,
-                        Content = comment.Content,
-                        UserID = user.UserID
+                        Content = comment.Content
                     };
                     int commentID = repoComment.Save(newComment);
                 }

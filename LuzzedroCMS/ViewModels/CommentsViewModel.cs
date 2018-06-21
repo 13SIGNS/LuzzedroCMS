@@ -9,7 +9,7 @@ namespace LuzzedroCMS.Models
 {
     public class CommentsViewModel
     {
-        public IList<CommentExtended> CommentsExtended { get; set; }
+        public IList<Comment> Comments { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }
 }

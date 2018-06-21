@@ -1,4 +1,4 @@
-﻿@model LuzzedroCMS.Models.ArticlesExtendedViewModel
+﻿@model LuzzedroCMS.Models.ArticlesViewModel
 @using LuzzedroCMS.Domain.Entities;
 @using LuzzedroCMS.WebUI.Properties
 @{
@@ -11,20 +11,20 @@
     </div>
 </div>
 <div class="row">
-    @foreach (ArticleExtended articleExtended in Model.ArticlesExtended)
+    @foreach (Article article in Model.Articles)
     {
         <div class="col-sm-6 col-md-3">
-            <a href="@Url.RouteUrl("Article", new { url = articleExtended.Article.Url})" class="thumbnail thumbnail-link" title="@articleExtended.Article.Title">
-                <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, articleExtended.Article.ImageName))" alt="@articleExtended.Article.ImageDesc" title="@articleExtended.Article.ImageDesc" />
+            <a href="@Url.RouteUrl("Article", new { url = article.Url})" class="thumbnail thumbnail-link" title="@article.Title">
+                <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, article.ImageName))" alt="@article.ImageDesc" title="@article.ImageDesc" />
                 <div class="caption">
                     <div>
-                        @if (articleExtended.CommentsExtended.Count() > 0)
+                        @if (article.Comments.Count() > 0)
                         {
-                            <span class="comment-number"><i class="fa fa-comment"></i> @articleExtended.CommentsExtended.Count()</span>
+                            <span class="comment-number"><i class="fa fa-comment"></i> @article.Comments.Count()</span>
                         }
                     </div>
-                    <h3 class="caption-article-title">@articleExtended.Article.Title</h3>
-                    <p>@articleExtended.Article.Lead</p>
+                    <h3 class="caption-article-title">@article.Title</h3>
+                    <p>@article.Lead</p>
                 </div>
             </a>
         </div>

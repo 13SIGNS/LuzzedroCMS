@@ -15,6 +15,8 @@ namespace LuzzedroCMS.Domain.Entities
         [HiddenInput(DisplayValue = false)]
         public int TagID { get; set; }
 
+        public virtual IList<Article> Articles { get; set; }
+
         [Display(Name = "TagName", ResourceType = typeof(Resources))]
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Required")]
         [MinLength(2, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "FieldMustHaveMoreChars")]

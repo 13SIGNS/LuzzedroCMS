@@ -7,9 +7,9 @@ using System.Web;
 
 namespace LuzzedroCMS.Models
 {
-    public class CommentsExtendedWithArticlesViewModel
+    public class CommentsWithArticlesViewModel
     {
-        public IList<CommentExtendedWithArticleViewModel> CommentExtendedWithArticleViewModel { get; set; }
+        public IList<CommentWithArticleViewModel> CommentWithArticleViewModel { get; set; }
         public string ContentExternalUrl { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }

@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace LuzzedroCMS.Models
 {
-    public class ArticlesExtendedViewModel
+    public class ArticlesViewModel
     {
-        public IList<ArticleExtended> ArticlesExtended { get; set; }
+        public IList<Article> Articles { get; set; }
         public string ContentExternalUrl { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }

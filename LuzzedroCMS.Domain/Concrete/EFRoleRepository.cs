@@ -32,7 +32,7 @@ namespace LuzzedroCMS.Domain.Concrete
 
                     counter++;
                 }
-                //roleTable[counter] = "Admin";
+
                 return roleTable;
             }
             else

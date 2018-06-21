@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 using LuzzedroCMS.Domain.Properties;
+using System.Collections.Generic;
 
 namespace LuzzedroCMS.Domain.Entities
 {
@@ -16,8 +17,13 @@ namespace LuzzedroCMS.Domain.Entities
         public int UserID { get; set; }
 
         [Display(Name = "CategoryID", ResourceType = typeof(Resources))]
-        public int CategoryID { get; set; }
+        public virtual Category Category { get; set; }
 
+        public virtual IList<Comment> Comments { get; set; }
+
+        public virtual IList<Tag> Tags { get; set; }
+
+        public virtual Photo Photo { get; set; }
 
         [Display(Name = "MainPhotoName", ResourceType = typeof(Resources))]
         [MinLength(5, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "FieldMustHaveMoreChars")]

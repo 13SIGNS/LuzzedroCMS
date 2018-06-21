@@ -101,14 +101,6 @@ namespace LuzzedroCMS.Domain.Concrete
                 user.Status = 0;
             }
             context.SaveChanges();
-            IList<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.UserID == userID).ToList();
-            if (userPhotoAssociates != null)
-            {
-                foreach (var userPhotoAssociate in userPhotoAssociates)
-                {
-                    userPhotoAssociate.Status = 0;
-                }
-            }
         }
 
         public void RemovePermanently(int userID)
@@ -118,14 +110,7 @@ namespace LuzzedroCMS.Domain.Concrete
             {
                 context.Users.Remove(user);
             }
-            IList<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.UserID == userID).ToList();
-            if (userPhotoAssociates != null)
-            {
-                foreach (var userPhotoAssociate in userPhotoAssociates)
-                {
-                    context.UserPhotoAssociates.Remove(userPhotoAssociate);
-                }
-            }
+
             context.SaveChanges();
         }
 

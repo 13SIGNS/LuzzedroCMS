@@ -42,11 +42,11 @@ namespace LuzzedroCMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                IList<ArticleExtended> articlesExtended = repoArticle.ArticlesExtended(key: searchViewModel.Key, page: page, take: PageSize).OrderBy(x => x.Article.DateAdd).ToList();
+                IList<Article> articles = repoArticle.Articles(key: searchViewModel.Key, page: page, take: PageSize).OrderBy(x => x.DateAdd).ToList();
                 ArticlesSearchedViewModel articleSearchViewModel = new ArticlesSearchedViewModel
                 {
                     SearchKey = searchViewModel.Key,
-                    ArticlesExtended = articlesExtended,
+                    Articles = articles,
                     ContentExternalUrl = repoConfig.Get(ConfigurationKeyStatic.CONTENT_EXTERNAL_URL),
                     PagingInfo = new PagingInfo
                     {
@@ -56,10 +56,10 @@ namespace LuzzedroCMS.Controllers
                     }
                 };
                 ViewBag.Title = String.Format("{0} - {1}", searchViewModel.Key, Resources.SearchResult);
-                if (articlesExtended.Count() != 0)
+                if (articles.Count() != 0)
                 {
-                    ViewBag.Description = String.Format("{0} - {1}", articlesExtended.First().Article.Lead, Resources.SearchResult);
-                    ViewBag.Keywords = String.Format("{0} - {1}", articlesExtended.First().Article.ImageDesc, Resources.ArticleByCategory);
+                    ViewBag.Description = String.Format("{0} - {1}", articles.First().Lead, Resources.SearchResult);
+                    ViewBag.Keywords = String.Format("{0} - {1}", articles.First().ImageDesc, Resources.ArticleByCategory);
                 }
                 return View(articleSearchViewModel);
             }

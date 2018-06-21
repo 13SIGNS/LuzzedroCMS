@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LuzzedroCMS.Models
 {
-    public class ArticlePageViewModel : ArticleExtended
+    public class ArticlePageViewModel : Article
     {
         public string ContentExternalUrl { get; set; }
         public bool HasUserNick { get; set; }

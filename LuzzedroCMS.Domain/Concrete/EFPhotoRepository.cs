@@ -27,15 +27,6 @@ namespace LuzzedroCMS.Domain.Concrete
                 photos = photos.Where(p => p.Status == 1);
             }
 
-            if (userID != 0)
-            {
-                var photoIDs = context.UserPhotoAssociates.Where(p => p.UserID == userID).Select(x => x.PhotoID).ToList();
-                if (photoIDs != null)
-                {
-                    photos = photos.Where(p => photoIDs.Contains(p.PhotoID));
-                }
-            }
-
             if (orderByDescending != null)
             {
                 photos = photos.OrderByDescending(orderByDescending);
@@ -64,24 +55,6 @@ namespace LuzzedroCMS.Domain.Concrete
             return photos.ToList();
         }
 
-        public void Remove(int photoID)
-        {
-            Photo photo = context.Photos.Find(photoID);
-            if (photo != null)
-            {
-                photo.Status = 0;
-            }
-            IList<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.PhotoID == photoID).ToList();
-            if (userPhotoAssociates != null)
-            {
-                foreach (var userPhotoAssociate in userPhotoAssociates)
-                {
-                    userPhotoAssociate.Status = 0;
-                }
-            }
-            context.SaveChanges();
-        }
-
         public void RemovePermanently(int photoID)
         {
             Photo photo = context.Photos.Find(photoID);
@@ -89,14 +62,7 @@ namespace LuzzedroCMS.Domain.Concrete
             {
                 context.Photos.Remove(photo);
             }
-            IList<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.PhotoID == photoID).ToList();
-            if (userPhotoAssociates != null)
-            {
-                foreach (var userPhotoAssociate in userPhotoAssociates)
-                {
-                    context.UserPhotoAssociates.Remove(userPhotoAssociate);
-                }
-            }
+
             context.SaveChanges();
         }
 
@@ -117,17 +83,6 @@ namespace LuzzedroCMS.Domain.Concrete
                 Photo dbEntry = context.Photos.Find(photo.PhotoID);
                 if (dbEntry != null)
                 {
-                    if (dbEntry.Status == 0 && photo.Status == 1)
-                    {
-                        IList<UserPhotoAssociate> userPhotoAssociates = context.UserPhotoAssociates.Where(p => p.PhotoID == photo.PhotoID).ToList();
-                        if (userPhotoAssociates.Any())
-                        {
-                            foreach (var userPhotoAssociate in userPhotoAssociates)
-                            {
-                                userPhotoAssociate.Status = 1;
-                            }
-                        }
-                    }
                     dbEntry.Date = DateTime.Now;
                     dbEntry.Name = photo.Name;
                     dbEntry.Desc = photo.Desc;

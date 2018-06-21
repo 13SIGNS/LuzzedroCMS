@@ -6,9 +6,9 @@ using System.Web;
 
 namespace LuzzedroCMS.Models
 {
-    public class CommentExtendedWithArticleViewModel
+    public class CommentWithArticleViewModel
     {
-        public CommentExtended CommentExtended { get; set; }
-        public ArticleExtended ArticleExtended { get; set; }
+        public Comment Comment { get; set; }
+        public Article Article { get; set; }
     }
 }

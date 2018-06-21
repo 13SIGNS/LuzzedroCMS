@@ -2,20 +2,20 @@
 @using LuzzedroCMS.WebUI.Properties
 @using LuzzedroCMS.Domain.Entities;
 
-@helper ArticlesListByCategory(IList<ArticleExtended> articles, int number)
+@helper ArticlesListByCategory(IList<Article> articles, int number)
 {
 if (articles.Any() && articles.Skip(number).Any())
 {
-    ArticleExtended article = articles.Skip(number).First();
-        <a href="@Url.RouteUrl("Article", new { url = article.Article.Url })" class="thumbnail thumbnail-link" title="@article.Article.Title">
+    Article article = articles.Skip(number).First();
+        <a href="@Url.RouteUrl("Article", new { url = article.Url })" class="thumbnail thumbnail-link" title="@article.Title">
             <div class="row">
-                <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, article.Article.ImageName))" class="col-md-4" alt="@article.Article.ImageDesc" title="@article.Article.ImageDesc" />
+                <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, article.ImageName))" class="col-md-4" alt="@article.ImageDesc" title="@article.ImageDesc" />
                 <div class="caption col-md-8">
                     <h3 class="caption-article-title">
-                        @articles.Skip(number).First().Article.Title
-                        @if (article.CommentsExtended.Count() > 0)
+                        @articles.Skip(number).First().Title
+                        @if (article.Comments.Count() > 0)
                         {
-                            <span class="comment-number"><i class="fa fa-comment"></i> @article.CommentsExtended.Count()</span>
+                            <span class="comment-number"><i class="fa fa-comment"></i> @article.Comments.Count()</span>
                         }
                     </h3>
                 </div>
@@ -24,23 +24,23 @@ if (articles.Any() && articles.Skip(number).Any())
 }
 }
 
-@helper ArticlesListByCategoryHead(IList<ArticleExtended> articles, int number)
+@helper ArticlesListByCategoryHead(IList<Article> articles, int number)
 {
 if (articles.Any() && articles.Skip(number).Any())
 {
-    ArticleExtended article = articles.Skip(number).First();
+    Article article = articles.Skip(number).First();
         <div class="default-title">@article.Category.Name</div>
-        <a href="@Url.RouteUrl("Article", new { url = article.Article.Url })" class="thumbnail thumbnail-link" title="@article.Article.Title">
-            <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, article.Article.ImageName))" alt="@article.Article.ImageDesc" title="@article.Article.ImageDesc" />
+        <a href="@Url.RouteUrl("Article", new { url = article.Url })" class="thumbnail thumbnail-link" title="@article.Title">
+            <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, article.ImageName))" alt="@article.ImageDesc" title="@article.ImageDesc" />
             <div class="caption">
                 <h3 class="caption-article-title">
-                    @article.Article.Title
-                    @if (article.CommentsExtended.Count() > 0)
+                    @article.Title
+                    @if (article.Comments.Count() > 0)
                     {
-                        <span class="comment-number"><i class="fa fa-comment"></i> @article.CommentsExtended.Count()</span>
+                        <span class="comment-number"><i class="fa fa-comment"></i> @article.Comments.Count()</span>
                     }
                 </h3>
-                <p>@article.Article.Lead</p>
+                <p>@article.Lead</p>
             </div>
         </a>
 }
@@ -61,18 +61,18 @@ if (articles.Any() && articles.Skip(number).Any())
                 string active = i == 0 ? "active" : string.Empty;
                 <a href="@Url.RouteUrl("Article", new
                     {
-                        url = Model.LatestArticles.Skip(i).First().Article.Url
+                        url = Model.LatestArticles.Skip(i).First().Url
                     })"
                    class="item @active article-carousel-img"
-                   title="@Model.LatestArticles.Skip(i).First().Article.Title">
-                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images900/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(i).First().Article.ImageName))" alt="@Model.LatestArticles.Skip(i).First().Article.ImageDesc" />
+                   title="@Model.LatestArticles.Skip(i).First().Title">
+                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images900/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(i).First().ImageName))" alt="@Model.LatestArticles.Skip(i).First().ImageDesc" />
                     <div class="carousel-caption full-width-caption">
-                        <h3>@Model.LatestArticles.Skip(i).First().Article.Title</h3>
+                        <h3>@Model.LatestArticles.Skip(i).First().Title</h3>
                         <p>
-                            @Model.LatestArticles.Skip(i).First().Article.Lead
-                            @if (Model.LatestArticles.Skip(i).First().CommentsExtended.Count() > 0)
+                            @Model.LatestArticles.Skip(i).First().Lead
+                            @if (Model.LatestArticles.Skip(i).First().Comments.Count() > 0)
                             {
-                                <span class="comment-number image-category"><i class="fa fa-comment"></i>  @Model.LatestArticles.Skip(i).First().CommentsExtended.Count()</span>
+                                <span class="comment-number image-category"><i class="fa fa-comment"></i>  @Model.LatestArticles.Skip(i).First().Comments.Count()</span>
                             }
                         </p>
                     </div>
@@ -96,18 +96,18 @@ if (articles.Any() && articles.Skip(number).Any())
         if (Model.LatestArticles.Any() && Model.LatestArticles.Skip(y).Any())
         {
             <div class="col-sm-6 col-md-4">
-                <a href="@Url.RouteUrl("Article", new { url = Model.LatestArticles.Skip(y).First().Article.Url })" class="thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(y).First().Article.Title">
-                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(y).First().Article.ImageName))" alt="@Model.LatestArticles.Skip(y).First().Article.ImageDesc" title="@Model.LatestArticles.Skip(y).First().Article.ImageDesc" />
+                <a href="@Url.RouteUrl("Article", new { url = Model.LatestArticles.Skip(y).First().Url })" class="thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(y).First().Title">
+                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(y).First().ImageName))" alt="@Model.LatestArticles.Skip(y).First().ImageDesc" title="@Model.LatestArticles.Skip(y).First().ImageDesc" />
                     <div class="caption">
                         <div class="image-category">
-                            @Model.LatestArticles.Skip(y).First().Category.Name
-                            @if (Model.LatestArticles.Skip(y).First().CommentsExtended.Count() > 0)
+                            @Model.LatestArticles.Skip(y).First().Category?.Name
+                            @if (Model.LatestArticles.Skip(y).First().Comments.Count() > 0)
                             {
-                                <span class="comment-number"><i class="fa fa-comment"></i> @Model.LatestArticles.Skip(y).First().CommentsExtended.Count()</span>
+                                <span class="comment-number"><i class="fa fa-comment"></i> @Model.LatestArticles.Skip(y).First().Comments.Count()</span>
                             }
                         </div>
-                        <h3 class="caption-article-title">@Model.LatestArticles.Skip(y).First().Article.Title</h3>
-                        <p>@Model.LatestArticles.Skip(y).First().Article.Lead</p>
+                        <h3 class="caption-article-title">@Model.LatestArticles.Skip(y).First().Title</h3>
+                        <p>@Model.LatestArticles.Skip(y).First().Lead</p>
                     </div>
                 </a>
             </div>
@@ -120,18 +120,18 @@ if (articles.Any() && articles.Skip(number).Any())
         if (Model.LatestArticles.Any() && Model.LatestArticles.Skip(z).Any())
         {
             <div class="col-sm-6 col-md-4">
-                <a href="@Url.RouteUrl("Article", new { url = Model.LatestArticles.Skip(z).First().Article.Url })" class="thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(z).First().Article.Title">
-                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(z).First().Article.ImageName))" alt="@Model.LatestArticles.Skip(z).First().Article.ImageDesc" title="@Model.LatestArticles.Skip(z).First().Article.ImageDesc" />
+                <a href="@Url.RouteUrl("Article", new { url = Model.LatestArticles.Skip(z).First().Url })" class="thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(z).First().Title">
+                    <img src="@Url.Content(String.Format("{0}ArticleImage/Images320/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(z).First().ImageName))" alt="@Model.LatestArticles.Skip(z).First().ImageDesc" title="@Model.LatestArticles.Skip(z).First().ImageDesc" />
                     <div class="caption">
                         <div class="image-category">
-                            @Model.LatestArticles.Skip(z).First().Category.Name
-                            @if (Model.LatestArticles.Skip(z).First().CommentsExtended.Count() > 0)
+                            @Model.LatestArticles.Skip(z).First().Category?.Name
+                            @if (Model.LatestArticles.Skip(z).First().Comments.Count() > 0)
                             {
-                                <span class="comment-number"><i class="fa fa-comment"></i> @Model.LatestArticles.Skip(z).First().CommentsExtended.Count()</span>
+                                <span class="comment-number"><i class="fa fa-comment"></i> @Model.LatestArticles.Skip(z).First().Comments.Count()</span>
                             }
                         </div>
-                        <h3 class="caption-article-title">@Model.LatestArticles.Skip(z).First().Article.Title</h3>
-                        <p>@Model.LatestArticles.Skip(z).First().Article.Lead</p>
+                        <h3 class="caption-article-title">@Model.LatestArticles.Skip(z).First().Title</h3>
+                        <p>@Model.LatestArticles.Skip(z).First().Lead</p>
                     </div>
                 </a>
             </div>
@@ -146,19 +146,19 @@ if (articles.Any() && articles.Skip(number).Any())
             <div class="col-md-12">
                 <a href="@Url.RouteUrl("Article", new
                     {
-                        url = Model.LatestArticles.Skip(x).First().Article.Url
+                        url = Model.LatestArticles.Skip(x).First().Url
                     })"
-                   class="media typical-color thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(x).First().Article.Title">
-                    <div class="media typical-color thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(x).First().Article.Title">
+                   class="media typical-color thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(x).First().Title">
+                    <div class="media typical-color thumbnail thumbnail-link" title="@Model.LatestArticles.Skip(x).First().Title">
                         <div class="media-left">
-                            <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(x).First().Article.ImageName))" alt="@Model.LatestArticles.Skip(x).First().Article.ImageDesc" title="@Model.LatestArticles.Skip(x).First().Article.ImageDesc" />
+                            <img src="@Url.Content(String.Format("{0}ArticleImage/Images120/{1}", Model.ContentExternalUrl, Model.LatestArticles.Skip(x).First().ImageName))" alt="@Model.LatestArticles.Skip(x).First().ImageDesc" title="@Model.LatestArticles.Skip(x).First().ImageDesc" />
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">@Model.LatestArticles.Skip(x).First().Article.Title</h4>
-                            @Model.LatestArticles.Skip(x).First().Article.Lead
-                            @if (Model.LatestArticles.Skip(x).First().CommentsExtended.Count() > 0)
+                            <h4 class="media-heading">@Model.LatestArticles.Skip(x).First().Title</h4>
+                            @Model.LatestArticles.Skip(x).First().Lead
+                            @if (Model.LatestArticles.Skip(x).First().Comments.Count() > 0)
                             {
-                                <span class="comment-number"><i class="fa fa-comment"></i> @Model.LatestArticles.Skip(x).First().CommentsExtended.Count()</span>
+                                <span class="comment-number"><i class="fa fa-comment"></i> @Model.LatestArticles.Skip(x).First().Comments.Count()</span>
                             }
                         </div>
                     </div>

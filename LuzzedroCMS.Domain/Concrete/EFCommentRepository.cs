@@ -30,21 +30,16 @@ namespace LuzzedroCMS.Domain.Concrete
             return comments.FirstOrDefault();
         }
 
-        public CommentExtended CommentExtended(
+        public Comment Comment(
             bool enabled = true,
             int commentID = 0,
             Comment comment = null)
         {
             Comment commentSelected = comment != null ? comment : Comment(enabled, commentID);
-            User user = context.Users.FirstOrDefault(p => p.UserID == comment.UserID);
-            return new CommentExtended()
-            {
-                Comment = comment,
-                User = user
-            };
+            return commentSelected;
         }
 
-        public IList<Comment> Comments(
+        public IList<Comment> commentsSelected(
             bool enabled = true,
             int page = 1,
             int take = 0,
@@ -58,16 +53,6 @@ namespace LuzzedroCMS.Domain.Concrete
             if (enabled)
             {
                 comments = comments.Where(p => p.Status == 1);
-            }
-
-            if (articleID != 0)
-            {
-                comments = comments.Where(p => p.ArticleID == articleID);
-            }
-
-            if (userID != 0)
-            {
-                comments = comments.Where(p => p.UserID == userID);
             }
 
             if (orderByDescending != null)
@@ -98,7 +83,7 @@ namespace LuzzedroCMS.Domain.Concrete
             return comments.ToList();
         }
 
-        public IList<CommentExtended> CommentsExtended(
+        public IList<Comment> Comments(
             bool enabled = true,
             int page = 1,
             int take = 0,
@@ -109,16 +94,8 @@ namespace LuzzedroCMS.Domain.Concrete
             IList<Comment> comments = null)
         {
             IList<Comment> commentsSelected = comments != null ? comments : Comments(enabled, page, take, articleID, userID, orderBy, orderByDescending);
-            IList<CommentExtended> commentsExtended = new List<CommentExtended>();
-            foreach (var comment in commentsSelected)
-            {
-                commentsExtended.Add(new CommentExtended()
-                {
-                    Comment = comment,
-                    User = context.Users.FirstOrDefault(p => p.UserID == comment.UserID)
-                });
-            }
-            return commentsExtended;
+
+            return commentsSelected;
         }
 
         public void Remove(int commentID)
@@ -149,9 +126,9 @@ namespace LuzzedroCMS.Domain.Concrete
             {
                 dbEntry = context.Comments.Add(new Comment
                 {
-                    UserID = comment.UserID,
+                    User = comment.User,
                     ParentCommentID = comment.ParentCommentID,
-                    ArticleID = comment.ArticleID,
+                    Article = comment.Article,
                     Date = DateTime.Now,
                     Content = comment.Content,
                     Status = 1
@@ -162,8 +139,8 @@ namespace LuzzedroCMS.Domain.Concrete
                 dbEntry = context.Comments.Find(comment.CommentID);
                 if (dbEntry != null)
                 {
-                    dbEntry.UserID = comment.UserID;
-                    dbEntry.ArticleID = comment.ArticleID;
+                    dbEntry.User = comment.User;
+                    dbEntry.Article = comment.Article;
                     dbEntry.ParentCommentID = comment.ParentCommentID;
                     dbEntry.Date = DateTime.Now;
                     dbEntry.Content = comment.Content;

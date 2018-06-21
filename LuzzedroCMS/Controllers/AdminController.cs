@@ -94,7 +94,6 @@ namespace LuzzedroCMS.Controllers
             IList<int> selectedTagsID = new List<int>();
             IList<Category> categories = repoCategory.Categories();
             Article article;
-            ArticleExtended articleExtended;
             IList<string> imageNames = new List<string>();
 
             foreach (var imageName in imageHelper.IsFtp() ? imageHelper.GetAllImagesForArticleFromFtp() : imageHelper.GetAllImagesForArticleFromLocal(Server))
@@ -111,20 +110,16 @@ namespace LuzzedroCMS.Controllers
                     Status = 1
                 };
                 ViewBag.Title = Resources.AddingArticle;
-                articleExtended = new ArticleExtended
-                {
-                    Article = article
-                };
             }
             else
             {
-                articleExtended = repoArticle.ArticleExtended(url: url, actual: false);
+                article = repoArticle.Article(url: url, actual: false);
                 ViewBag.Title = Resources.EditArticle;
             }
 
-            if (articleExtended.Tags != null)
+            if (article.Tags != null)
             {
-                foreach (var tag in articleExtended.Tags)
+                foreach (var tag in article.Tags)
                 {
                     selectedTagsID.Add(tag.TagID);
                 }
@@ -132,7 +127,7 @@ namespace LuzzedroCMS.Controllers
 
             return View(new EditArticleViewModel
             {
-                ArticleExtended = articleExtended,
+                Article = article,
                 SelectedTagsId = selectedTagsID,
                 Categories = categories,
                 Tags = tags,
@@ -144,27 +139,25 @@ namespace LuzzedroCMS.Controllers
         [HttpPost]
         [SetTempDataModelState]
         [ValidateAntiForgeryToken]
-        public ActionResult EditArticle(ArticleExtended articleExtended, int[] SelectedTagsID, string returnUrl, string ExistingImageName)
+        public ActionResult EditArticle(Article article, int[] SelectedTagsID, string returnUrl, string ExistingImageName)
         {
             if (ModelState.IsValid)
             {
                 int articleID = repoArticle.Save(new Article
                 {
-                    ArticleID = articleExtended.Article.ArticleID,
-                    CategoryID = articleExtended.Article.CategoryID,
+                    ArticleID = articleID,
+                    Category = article.Category,
                     UserID = user.UserID,
                     ImageName = ExistingImageName,
-                    ImageDesc = articleExtended.Article.ImageDesc,
-                    DatePub = articleExtended.Article.DatePub,
-                    DateExp = articleExtended.Article.DateExp,
-                    Title = articleExtended.Article.Title,
-                    Lead = articleExtended.Article.Lead,
-                    Content = articleExtended.Article.Content,
-                    Source = articleExtended.Article.Source,
-                    Status = articleExtended.Article.Status
+                    ImageDesc = article.ImageDesc,
+                    DatePub = article.DatePub,
+                    DateExp = article.DateExp,
+                    Title = article.Title,
+                    Lead = article.Lead,
+                    Content = article.Content,
+                    Source = article.Source,
+                    Status = article.Status
                 });
-
-                repoArticle.RemoveAllTagsFromArticle(articleID);
 
                 if (SelectedTagsID != null)
                 {
@@ -173,12 +166,12 @@ namespace LuzzedroCMS.Controllers
                         repoArticle.AddTagToArticle(articleID, selectedTagID);
                     }
                 }
-                this.SetMessage(InfoMessageType.Success, (articleExtended.Article.ArticleID == 0) ? Resources.ProperlyAddedArticle : Resources.CorrectlyChanged);
+                this.SetMessage(InfoMessageType.Success, (articleID == 0) ? Resources.ProperlyAddedArticle : Resources.CorrectlyChanged);
                 return Redirect(Url.Action("Articles", "Admin"));
             }
             else
             {
-                return Redirect(Url.Action("EditArticle", "Admin", new { articleExtended.Article.Url }));
+                return Redirect(Url.Action("EditArticle", "Admin", new { article.Url }));
             }
 
         }
@@ -195,10 +188,9 @@ namespace LuzzedroCMS.Controllers
         public ViewResult Comments(int page = 1)
         {
             ViewBag.Title = Resources.ListOfComments;
-            IList<CommentExtended> commentsExtended = repoComment.CommentsExtended(page: page, take: PageSize, enabled: false);
+            IList<Comment> Comments = repoComment.Comments(page: page, take: PageSize, enabled: false);
             CommentsViewModel commentsViewModel = new CommentsViewModel
             {
-                CommentsExtended = commentsExtended,
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
